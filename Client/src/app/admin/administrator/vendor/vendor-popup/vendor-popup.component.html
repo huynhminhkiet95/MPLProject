@@ -1,0 +1,89 @@
+<div class="modal-header">
+  <h4 id="dialog-child-name" class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && saveVendor()" #f="ngForm" novalidate>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="box box-primary">
+        
+        <div class="box-body" style="padding: 10px 22px !important;">
+
+          <div class="row">
+              <div class="form-group">
+                <label class="control-label col-md-2">{{languages.vendorname || 'Vendor Name'}}&nbsp;</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" id="vendor" name="vendorname" [(ngModel)]="vendorModel.vendorName"
+                      #Subject="ngModel" />
+                </div>
+
+                <label class="control-label col-md-2">{{languages.vendoraddress1 || 'Vendor Address 1'}}&nbsp;</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" id="vendoraddress1" name="vendoraddress1" [(ngModel)]="vendorModel.vendorAddress1"
+                      #Subject="ngModel" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-2">{{languages.vendoraddress2 || 'Vendor Address 2'}}&nbsp;</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" id="vendoraddress2" name="vendoraddress2" [(ngModel)]="vendorModel.vendorAddress2"
+                      #Subject="ngModel" />
+                </div>
+
+                <label class="control-label col-md-2">{{languages.vendoraddress3 || 'Vendor Address 3'}}&nbsp;</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" id="vendoraddress3" name="vendoraddress3" [(ngModel)]="vendorModel.vendorAddress3"
+                      #Subject="ngModel" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-2">{{languages.tel || 'Tel'}}&nbsp;</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" id="tel" name="tel" [(ngModel)]="vendorModel.tel"
+                      #Subject="ngModel" />
+                </div>
+
+                <label class="control-label col-md-2">{{languages.contactperson || 'Contact Person'}}&nbsp;</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" id="contactperson" name="contactperson" [(ngModel)]="vendorModel.contactPerson"
+                      #Subject="ngModel" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-2">{{languages.email || 'Email'}}&nbsp;</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" id="email" name="email" [(ngModel)]="vendorModel.email"
+                      #Subject="ngModel" />
+                </div>
+
+                <label class="control-label col-md-2">{{languages.servicecategory || 'Service Category'}}&nbsp;</label>
+                <div class="col-md-4">
+                  <select class="form-control" [(ngModel)]="vendorModel.serviceCategory" name="servicecategory"
+                    #department="ngModel">
+                    <option *ngFor="let c of serviceCategories" [ngValue]="c.codeId">{{c.codeDesc}}</option>
+                  </select>
+                </div>
+              </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="row">
+      <div class="col-md-12 group-btn-right">
+          <button type="button" class="btn btn-default pull-right" (click)="bsModalRef.hide()">{{this.languages.close}}</button>
+          <button type="submit" class="btn btn-primary pull-right" >{{this.languages.save}}</button>
+      </div>
+    </div>
+</form>
+</div>
+ 

@@ -1,0 +1,14 @@
+<div [ngClass]="{'closed': !isOpen}">
+    <div class="modal-overlay" (click)="close(true)"></div>
+
+    <div class="modal-custom">
+      <div class="title" *ngIf="modalTitle">
+        <span class="title-text">{{ modalTitle }}</span>
+        <span class="right-align" (click)="close(true)"><i class="fa fa-times"></i></span>
+      </div>
+
+      <div class="body">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>

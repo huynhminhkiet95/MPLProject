@@ -1,0 +1,13 @@
+<div *ngIf="isShowCategory" class="box-header with-border" style="background: gray;padding: 3px;">
+  
+<a class="btn btn-primary btn-outline btn-circle" (click)="GetGalleryByType('ALL')">ALL</a>
+  <!-- <a *ngFor="let c of listTypes" class="btn btn-primary btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse1"  aria-expanded="false" (click)="GetGalleryByType(c.codeId)" aria-controls="nav-collapse1">{{c.codeDesc}}</a> -->
+  <a *ngFor="let c of listTypes" class="btn btn-primary btn-outline btn-circle" data-toggle="collapse" href="#nav-collapse1"  aria-expanded="false" (click)="GetGalleryByType(c.codeId)" aria-controls="nav-collapse1">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</a>
+</div>
+<div class="row box-body">
+
+  <ngx-gallery [options]="galleryOptions" [images]="galleryImages" style="padding: 10px;"></ngx-gallery>
+  <div *ngIf="isLoading" class="overlay">
+      <i class="fa fa-refresh fa-spin"></i>
+    </div>
+</div>

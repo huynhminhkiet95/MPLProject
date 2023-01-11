@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Assets Movement</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="employeeId">
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+        <dxi-column caption="{{languages.assetcode}}" dataField="assetCode" dataType="string" ></dxi-column>
+        <dxi-column dataField="assetDesc" caption="{{languages.assetdesc}}">
+        </dxi-column>
+        <dxi-column dataField="assetGroupDesc" caption="{{languages.assetgroup}}">
+        </dxi-column>
+        <dxi-column dataField="createDate" dataType="date" format="dd/MM/yyyy" caption="{{languages.createdate}}">
+        </dxi-column>
+        <dxi-column dataField="createUserName" caption="Create User">
+        </dxi-column>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+          [showInfo]="true"></dxo-pager>
+        <dxo-editing mode="popup" [allowDeleting]="false">
+        </dxo-editing>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+
+</div>

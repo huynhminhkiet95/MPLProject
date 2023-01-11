@@ -1,0 +1,131 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{languages.assetactivity||'Acsset activity edit'}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && Save()" #f="ngForm" novalidate>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="box box-primary idrequest-search">
+        <div class="box-body">
+          
+            <div class="row">
+              <div class="col-md-12">
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label" >{{languages.asssetgroup||'Assset group'}} 
+                        <span class="required"></span></label>
+                        <div class="col-sm-4">
+                          <select [disabled]="editMode" class="form-control" id="assetGroup" name="assetGroup" (change)="changeAssetGroup()" [(ngModel)]="model.assetGroup" #assetGroup="ngModel" required>
+                            <option *ngFor="let c of assetGroups" [ngValue]="c.assetGroup" >{{c.assetGroupDesc}}</option>
+                          </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="SvcType" class="col-sm-2 control-label" >{{languages.asset}}<span class="required"></span></label>
+      
+                        <div class="col-sm-4" *ngIf="!editMode">
+                            <select class="form-control" [(ngModel)]="model.assetId" name="asset" #asset="ngModel">
+                                    <option value=""></option>
+                                    <option *ngFor="let c of assets" [ngValue]="c.assetId">{{c.assetCode}} - {{c.assetDesc}}</option>
+                            </select>
+                          <span *ngIf="f.submitted && !asset.valid" class="help-block-custom">
+                            <i class="fa fa-exclamation-circle" tooltip="Servise Type is required" aria-hidden="true"></i>
+                          </span>
+                        </div>
+                        <div class="col-sm-4" *ngIf="editMode">
+                          <input name="assetDesc" readonly="readonly" class="form-control" [(ngModel)]="model.assetDesc" name="assetDesc" #assetDesc="ngModel"  >   
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">{{languages.activitydate||'Activity Date'}}<span class="required"></span></label>
+                        <div class="col-sm-4">
+                            <dx-date-box width="100%" displayFormat="dd/MM/yyyy" type="date"
+                            [(value)]="model.activityDate">
+                          </dx-date-box>
+                        </div>
+                        <label  class="col-sm-2 control-label">{{languages.activitytype||'Activity Type'}}<span class="required"></span></label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="activitytype" name="activitytype" [(ngModel)]="model.activityType" #activitytype="ngModel" required>
+                                <!-- <option *ngFor="let c of activityTypes" [ngValue]="c.codeId" >{{c.codeDesc}}</option> -->
+                                <option *ngFor="let c of activityTypes" [ngValue]="c.codeId" >{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                              </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">{{languages.thirdparty}}</label>
+                        <div class="col-sm-4">
+                            <input class="form-control" [(ngModel)]="model.thirdParty" name="thirdparty" #thirdparty="ngModel" />
+                        </div>
+                        <label  class="col-sm-2 control-label">{{languages.refno}} </label>
+                        <div class="col-md-4">
+                            <input class="form-control" [(ngModel)]="model.refNo" name="refno" #refno="ngModel" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">{{languages.remark}}</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" [(ngModel)]="model.remark" name="remark" #remark="ngModel" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">{{languages.cost}}</label>
+                        <div class="col-sm-4">
+                            <input class="form-control text-right"   [(ngModel)]="model.cost" name="cost" #cost="ngModel" myCurrencyFormatter  (ngModelChange)="localAmountChange($event)"/>
+                        </div>
+                        <label  class="col-sm-2 control-label">{{languages.currency}} </label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="currency" name="currency" [(ngModel)]="model.currency" #currency="ngModel">
+                                <option value="VND">VND</option>
+                                <option value="USD">USD</option>
+                              </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <label  class="col-sm-2 control-label">{{languages.expiredate||'Expire Date'}}</label>
+                      <div class="col-sm-4">
+                          <dx-date-box width="100%" displayFormat="dd/MM/yyyy" type="date"
+                          [(value)]="model.expireDate">
+                        </dx-date-box>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-md-12">
+          <div class="box box-primary">
+              <div class="box-body">
+              <div class="form-group">
+                  <label for="attachment" class="col-sm-2 control-label">{{languages.attachment}}</label>
+                  <div class="col-sm-10">
+                      <div class="row">
+                          <div class="col-md-12">
+                            <app-fileupload  #assetUploadFile
+                              projectId="100" 
+                              sectionId="107" 
+                              maxFiles="4"
+                              maxSize="5">
+                            </app-fileupload>
+                          </div>
+                        </div>
+                  </div>
+              </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 group-btn-right">
+        <button type="button" class="btn btn-default pull-right" (click)="bsModalRef.hide()">{{languages.close}}</button>
+        <button type="submit" class="btn btn-primary pull-right" [disabled]="IsSubmit">{{languages.submit}}</button>
+    </div>
+  </div>
+</form>
+</div>

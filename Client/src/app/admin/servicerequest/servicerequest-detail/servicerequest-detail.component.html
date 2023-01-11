@@ -1,0 +1,317 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.servicerequest}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li>
+        <a routerLink="../../servicerequest"> {{languages.servicerequest}}</a>
+      </li>
+
+    </ol>
+  </section>
+
+  <section class="content">
+    <form class="form-horizontal" name="formServiceRequest" #f="ngForm">
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary idrequest-search">
+            <div class="box-header with-border">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title"> {{languages.general}}</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.subject || "Subject"}}&nbsp;<span class="required"></span></label>
+                    <div class="col-md-3">
+                      <input type="text" class="form-control" maxlength="256" name="svrSubject" [(ngModel)]="model.svrSubject"
+                        #svrSubject="ngModel" required [disabled]="isView" />
+
+                      <span *ngIf="f.submitted && !svrSubject.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Subject is required" aria-hidden="true"></i>
+                      </span>
+
+                    </div>
+                    <label class="control-label col-md-2">{{languages.applicationtype || "Application Type"}}&nbsp;<span class="required"></span></label>
+                    <div class="col-md-3">
+                      <select class="form-control" (change)="changeType()" name="svrServiceType" [(ngModel)]="model.svrServiceType"
+                        #svrServiceType="ngModel" required [disabled]="isView">
+                        <option *ngFor="let c of listServiceType" [ngValue]="c.applicationCode">
+                          {{c.applicationDesc}}
+                        </option>
+                      </select>
+
+                      <span *ngIf="f.submitted && !svrServiceType.valid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                          tooltip="svrServiceType is required" aria-hidden="true"></i></span>
+
+                    </div>
+                    <div class="col-md-2"><button  type="button" (click)="popup()" class="btn btn-sm btn-default">{{languages.viewworkflow || "View Workflow"}}</button></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.duedate || "Due Date"}}</label>
+                    <div class="col-md-3">
+                      <dx-date-box width="100%" [disabled]="isView" [showClearButton]="false" displayFormat="dd/MM/yyyy"
+                        type="date" [(value)]="bsDueDate">
+                      </dx-date-box>
+                    </div>
+                    <label class="control-label col-md-2">{{languages.priority || "Priority"}}&nbsp;<span class="required"></span></label>
+                    <div class="col-md-3">
+                      <select class="form-control" name="proiority" [disabled]="isView" [(ngModel)]="model.proiority"
+                        #proiority="ngModel" required>
+                        <!-- <option *ngFor="let c of listPriority" [ngValue]="c.codeId">
+                          {{c.codeDesc}}
+                        </option> -->
+                        <option *ngFor="let c of listPriority" [ngValue]="c.codeId">
+                          {{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}
+                        </option>
+                      </select>
+
+                      <span *ngIf="f.submitted && !proiority.valid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                          tooltip="proiority is required" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.relatedcustomer || "Related Customer"}}</label>
+                    <div class="col-md-3">
+                      <input type="text" class="form-control" name="relatedCustomer" [disabled]="isView" maxlength="2000"
+                        [(ngModel)]="model.relatedCustomer" #relatedCustomer="ngModel" />
+                    </div>
+                    <label class="control-label col-md-2">{{languages.relatedparty || "Related Party"}}</label>
+                    <div class="col-md-3">
+                      <input type="text" class="form-control" name="thirdParty" [disabled]="isView" maxlength="2000"
+                        [(ngModel)]="model.thirdParty" #thirdParty="ngModel" />
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.fixedvendor  || "Fixed Vendor"}}</label>
+                    <div class="col-md-3">
+                      <select class="form-control" name="vendor" [disabled]="isView" [(ngModel)]="model.vendor"
+                        #vendor="ngModel">
+                        <option *ngFor="let c of vendorsList" [ngValue]="c.id">{{c.vendorName}}</option>
+                      </select>
+                    </div>
+                    <label class="control-label col-md-2">{{languages.servicecategory || "Service Category"}}</label>
+                    <div class="col-md-3">
+                      <select class="form-control" name="serviceCategory" [disabled]="isView" [(ngModel)]="model.serviceCategory"
+                        #serviceCategory="ngModel">
+                        <option *ngFor="let c of serviceCategories" [ngValue]="c.codeId">{{c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.background || "Background"}}</label>
+                    <div class="col-md-3">
+                      <textarea type="text" style="height: 100px!important;" [disabled]="isView" maxlength="2000" class="form-control"
+                        name="background" [(ngModel)]="model.background" #background="ngModel"></textarea>
+                    </div>
+
+                    <label class="control-label col-md-2">{{languages.requiredetail || "Require Detail"}}</label>
+                    <div class="col-md-3">
+                      <textarea type="text" style="height: 100px!important;" [disabled]="isView" maxlength="2000" class="form-control"
+                        name="requiredDetail" [(ngModel)]="model.requiredDetail" #requiredDetail="ngModel"></textarea>
+                    </div>
+                    <div *ngIf="model.svrServiceType=='SPR' && !isView" class="col-md-2">
+                      <button type="button" class="btn btn-info btn-sm" (click)="showChildModal()" >{{languages.selectitems || "Select Items"}}</button>
+                    </div>
+                    <div *ngIf="model.svrServiceType=='SPR' && isView" class="col-md-2">
+                      <button type="button" class="btn btn-info btn-sm" (click)="ViewItems()" >{{languages.viewitems || "View Items"}}</button>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.localamount || "Local Amount"}}</label>
+                    <div class="col-md-3">
+                      <input class="form-control text-right" [disabled]="isView" name="localDocAmount" [(ngModel)]="model.localDocAmount"
+                        #localDocAmount="ngModel" myCurrencyFormatter (ngModelChange)="localAmountChange($event)" />
+                    </div>
+                    <label class="control-label col-md-2">{{languages.usdamount || "USD Amount"}}</label>
+                    <div class="col-md-3">
+                      <input [disabled]="isView" class="form-control text-right" [ngModel]="model.usdDocAmount" name="usdDocAmount"
+                        #usdDocAmount="ngModel" (ngModelChange)="usdAmountChange($event)" myCurrencyFormatter />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.plannedbudget || "Planned Budget"}}</label>
+                    <div class="col-md-3">
+                      <label class="radio-inline">
+                        <input type="radio" value="Yes" [disabled]="isView" name="optradio" [(ngModel)]="model.HasBudget"
+                          name="HasBudget">Yes
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" value="No" [disabled]="isView" [(ngModel)]="model.hasBudget" name="HasBudget">No
+                      </label>
+                    </div>
+                    <label class="col-md-2 control-label">{{languages.referencedocno || "Reference Doc No"}}</label>
+                    <div class="col-md-3">
+                      <input type="text" class="form-control" [disabled]="isView" name="refDocumentNo" maxlength="30"
+                        [(ngModel)]="model.refDocumentNo" #refDocumentNo="ngModel" />
+                    </div>
+                  </div>
+
+
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.remark || "Remark"}}</label>
+                    <div class="col-md-3">
+                      <textarea type="text" style="height: 100px!important;" [disabled]="isView" maxlength="2000" class="form-control"
+                        name="remark" [(ngModel)]="model.remark" #remark="ngModel"></textarea>
+                    </div>
+                    <label class="control-label col-md-2">{{languages.relateddivision || "Related Division"}}</label>
+                    <div class="col-md-3">
+                      <select class="form-control" name="relatedDivision" [disabled]="isView" [(ngModel)]="model.relatedDivision"
+                        #relatedDivision="ngModel">
+                        <option *ngFor="let c of listDivision" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2">{{languages.attachedfiles || "Attached File"}}</label>
+                    <div class="col-md-5">
+                      <app-fileupload projectId="100" sectionId="107" maxFiles="10" maxSize="10">
+                      </app-fileupload>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                      <!-- <button class="btn btn-default"  [disabled]="loading || isView" type="submit">Save</button> -->
+                      <button class="btn btn-default" (click)="save('DRAF')" [disabled]="loading || isView || !f.valid"
+                        type="button">{{languages.draftsave || "Draft Save"}}</button>
+                      <button class="btn btn-primary" appDebounceClick  (debounceClick)="save('NEW')" [disabled]="isView || !f.valid" type="button">{{languages.submit || "Submit"}}</button>
+                      <button *ngIf="id!=undefined && id != 'addnew'" class="btn btn-primary" (click)="onPrint()" type="button">{{languages.print || "Print"}}</button>
+                      <button *ngIf="id != undefined && id != 'addnew' && model.svrStatus == 'DROP'" class="btn btn-primary" (click)="resubmit()" type="button">{{languages.resubmit || "Resubmit"}}</button>
+                      <button class="btn btn-default pull-right" routerLink="../../servicerequest"  type="button">{{languages.back || "Back"}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <div id="container-print" style="display: none;">
+      <app-servicerequest-print [modeldetail]="model">
+
+      </app-servicerequest-print>
+    </div>
+    <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form class="form-horizontal" name="formAssetsMovement"
+            #f2="ngForm">
+            <div class="modal-header">
+              <h4 id="dialog-child-name" class="modal-title pull-left">{{languages.selectitem || 'Select Item for Stationaly Purchase Request'}}</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="box box-primary idrequest-search">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <dx-data-grid #gridContainer
+                        id="gridContainer" 
+                        [dataSource]="Items"
+                        keyExpr="itemDesc" >
+                        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                        <dxi-column dataField="itemDesc" dataType="string" caption="{{this.languages.itemname||'Item Name'}}">
+                        </dxi-column>
+                        <dxi-column dataField="unit" dataType="string" caption ="{{this.languages.unit||'Unit'}}">
+                        </dxi-column>
+                        <dxi-column dataField="price" dataType="number" caption ="{{this.languages.price||'Price'}}">
+                        </dxi-column>
+                        <dxi-column dataField="quantity" dataType="number" caption ="{{this.languages.quantity||'Quantity'}}">
+                        </dxi-column>
+                        <dxo-selection mode="single"></dxo-selection>
+                        <dxo-paging [pageSize]="20"></dxo-paging>
+                        <dxo-pager
+                            [showPageSizeSelector]="true"
+                            [showNavigationButtons]="true"
+                            [allowedPageSizes]="[20, 50, 100]"
+                            [showInfo]="true"
+                        ></dxo-pager>
+                      <dxo-editing mode="cell" [allowUpdating]="true"   [allowDeleting]="false">
+                      </dxo-editing>
+                      
+                  </dx-data-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="group-btn-right">
+                  <button type="button" class="btn btn-primary pull-right" (click)="updateItemToPurchase()">{{languages.update || "Update"}}</button>
+                  <button type="button" class="btn btn-default pull-right" (click)="hideChildModal()">{{languages.close}}</button>
+              </div>
+              
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div bsModal #childModal2="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form class="form-horizontal" name="formAssetsMovement"
+            #f2="ngForm">
+            <div class="modal-header">
+              <h4 id="dialog-child-name" class="modal-title pull-left">{{languages.selectitem || 'Item for Stationary Purchase Request'}}</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal2()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="box box-primary idrequest-search">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <dx-data-grid #gridContainer2
+                        id="gridContainer2" 
+                        [dataSource]="ItemSelected" 
+                        keyExpr="spiId">
+                        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                        <dxi-column dataField="svR_SPR_Items.itemDesc" dataType="string" caption="{{this.languages.itemname||'Item Name'}}">
+                        </dxi-column>
+                        <dxi-column dataField="svR_SPR_Items.unit" dataType="string" caption ="{{this.languages.unit||'Unit'}}">
+                        </dxi-column>
+                        
+                        <dxi-column dataField="qty" dataType="number" caption ="{{this.languages.quantity||'Request Quantity'}}">
+                        </dxi-column>
+                        <dxi-column dataField="appQty" dataType="number" caption ="{{this.languages.approvalquantity || 'Approval Quantity'}}">
+                          </dxi-column>
+                        <dxo-selection mode="single"></dxo-selection>
+                        <dxo-paging [pageSize]="20"></dxo-paging>
+                        <dxo-pager
+                            [showPageSizeSelector]="true"
+                            [showNavigationButtons]="true"
+                            [allowedPageSizes]="[20, 50, 100]"
+                            [showInfo]="true"
+                        ></dxo-pager>
+                      <dxo-editing  [allowUpdating]="false"   [allowDeleting]="false">
+                      </dxo-editing>
+                      
+                  </dx-data-grid>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,150 @@
+<div class="row">
+  <div class="col-md-4">
+    <form class="form-horizontal" name="configurationGenerate" (ngSubmit)="f2.form.valid" #f2="ngForm">
+    <ul style="list-style: none; margin: 0; padding: 0;">
+      <li>
+        <label>Owner Logo</label>
+        <div class="flex-container">
+          <div style="flex-grow: 5">
+            <div class="border-img">
+              <img style="max-height: 100px; max-width: 200px;" src="{{model.ownerlogo}}" alt="">
+            </div>
+
+          </div>
+          <div style="flex-grow: 5">
+            <a (click)="showUploadImage(1)" class="btn btn-info btn-sm">Select Immage</a>
+            <p>Recommend size</p>
+            <p>100x150 px</p>
+            <p>PNG(Transparent)</p>
+          </div>
+        </div>
+
+      </li>
+      <li>
+        <label>System Logo</label>
+        <div class="flex-container">
+          <div style="flex-grow: 5">
+            <div class="border-img">
+              <img style="max-height: 100px; max-width: 200px;" src="{{model.systemlogo}}" alt="">
+            </div>
+
+          </div>
+          <div style="flex-grow: 5">
+            <a  (click)="showUploadImage(2)" class="btn btn-info btn-sm">Select Immage</a>
+            <p>Recommend size</p>
+            <p>100x150 px</p>
+            <p>PNG(Transparent)</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="flex-container">
+          <div style="flex-grow: 5">
+            <label class="control-label">Color theme</label>
+          </div>
+          <div style="flex-grow: 5">
+            <!-- <input class="input-config" name="colorTheme" #colorTheme="ngModel" [(ngModel)]="model.colortheme" > -->
+            <ng-select [items]="items" #themeColor (data)="model.colortheme" (selected)="selectedThemColor($event)"
+                      placeholder="No color selected">
+          </ng-select>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="flex-container">
+          <div style="flex-grow: 5">
+            <label class="control-label">Frame font color</label>
+          </div>
+          <div style="flex-grow: 5">
+            <!-- <input class="input-config" name="frameFontColor" #frameFontColor="ngModel" [(ngModel)]="model.norframfontcolor"> -->
+            <div class="dx-field-value">
+              <dx-color-box [(value)]="model.norframfontcolor"></dx-color-box>
+          </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="flex-container">
+          <div style="flex-grow: 5">
+            <label class="control-label">Normal font color</label>
+          </div>
+          <div style="flex-grow: 5">
+            <!-- <input class="input-config" name="normalFontColor" #normalFontColor="ngModel" [(ngModel)]="model.norfontclor"> -->
+            <div class="dx-field-value">
+              <dx-color-box [(value)]="model.norfontclor"></dx-color-box>
+          </div>
+          </div>
+           
+        </div>
+      </li>
+      <li>
+        <label>Floating Image</label>
+        <div class="flex-container">
+          <div style="flex-grow: 5">
+            <div class="border-img">
+              <img style="max-height: 100px; max-width: 200px;" src="{{model.floatlogo}}" alt="">
+            </div>
+
+          </div>
+          <div style="flex-grow: 5">
+            <p>
+              <dx-check-box  [(value)]="model.showfloatlogo" text="Show">
+              </dx-check-box>
+            </p>
+            <a (click)="showUploadImage(3)" class="btn btn-info btn-sm">Select Immage</a>
+            <p>Recommend size</p>
+            <p>115x25 px</p>
+            <p>PNG(Transparent)</p>
+           
+          </div>
+          
+        </div>
+      </li>
+      <li>
+        <label>Logo Page Image</label>
+        <div class="flex-container">
+          <div style="flex-grow: 5">
+            <div class="border-img">
+              <img style="max-height: 100px; max-width: 200px;" src="{{model.loginlogo}}" alt="">
+            </div>
+
+          </div>
+          <div style="flex-grow: 5">
+            <a (click)="showUploadImage(4)" class="btn btn-info btn-sm">Select Immage</a>
+            <p>Recommend size</p>
+            <p>115x25 px</p>
+            <p>PNG(Transparent)</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <button (click)="save()" type="button" class="btn btn-primary">{{languages.submit}}</button>
+      </li>
+    </ul>
+  </form>
+  </div>
+</div>
+<div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{languages.uploadimage || 'Upload image'}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="staticModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="box-upload-avatar">
+          <app-fileupload #innerFileUpload projectId="100"  sectionId="107" maxFiles="1" maxSize="2" fileExt="PNG,JPG,JPEG"
+            isVatar=false>
+          </app-fileupload>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="staticModal.hide()">{{languages.close || 'Close'}}</button>
+        <button class="btn btn-primary" (click)="updateImage()">{{languages.update || 'Update'}}</button>
+      </div>
+    </div>
+  </div>
+</div>

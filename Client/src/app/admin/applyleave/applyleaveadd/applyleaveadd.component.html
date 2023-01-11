@@ -1,0 +1,174 @@
+<!-- <ng-template #template> -->
+
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hidemodal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <div class="row">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="fromDateValue" class="col-sm-2 control-label">{{languages.periodtime}}</label>
+
+                    <div class="col-sm-2">
+                      <dx-date-box width="100%" (onValueChanged)="toDateValueChange('F')" [showClearButton]="false"
+                        displayFormat="dd/MM/yyyy" type="date" [(value)]="fromDateValue">
+                        <dx-validator>
+                          <dxi-validation-rule type="required" message="FromDate is required"></dxi-validation-rule>
+                        </dx-validator>
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-2">
+                      <dx-date-box width="100%" (onValueChanged)="toDateValueChange('T')" [min]="minDateValue"
+                        [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date" [(value)]="toDateValue">
+                        <dx-validator>
+                          <dxi-validation-rule type="required" message="ToDate is required"></dxi-validation-rule>
+                        </dx-validator>
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-2">
+                      <select class="form-control" [(ngModel)]="model.marker" [ngModelOptions]="{standalone: true}"
+                        (change)="markerChange()">
+                        <!-- <option *ngFor="let m of optionsMarker.marker" [value]="m">{{m}}</option> -->
+                        <option *ngFor="let c of optionsMarker.marker" [ngValue]="c">{{languages[c|removewhitespaces]||c}}</option>
+                      </select>
+                    </div>
+                    <span class="col-sm-3"> {{languages.leavedays}} : {{ this.model.leaveDays}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="LeaveType" class="col-sm-2 control-label">{{languages.leavetype}}&nbsp;
+                      <span class="required"></span>
+                    </label>
+                    <div class="col-sm-4">
+                      <select class="form-control" (change)="changedType()" [(ngModel)]="model.leaveType"
+                        name="LeaveType" #ITService="ngModel" required>
+                        <!-- <option *ngFor="let c of leavetypes" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of leavetypes" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                      <span *ngIf="f.form.invalid && !model.leaveType" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Leave type is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                    <label *ngIf="checkBalance" class="col-sm-2 control-label">
+                      {{languages.balance||'Balance'}}
+                    </label>
+                    <div *ngIf="checkBalance" class="col-sm-2" style="margin-top:6px;">
+                      <span>{{balanceValue.balance}} {{languages.days||'days'}}</span>
+                    </div>
+                    <div class="col-md-2"><button type="button"  (click)="popup()" class="btn btn-default btn-sm">{{languages.approvedby||'View Workflow'}}</button></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label col-md-2">
+                      {{languages.leavereason||'Leave reason'}}
+                    </label>
+                    <div class="col-md-6">
+                      <input name="reason" class="form-control" placeholder="{{languages.leavereason||'Lý do nghỉ'}}" [(ngModel)]="remark2.reason" #reason="ngModel" required/>
+                      <span *ngIf="f.form.invalid && !remark2.reason" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Leave type is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2">
+                     {{languages.handoverjob||'Handover job'}}
+                    </label>
+                    <div class="col-md-4">
+                      <input name="jobtranfer" class="form-control" placeholder="{{languages.handoverjob||'Công việc bàn giao'}}" [(ngModel)]="remark2.jobtranfer" #jobtranfer="ngModel" required/>
+                      <span *ngIf="f.form.invalid && !remark2.jobtranfer" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Leave type is required" aria-hidden="true"></i>
+                      </span>
+                    </div>  
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2">
+                     {{languages.handoveremployee ||'Handover Employee'}}
+                    </label>
+                    <div class="col-md-4">
+                      <input name="emptranfer" class="form-control" placeholder="{{languages.handovername||'Người nhận bàn giao'}}" [(ngModel)]="remark2.emptranfer" #emptranfer="ngModel" required/>
+                      <span *ngIf="f.form.invalid && !remark2.emptranfer" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Leave type is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-2">
+                      {{languages.contactphone||'Contact Phone'}}
+                    </label>
+                    <div class="col-md-4">
+                      <input name="contact" class="form-control" placeholder="{{languages.contactphone||'Thông tin liên lạc'}}" [(ngModel)]="remark2.contact" #contact="ngModel" required />
+                      <span *ngIf="f.form.invalid && !remark2.contact" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Leave type is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="attachment" class="col-sm-2 control-label">{{languages.attachment}}</label>
+                    <div class="col-sm-10">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <app-fileupload projectId="100" sectionId="107" maxFiles="4" maxSize="2">
+                          </app-fileupload>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div *ngIf="model.attachments.length>0">
+                      <label for="attachment" class="col-sm-2 control-label">{{languages.attachment}}</label>
+                      <div class="col-md-10">
+                        <ul class="list-attachfile-view">
+                          <li *ngFor="let c of model.attachments" class="item-files">
+                            <i class="fa fa-bolt" aria-hidden="true"></i>
+                            <a target="_blank" (click)="downloadFile(c.docNo)">{{c.dFileName}}</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-sm-12">
+      <button style="margin-right: 15px;float: right;" type="button" class="btn btn-default"
+        (click)="hidemodal()">{{languages.close}}</button>
+      <button style="margin-right: 15px;float: right;" appDebounceClick  (debounceClick)="Save('NEW')"  class="btn btn-primary"
+         [disabled]="!f.form.valid">{{languages.submit}}</button>
+      <button style="margin-right: 15px;float: right;" *ngIf="isDraf" class="btn btn-info" appDebounceClick  (debounceClick)="Save('DRAF')"
+        [disabled]="!f.form.valid">{{languages.draftsave||'Draft Save'}}</button>
+      <button style="margin-right: 15px;float: right;" *ngIf="isCancel" class="btn btn-primary" (click)="Delete()"
+        [disabled]="!f.form.valid">{{languages.cancel}}</button>
+    </div>
+  </div>
+</div>
+
+<!-- </ng-template> -->

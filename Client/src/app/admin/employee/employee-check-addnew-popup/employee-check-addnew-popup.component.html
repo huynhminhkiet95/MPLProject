@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">List Employee Available</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <dx-data-grid #gridContainer id="gridContainer" [dataSource]="checkEmpList" keyExpr="employeeId">
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+        <dxi-column caption=" {{languages.employeename}}" dataType="string" dataField="employeeName"></dxi-column>
+        <dxi-column dataField="employeeCode" dataType="string" caption="{{languages.employeecode||'EmployeeCode'}}">
+        </dxi-column>
+        <dxi-column dataField="subsidiaryName" dataType="string" caption="{{languages.subsidiary}}">
+        </dxi-column>
+        <dxi-column dataField="divisionDesc" dataType="string" caption="{{languages.division}}">
+        </dxi-column>
+        <dxi-column dataField="deptDesc" dataType="string" caption="{{languages.department}}">
+        </dxi-column>
+        <dxi-column dataField="designation" caption="{{languages.designation}}" dataType="string">
+        </dxi-column>
+        <dxi-column dataField="dateofJoin" format="dd/MM/yyyy" caption="{{languages.dateofjoin}}" dataType="date">
+        </dxi-column>
+        <dxi-column dataField="email" dataType="string">
+        </dxi-column>
+        <dxi-column dataField="timeSheetCode" dataType="string">
+        </dxi-column>
+        <dxi-column dataField="address" dataType="string" caption="{{languages.address||'Address'}}">
+        </dxi-column>
+        <dxi-column dataField="dob" format="dd/MM/yyyy" dataType="date" caption="{{languages.dob||'DOB'}}">
+        </dxi-column>
+        <dxi-column dataField="idNo" dataType="string" caption="{{languages.idno||'IDNo'}}">
+        </dxi-column>
+        <dxi-column dataField="workingLocation" dataType="string"
+          caption="{{languages.workingLocation||'Working Location'}}">
+        </dxi-column>
+        <dxi-column dataField="employeeNote" dataType="string" caption="{{languages.notes||'Notes'}}">
+        </dxi-column>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+          [showInfo]="true"></dxo-pager>
+        <dxo-editing mode="popup" [allowDeleting]="false">
+        </dxo-editing>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+
+</div>

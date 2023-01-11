@@ -1,0 +1,20 @@
+.item-detail{
+    border-bottom: solid 1px #e0e0e0;
+}
+.date{
+    font-style: italic;
+}
+.item-files a:hover{
+    cursor: pointer;
+}
+.ui-select-container .form-control{
+    height: 30px !important;
+}
+.pull-right-input
+{
+    margin-right: 6px;
+}
+.direct-chat-text img {
+
+    width: 100%;
+}

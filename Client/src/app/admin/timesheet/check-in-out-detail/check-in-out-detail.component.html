@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <dx-data-grid #gridContainer id="gridContainer" keyExpr="address" [showBorders]="true" [dataSource]="dataSource">
+        <dxo-group-panel [visible]="false"></dxo-group-panel>
+        <dxi-column dataField="timeSheetCode" dataType="string" caption="{{this.languages.timesheetcode  || 'Timesheet Code'}}">
+        </dxi-column>
+        <dxi-column dataField="actionDate" dataType="datetime2" caption="{{this.languages.actionDate || 'Action Date'}}">
+        </dxi-column>
+        <dxi-column dataField="address" dataType="string" caption="{{this.languages.address || 'Address'}}">
+        </dxi-column>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-editing mode="row" [allowUpdating]="false" [allowDeleting]="false">
+        </dxo-editing>
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+          [showInfo]="true"></dxo-pager>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+
+</div>

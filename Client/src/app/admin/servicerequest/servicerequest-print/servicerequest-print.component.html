@@ -1,0 +1,101 @@
+
+      <div style="margin: 20px auto; width: 800px;border:solid 1px #e0e0e0;padding: 20px 3px;">
+          <table style="width: 100%; border-collapse: separate;
+          border-spacing: 10px;">
+            <tbody>
+                <tr>
+                    <td colspan="4">
+                        <h1 style="text-align: center;font-size: 25px">SERVICE REQUEST</h1>
+                    </td>
+                  </tr>
+              <tr>
+                <td colspan="4">
+                    <h2 style="text-align: center">{{modeldetail.applicationDesc}}</h2>
+                </td>
+              </tr>
+              <tr>
+                <td><label>Subject</label></td>
+                <td colspan="3"><span>{{modeldetail.svrSubject}}</span></td>
+              </tr>
+              <tr>
+                <td><label style="display:inline-block; min-width:140px">Request Number</label></td>
+                <td><span>{{modeldetail.svrNo}}</span></td>
+                <td><label>Application Type</label></td>
+                <td><span>{{modeldetail.applicationDesc}}</span></td>
+              </tr>
+              <tr>
+               
+                <td><label>Barcode</label></td>
+                <td><span><ngx-barcode [bc-value]="modeldetail.svrNo" [bc-height]="40" [bc-margin]="0"   [bc-width]="1" [bc-display-value]="false"></ngx-barcode></span></td>
+                <td><label>Priority</label></td>
+                <td><span>{{modeldetail.proiorityDesc}}</span></td>
+              </tr>
+              <tr>
+                <td><label>Due Date</label></td>
+                <td><span>{{modeldetail.dueDate|date:'dd/MM/yyyy'}}</span></td>
+                <td><label>Related Customer</label></td>
+                <td><span>{{modeldetail.relatedCustomer}}</span></td>
+              </tr>
+              <tr>
+                <td><label>Related Party</label></td>
+                <td colspan="3"><span>{{modeldetail.thirdParty}}</span></td>
+              </tr>
+              <tr>
+                <td><label>Background</label></td>
+                <td colspan="3"><div [innerHTML]="modeldetail.background|sanitizeHtml"> </div></td>
+              </tr>
+              <tr>
+                <td><label>Require Detail</label></td>
+                <td colspan="3"><div [innerHTML]="modeldetail.requiredDetail|sanitizeHtml"> </div> </td>
+              </tr>
+              <tr>
+                <td><label>Local Amount</label></td>
+                <td><span>{{modeldetail.localDocAmount|number:'3.2-5'}}</span></td>
+                <td><label>USD Amount</label></td>
+                <td><span>{{modeldetail.usdDocAmount|number:'3.2-5'}}</span></td>
+              </tr>
+              <tr>
+                <td><label>Planned Budget</label></td>
+                <td><span>{{modeldetail.hasBudget}}</span></td>
+                <td><label>Reference Doc No</label></td>
+                <td><span>{{modeldetail.refDocumentNo}}</span></td>
+              </tr>
+              <tr>
+                <td><label>Remark</label></td>
+                <td><span>{{modeldetail.remark}}</span></td>
+                <td><label>Related Division</label></td>
+                <td><span>{{modeldetail.divisionDesc}}</span></td>
+              </tr>
+              <tr>
+                <td><label>Created By</label></td>
+                <td><span>{{modeldetail.employeeName}}</span></td>
+                <td><label>Created On</label></td>
+                <td><span>{{modeldetail.createDate|date:'dd/MM/yyyy'}}</span></td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <fieldset style="border:none; border-top:solid 1px #999;margin-top: 20px;">
+                   <legend >Signature</legend>
+                    <ul style="display:block;margin:0; padding: 0;border:solid 1px #999;">
+                        <li style="border-right: solid 1px #555555;display: inline-block; width: 24.5%; height: 100px; margin:0; text-align: center; vertical-align: top">
+                           <label style="display: block;border-bottom: solid 1px #555555;padding-bottom: 3px;">Request</label>
+                        </li>
+                        <li style="border-right: solid 1px #555555;display: inline-block; width: 24.5%; height: 100px; margin:0; text-align: center; vertical-align: top">
+                          <label style="display: block;border-bottom: solid 1px #555555;padding-bottom: 3px;">Review</label>
+                       </li>
+                       <li style="border-right: solid 1px #555555;display: inline-block; width: 24.5%; height: 100px; margin:0; text-align: center; vertical-align: top">
+                        <label style="display: block;border-bottom: solid 1px #555555;padding-bottom: 3px;">Approval</label>
+                     </li>
+                     <li style="display: inline-block; width: 24.5%; height: 100px; margin:0; text-align: center; vertical-align: top">
+                      <label style="display: block;border-bottom: solid 1px #555555;padding-bottom: 3px;min-height: 19px;"></label>
+                   </li>
+                    </ul>
+                  </fieldset>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+        </div>
+
+

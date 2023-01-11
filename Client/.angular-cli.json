@@ -1,0 +1,98 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "mp-logistics-intranet"
+  },
+  "apps": [{
+    "root": "src",
+    "outDir": "dist",
+    "assets": [
+      "assets",
+      "favicon.ico",
+      "web.config",
+      "version.json"
+    ],
+    "index": "index.html",
+    "main": "main.ts",
+    "polyfills": "polyfills.ts",
+    "test": "test.ts",
+    "tsconfig": "tsconfig.app.json",
+    "testTsconfig": "tsconfig.spec.json",
+    "prefix": "app",
+    "styles": [
+      "styles.css",
+      "../node_modules/bootstrap/dist/css/bootstrap.css",
+      "../node_modules/font-awesome/css/font-awesome.css",
+      "../node_modules/ionicons/css/ionicons.css",
+      "_variables.less",
+      "../node_modules/icheck/skins/flat/blue.css",
+      "../node_modules/morris.js/morris.css",
+      "../node_modules/devextreme/dist/css/dx.common.css",
+      "../node_modules/devextreme/dist/css/dx.light.css",
+      "assets/css/ng2-select.css",
+      "../node_modules/angular-calendar/css/angular-calendar.css",
+      "../node_modules/ngx-toastr/toastr.css",
+      "../node_modules/ng2-slim-loading-bar/style.css",
+      "../node_modules/orgchart/dist/css/jquery.orgchart.min.css",
+      "assets/js/lib/css/emoji.css"
+    ],
+    "scripts": [
+      "../node_modules/jquery/dist/jquery.js",
+      "../node_modules/jqueryui/jquery-ui.js",
+      "../node_modules/bootstrap/dist/js/bootstrap.js",
+      "../node_modules/raphael/raphael.js",
+      "../node_modules/morris.js/morris.js",
+      "../node_modules/jquery-sparkline/jquery.sparkline.js",
+      "../node_modules/jquery-knob/dist/jquery.knob.min.js",
+      "../node_modules/moment/moment.js",
+      "../node_modules/jquery-slimscroll/jquery.slimscroll.js",
+      "../node_modules/icheck/icheck.js",
+      "../node_modules/admin-lte/dist/js/app.js",
+      "assets/js/lib/js/config.js",
+      "assets/js/lib/js/util.js",
+      "assets/js/lib/js/jquery.emojiarea.js",
+      "assets/js/lib/js/emoji-picker.js",
+      "assets/js/scripts.js",
+      "../node_modules/tinymce/tinymce.js",
+      "../node_modules/tinymce/themes/modern/theme.js",
+      "../node_modules/tinymce/plugins/link/plugin.js",
+      "../node_modules/tinymce/plugins/paste/plugin.js",
+      "../node_modules/tinymce/plugins/table/plugin.js",
+      "../node_modules/tinymce/plugins/media/plugin.js",
+      "../node_modules/tinymce/plugins/image/plugin.js",
+      "../node_modules/tinymce/plugins/code/plugin.js",
+      "../node_modules/particles.js/particles.js"
+    ],
+    "environmentSource": "environments/environment.ts",
+    "environments": {
+      "dev": "environments/environment.ts",
+      "dev2": "environments/environment.dev.ts",
+      "prod": "environments/environment.prod.ts",
+      "staging": "environments/environment.staging.ts"
+    }
+  }],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [{
+      "project": "src/tsconfig.app.json"
+    },
+    {
+      "project": "src/tsconfig.spec.json"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {}
+  }
+}

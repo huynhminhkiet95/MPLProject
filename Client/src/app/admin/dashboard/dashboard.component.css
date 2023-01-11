@@ -1,0 +1,170 @@
+.user-info {
+  list-style: none;
+  padding-left: 0;
+}
+
+.user-info li {
+  margin-bottom: 5px;
+}
+
+.user-info li span {
+  padding-left: 10px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.sp-title {
+  min-width: 130px;
+  display: inline-block;
+}
+
+.list-announce-db li {
+  border-bottom: dotted 1px #e0e0e0;
+  margin-bottom: 10px;
+}
+
+.list-announce-db li p {
+  padding-left: 10px;
+}
+
+.cal-tooltip {
+  background-color: burlywood;
+  width: 200px;
+  height: 100px;
+  border-color: burlywood;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.cal-tooltip-MPH1F001 {
+  background-color: #06bbdb;
+  width: 200px;
+  height: 70px;
+  border-color: #deb887;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.cal-tooltip-MPH1F002 {
+  background-color: burlywood;
+  width: 200px;
+  height: 70px;
+  border-color: burlywood;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.cal-tooltip-MPH3F001 {
+  background-color: #1e90ff;
+  width: 200px;
+  height: 70px;
+  border-color: burlywood;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.cal-tooltip-MPH4F001 {
+  background-color: burlywood;
+  width: 200px;
+  height: 70px;
+  border-color: burlywood;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.cursor {
+  cursor: pointer;
+
+}
+
+/* .list-birthday{
+    list-style-image: url('/assets/img/cake.png');
+    list-style-position: inside;
+} */
+.list-birthday li {
+  margin-bottom: 5px;
+}
+
+ul.list-birthday {
+  padding-left: 5px;
+}
+
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:active {
+  color: rgb(0, 0, 1);
+}
+
+.users-list>li {
+  width: 20%;
+  padding-left: 5px;
+  float: none;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.sub-section {
+  height: 0px;
+  overflow: hidden;
+  transition: height 0.5s;
+}
+
+.toggle:checked~.sub-section {
+  height: auto;
+}
+
+
+label.section::before {
+  font-family: Consolas, monaco, monospace;
+  font-weight: bold;
+  content: "+";
+  vertical-align: text-top;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 3px;
+  background: radial-gradient(ellipse at center, #F39C12 50%, transparent 50%);
+  color: #fff;
+}
+
+.toggle:checked ~ label.section::before {
+  content: "-";
+}
+
+label.section {
+  text-align: center;
+  color: #666;
+}
+
+label.section:hover {
+  color: #000;
+}
+
+input#toggle,input#toggle1,input#toggle2 {
+  display: none;
+  visibility: hidden;
+}
+
+.sub-section {
+  padding-left: 20px;
+}
+.widget-user-2 .nav > li
+{
+    padding: 10px 15px 10px 0px;
+}
+.users-list-name {
+    white-space: pre-line;
+    height: 44px;
+}
+.colorred
+{
+  background-color:red;
+}
+
+.calendarholiday
+{
+  padding: 5px;
+}

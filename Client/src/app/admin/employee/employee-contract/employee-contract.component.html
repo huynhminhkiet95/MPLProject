@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Employee Contract</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- Main content -->
+<div class="modal-body">
+  <!-- Info boxes -->
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="box box-primary">
+        <div class="box-body">
+          <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="employeeId">
+            <dxo-export [enabled]="true" fileName="EmployeeContract"></dxo-export>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+            <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+            <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+            <dxi-column dataField="employeeName" caption="{{languages.employeename || 'Employee Name'}}">
+            </dxi-column>
+            <dxi-column dataField="contracType" caption="{{languages.contractype||'Contract Type'}}">
+            </dxi-column>
+            <dxi-column dataField="contractDate" dataType="date2"
+              caption="{{languages.contractdate||'Contract Date'}}">
+            </dxi-column>
+            <dxi-column dataField="expiredDate" dataType="date2" caption="{{languages.expireddate||'Expired Date'}}">
+            </dxi-column>
+            <dxi-column dataField="contracPersonName" caption="{{languages.contracperson||'Contract Person'}}">
+            </dxi-column>
+            <dxi-column dataField="remark" caption="{{languages.remark||'Remark'}}">
+            </dxi-column>
+            <dxi-column dataField="createdUserName" caption="{{languages.createdby || 'Created By'}}">
+            </dxi-column>
+            <dxi-column dataField="createdDate" dataType="date2" caption="{{languages.createdDate||'Created Date'}}">
+            </dxi-column>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxo-paging [pageSize]="10"></dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+              [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+            <dxo-editing mode="popup" [allowDeleting]="false">
+            </dxo-editing>
+          </dx-data-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.content -->
+<div class="modal-footer">
+</div>

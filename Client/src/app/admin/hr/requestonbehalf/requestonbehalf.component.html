@@ -1,0 +1,141 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{languages.requestonbehalf || 'Request On Behalf'}}
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active">{{languages.requestonbehalf || 'Request On Behalf'}}</li>
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">{{languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{languages.submitdate}}</label>
+                    <div class="col-sm-4 date-from">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsRangeValue[0]">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [min]="bsRangeValue[0]" [showClearButton]="false"
+                        displayFormat="dd/MM/yyyy" type="date" [(value)]="bsRangeValue[1]">
+
+                      </dx-date-box>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="LeaveType" class="col-sm-4 control-label">{{languages.leavetype}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.LeaveType" name="LeaveType"
+                        #ITService="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of leavetypes" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of leavetypes" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="Status" class="col-sm-4 control-label"> {{languages.status}} </label>
+
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Status" name="Status"
+                        #ServiceType="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of statuslist" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of statuslist" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <!-- <button type="button" class="btn btn-default pull-right btn-sm">Export Excel</button>  -->
+            <button type="button" (click)="openModalWithComponent()" class="btn btn-info pull-right btn-sm">
+              {{languages.newleave}} </button>
+            <button type="button" (click)="searchLeaves()"
+              class="btn btn-primary pull-right btn-sm">{{languages.search}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="lvNo">
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+              <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+              <dxi-column caption="{{languages.id}}" dataField="lvNo" [visible]="true" dataType="string"
+                cellTemplate="diffCellTemplate"></dxi-column>
+              <dxi-column dataField="submitDate" dataType="date2" caption="{{languages.submitdate}}">
+              </dxi-column>
+              <dxi-column dataField="leaveType" caption="{{languages.leavetype}}" dataType="string">
+              </dxi-column>
+              <dxi-column dataField="leaveDays" dataType="number" caption="{{languages.leavedays}}">
+              </dxi-column>
+              <dxi-column dataField="fromDate" dataType="date2" caption="{{languages.fromdate}}">
+              </dxi-column>
+              <dxi-column dataField="toDate" dataType="date2" caption="{{languages.todate}}">
+              </dxi-column>
+              <dxi-column caption="{{languages.employeename}}" dataField="employeeName" [visible]="true" dataType="string">
+              </dxi-column>
+              <dxi-column dataField="leaveStatusDesc" caption="{{languages.status}}" alignment="center"
+                cellTemplate="diffStatusTemplate"></dxi-column>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+              <dxo-editing mode="popup">
+              </dxo-editing>
+              <div *dxTemplate="let d of 'diffCellTemplate'">
+                <a (click)="GetDetail(d.value)">
+                  <span>{{d.value}}</span>
+                </a>
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate'">
+                <span class="label status-{{d.value}}">{{d.value}}</span>
+              </div>
+            </dx-data-grid>
+
+          </div>
+          <div class="box-footer"></div>
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+  </section>
+</div>

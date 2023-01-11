@@ -1,0 +1,54 @@
+<div class="content-wrapper">
+
+  <section class="content-header">
+    <h1>
+      {{languages.templatecontractdetail|| "Template Contract Detail"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active"> {{languages.econtracttemplate || "EContractTemplate" }}</li>
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Template</h3>
+          </div>
+          <div class="box-body">
+            <app-tiny-editor [elementId]="'remark'" (onEditorKeyup)="keyupHandlerFunction($event)"
+              [(tinymceModel)]="model.contents" [tmHeight]="400">
+            </app-tiny-editor>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <button type="button" *ngIf="isToggle=='hide'" (click)="toggleNavigationSub()"
+          class="btn btn-primary pull-right btn-sm">Preview</button>
+        <button type="button" *ngIf="isToggle =='show'" (click)="toggleNavigationSub()"
+          class="btn btn-primary pull-right btn-sm">Hide</button>
+        <button type="button" (click)="openModal()" style="margin-right: 8px;"
+          class="btn btn-primary pull-right btn-sm">Submit</button>
+
+      </div>
+      <div class="col-md-12 col-sm-12 col-xs-12">
+
+        <div [@toggleHeight]="isToggle" class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Preview</h3>
+
+          </div>
+          <div class="box-body">
+            <div [innerHTML]="model.contents"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

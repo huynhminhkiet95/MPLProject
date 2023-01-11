@@ -1,0 +1,116 @@
+<header class="main-header">
+  <!-- Logo -->
+  <a routerLink="dashboard" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini"><b>MPi</b></span>
+    <!-- logo for regular state and mobile devices -->
+    <!-- <span class="logo-lg"><b>MP</b>is<br/>
+    <small class="slogan">Minh Phuong Intranet Solution</small></span> -->
+    <span class="logo-lg">
+      <img src="assets/img/logo.svg" alt="Minh Phuong Logistics">
+    </span>
+  </a>
+  <!-- Header Navbar: style can be found in header.less -->
+  <nav class="navbar navbar-static-top">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
+    </a>
+
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown messages-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <!-- <i class="fa fa-envelope-o"></i> -->
+            <i class="fa fa-bell-o"></i>
+            <span *ngIf="messageList.length!=0" class="label label-success">{{messageList.length}}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have {{messageList.length}} messages</li>
+            <li>
+              
+              <ul class="menu">
+                <li *ngFor="let item of messageList"> 
+                  <a (click)="markRead(item)" *ngIf="item.userName!=''">
+                    <div class="pull-left">
+                      <img src="/assets/img/missing_avatar.svg.png" class="img-circle" alt="User Image">
+                    </div>
+                    <h4>
+                      {{item.userName}}
+                      <small><i class="fa fa-clock-o"></i>  {{item.createdDate|date:'dd/MM hh:mm:ss'}}</small>
+                    </h4>
+                    <p>{{item.content}}</p>
+                  </a>
+                </li>  
+              </ul>
+            </li>
+            <li class="footer"><a style="cursor: pointer;" (click)="clearAll()">Clear All Messages</a></li>
+          </ul>
+        </li>
+        <!-- <li class="dropdown notifications-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-bell-o"></i>
+            <span  *ngIf="messageList.length!=0" class="label label-warning">{{messageList.length}}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have {{messageList.length}} messages</li>
+            <li>
+             
+              <ul class="menu">
+                <li *ngFor="let item of messageList"> 
+                  <a href="javascript:void(0)" *ngIf="item.userName!=''">
+                    <div class="pull-left">
+                      <img src="/assets/img/missing_avatar.svg.png" class="img-circle" alt="User Image">
+                    </div>
+                    <h4>
+                      {{item.userName}}
+                      <small><i class="fa fa-clock-o"></i>  {{item.createdDate|date:'dd/MM hh:mm:ss'}}</small>
+                    </h4>
+                    <p>{{item.message}}</p>
+                  </a>
+                </li>
+              
+              </ul>
+            </li>
+            <li class="footer">
+              
+            </li>
+          </ul>
+        </li> -->
+        <li class="dropdown user user-menu">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="{{globals._avatar}}" onError="this.src='/assets/img/missing_avatar.svg.png';" #imgRef
+              class="user-image" alt="">
+            <span style="color:#fff" class="hidden-xs">{{currentUser.employeeName}}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- User image -->
+            <li class="user-header">
+              <img src="{{globals._avatar}}" onError="this.src='/assets/img/128-missing_avatar.svg.png';"
+                class="img-circle" alt="">
+              <p>
+                {{currentUser.employeeName}}
+                <small>{{languages.membersince || 'Member Since'}} {{currentUser.dateofJoin|date}}</small>
+              </p>
+            </li>
+             
+            <!-- Menu Footer-->
+            <li class="user-footer">
+              <div class="pull-left">
+                <a (click)="userProfile()" class="btn btn-default btn-flat">{{languages.viewprofile || 'Profile'}}</a>
+              </div>
+              <div class="pull-right">
+                <a (click)="logOut()" class="btn btn-default btn-flat">{{languages.signout || 'Sign out'}}</a>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <!-- Control Sidebar Toggle Button -->
+        <!-- <li>
+          <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+        </li> -->
+      </ul>
+    </div>
+  </nav>
+</header>

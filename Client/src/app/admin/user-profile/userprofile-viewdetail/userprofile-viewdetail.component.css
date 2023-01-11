@@ -1,0 +1,16 @@
+.list-info-profile{
+    list-style: none;
+
+}
+.list-info-profile>li{
+    display: block;
+    margin-bottom: 1px;
+}
+.list-info-profile li>label{
+    display: inline-block;
+    min-width: 100px;
+}
+ul.list-contact-account li{
+    list-style: none;
+}
+ 

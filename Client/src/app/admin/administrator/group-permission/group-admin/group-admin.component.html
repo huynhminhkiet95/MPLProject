@@ -1,0 +1,61 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{languages.grouppermission || "Group Permissions"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li>
+        <a routerLink="../grouppermissions"> {{languages.grouppermission || "Group Permission"}}</a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary group-permission">
+          
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">Group Permissions</h3>
+          </div>
+
+          <div class="box-body">
+            <div class="dv-group-permission">
+              <dx-data-grid #gridContainer 
+                id="GroupPermission" [dataSource]="dataSource" 
+                (onEditorPreparing)="onEditorPreparing($event)" 
+                (onRowInserting)="modifyGroupPermission($event,1)" 
+                (onRowUpdating)="modifyGroupPermission($event,2)" 
+                (onRowRemoving)="modifyGroupPermission($event,3)">
+                
+              <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+                <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+                <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
+                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+                <dxi-column [fixed]="true" [width]="200" dataField="groupId" dataType="string" caption="Group Id">
+                </dxi-column>
+                <dxi-column [width]="300" dataField="groupDesc" dataType="string" caption="Group Desc">
+                  <dxi-validation-rule type="required"></dxi-validation-rule>
+                </dxi-column>
+
+                <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+                </dxo-editing>
+                <dxo-paging [pageSize]="50"></dxo-paging>
+                <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[50, 100, 150, 200]"
+                  [showInfo]="true"></dxo-pager>
+              </dx-data-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

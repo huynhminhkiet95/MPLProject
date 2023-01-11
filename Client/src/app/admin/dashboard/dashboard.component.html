@@ -1,0 +1,441 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Dashboard
+      <!-- <small>Control panel</small> -->
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active">Dashboard</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+
+      <div class="col-lg-c4 col-md-c6">
+        <div class="box box-widget widget-user-2">
+           
+          <div class="widget-user-header bg-yellow2">
+            <a style="display:inline" tooltip="Click to view profile" href="#" [routerLink]="['/intranet/userprofile']" routerLinkActive="router-link-active">
+            <div class="widget-user-image">
+            
+                <img class="img-circle" src="{{globals._avatar}}"
+                onError="this.src='/assets/img/128-missing_avatar.svg.png';" alt="">
+            
+            </div>  </a>
+           
+            <h3 class="widget-user-username">{{globals._userinfo.employeeName}}</h3>
+            <h5 class="widget-user-desc">{{globals._userinfo.deptDesc}} - {{globals._userinfo.employeeCode}}</h5>
+          </div>
+          <div class="box-footer no-padding">
+            <ul class="nav nav-stacked">
+              <li>
+                <input id="toggle" class="toggle" type="checkbox">
+                <label class="section" for="toggle">{{languages.leavedaysremains||'Leave day remains'}}</label><span
+                  class="pull-right badge bg-blue">{{statusSummary.remainTotal}}</span>
+                <div class="sub-section">
+                  <ul *ngFor="let item of statusSummary.leaveList">
+                    <li *ngIf="item.leaveDays!=0 || item.remains!=0">
+                      <span class="sp-title">{{item.leaveTypeDesc}}</span>
+                      <span>{{item.leaveDays}}</span>
+                      <span style="margin-left:15px" class="sp-title">Remains</span>
+                      <span>{{item.remains}}</span>
+                    </li>
+                  </ul>
+                </div>
+
+              </li>
+              <li>
+                <input id="toggle1" class="toggle" type="checkbox">
+                <label class="section" for="toggle1">My pending request </label><span
+                  class="pull-right badge bg-aqua">{{listItService.total}}</span>
+                <div class="sub-section">
+                  <ul>
+                    <li *ngFor="let c of listItService.list">
+                      <span class="sp-title">{{c.applicationDesc}}</span>
+                      <span>{{c.cnt}}</span>
+                     
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <input id="toggle2" class="toggle" type="checkbox">
+                <label class="section" for="toggle2">My pending approval</label><span
+                  class="pull-right badge bg-green">{{listPendingApproval.total}}</span>
+                <div class="sub-section">
+                  <ul *ngFor="let item of listPendingApproval.list">
+                    <li *ngIf="item.count>0" style=" flex-wrap: wrap;">
+                      <span style="width:50%" class="sp-title">{{item.type}}</span>
+                      <span style="width:20%">{{item.count}}</span>
+                      <span style="width:29%; display: inline-block; text-align: right;"><a [routerLink]="[item.link]" routerLinkActive="router-link-active" >{{languages.viewdetail||'View Detail'}} <i class="fa fa-arrow-circle-right"></i></a></span>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="box box-primary" style="border-top: 3px solid #ffc700!important;">
+          <div class="box-header" style="background-color: #ffc700;min-height: 81px;">
+          <div class="row">
+            <div class="col-md-6">
+              <img src="assets/img/motchannel/WorkSmart02.png" class="bg-hd-mot" alt=""/>
+            </div>
+            <div class="col-md-6">
+              <div  style="position: absolute;            
+              top:-1px;
+              right: 16px;">
+                  <img class="chautrangmot" style="height: 77px;" src="assets/img/motchannel/TRANG-AChau.png" alt=""/>
+                  <img style="height: 55px; margin-top: -10px;" src="assets/img/motchannel/LOGOMOT.png" alt=""/>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="box-body">
+            <ul class="list-announce-db">
+              <li *ngFor="let c of listTrainings">
+                <a class="pointer" (click)="showContentModal(c)" style="display:block">
+                  <i class="fa fa-film"  aria-hidden="true"></i>
+                  <span>
+                    {{c.subject}}
+                  </span>
+                  <span class="direct-chat-timestamp pull-right">{{c.createDate|date:'dd/MM/yyyy'}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
+        <div class="box box-primary">
+          <div class="box-header">
+            <h3 class="box-title">{{languages.birthdayinweek }} ({{listBirth.length}})</h3>
+            <div class="box-tools pull-right">
+              <i class="fa fa-birthday-cake fa-cus"></i>
+          </div>
+          </div>
+          <div class="box-body">
+            <ul class="list-birthday">
+              <li *ngFor="let t of listBirth">
+                <img class="img-circle img-zoom-hover" style="height: 32px" onError="this.src='/assets/img/missing_avatar.svg.png';"
+                  src="/uploads/{{t.avartarThumbnail}}">
+                <span class="sp-title">{{t.employeeName}}</span>
+                <span>{{t.dob|date:'dd/MM'}}</span>
+                <span>({{t.divisionDesc}})</span>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+        
+
+      </div>
+
+      <div class="col-lg-c4 col-md-c6">
+        <div class="box box-primary">
+          <div class="box-header">
+            <h3 class="box-title">
+              {{languages.announcement}}
+            </h3>
+            <div class="box-tools pull-right">
+              <i class="fa fa-bullhorn fa-cus"></i>
+          </div>
+          </div>
+          <div class="box-body">
+            <ul class="list-announce-db">
+              <li *ngFor="let c of listAnnounce">
+                <a class="pointer" (click)="openNewsModel(template,c)" style="display:block">
+                  <i class="fa fa-newspaper-o"></i>
+                  <span>
+                    {{c.subject}}
+                  </span>
+                  <span class="direct-chat-timestamp pull-right">{{c.createDate|date:'dd/MM/yyyy'}}</span>
+                </a>
+                <!-- <p>
+                  <small>{{c.annType}} {{languages.createdby}} {{c.createUser}} </small>
+                </p> -->
+              </li>
+            </ul>
+            <div class="box-footer text-center">
+              <a class="uppercase" (click)="searchAnnouncement()" class="pointer">{{languages.viewslide||'View slide'}}
+                <i _ngcontent-c7="" class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header">
+            <h3 class="box-title">{{languages.gallery||'Gallerys' }}</h3>
+            <div class="box-tools pull-right">
+              <i class="fa fa-image fa-cus"></i>
+          </div>
+          </div>
+          <app-photogallery [isShowCategory]="false" sliderWidth="100%" sliderHeight="300px" thumbnailsColumns="4">
+          </app-photogallery>
+        </div>
+        <div class="box box-primary">
+          <div class="box-header">
+            <h3 class="box-title">New Employee</h3>
+
+            <div class="box-tools pull-right">
+                <i class="fa fa-user-plus fa-cus"></i>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <ul class="users-list clearfix" style="padding:0;">
+              <li *ngFor="let c of listnewEmployee">
+                <img *ngIf="c.avartarThumbnail==null" src="/assets/img/missing_avatar1.png" alt="User Image"
+                  style="width: 55px;">
+                <img *ngIf="c.avartarThumbnail!=null" [src]="c.avartarThumbnail" alt="User Image" style="width: 55px;">
+                <a class="users-list-name">{{c.employeeName}}</a>
+                <span class="users-list-date">{{c.deptDesc}}</span>
+                <span class="users-list-date">{{c.dateofJoin | date: 'dd-MM'}}</span>
+              </li>
+            </ul>
+            <div class="clearfix visible-xs-block"></div>
+            <!-- /.users-list -->
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer text-center">
+            <a routerLink="/intranet/employee/view" class="uppercase">View more <i _ngcontent-c7=""
+                class="fa fa-arrow-circle-right"></i></a>
+          </div>
+          <!-- /.box-footer -->
+        </div>
+      </div>
+
+      <div class="col-lg-c4 col-md-c6">
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">{{languages.bookmeetingroom}}</h3>
+            <div class="box-tools pull-right">
+              <i class="fa fa-commenting-o fa-cus"></i></div>
+         
+          </div>
+          <div class="box-body">
+            <ng-template #cellTooltipTemplate let-event="event" let-placement="placement">
+              <div class="cal-tooltip" [ngClass]="'cal-tooltip-' + placement">
+                <div class="cal-tooltip">
+                  <span style="font-size: 14px;">
+                    <strong> {{event.title}}</strong>
+                  </span>
+                  <br />
+                  <span style="font-size: 14px;">
+                    <strong>{{languages.room}} : </strong>{{event.facilityDesc}}</span>
+                  <br />
+                  <span style="font-size: 14px;">
+                    <strong>{{languages.timerange}} : </strong>{{event.start | date : 'HH:mm'}} - {{ event.end | date :
+                    'HH:mm'}}</span>
+                  <br />
+                  <span style="font-size: 14px;">
+                    <strong>{{languages.bookedby}} : </strong> {{event.bookBy}}</span>
+                  <br />
+
+                </div>
+
+              </div>
+            </ng-template>
+            <div [ngSwitch]="view">
+              <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events"
+                [activeDayIsOpen]="true" [refresh]="refresh" (eventTimesChanged)="eventTimesChanged($event)">
+              </mwl-calendar-month-view>
+              <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                [excludeDays]="excludeDays" [headerTemplate]="headerTemplate"
+                (eventTimesChanged)="eventTimesChanged($event)" [tooltipTemplate]="cellTooltipTemplate"
+                [eventTitleTemplate]="eventTitleTemplate">
+              </mwl-calendar-week-view>
+              <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                (eventTimesChanged)="eventTimesChanged($event)">
+              </mwl-calendar-day-view>
+            </div>
+          </div>
+          <div class="box-footer text-center">
+            <a class="uppercase" routerLink="/intranet/facilitybooking">{{languages.viewmore}} <i _ngcontent-c7=""
+                class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">{{languages.divisionleave || 'Division Leave'}}</h3>
+            <div class="box-tools pull-right">
+              <i class="fa fa-user-times fa-cus"></i>
+              </div>
+          </div>
+          <div class="box-body">
+            <ng-template #cellTooltipTemplate3 let-event="event" let-placement="placement">
+              <div class="cal-tooltip" [ngClass]="'cal-tooltip-' + placement">
+                <div class="cal-tooltip" style="font-size: 14px; padding-left: 15px;padding-top: 5px;">
+                  <p>{{event.employeeName }}</p>
+                  <p>{{event.marker}}, {{event.leaveDays}} Days</p>
+                  <p>{{event.leaveType}}</p>
+                </div>
+              </div>
+            </ng-template>
+
+            <div [ngSwitch]="view">
+              <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events3"
+                [activeDayIsOpen]="true" [refresh]="refresh" (eventTimesChanged)="eventTimesChanged($event)">
+              </mwl-calendar-month-view>
+              <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events3"
+                [refresh]="refresh" [excludeDays]="excludeDays" [headerTemplate]="headerTemplate"
+                (eventTimesChanged)="eventTimesChanged($event)" [tooltipTemplate]="cellTooltipTemplate3"
+                [eventTitleTemplate]="eventTitleTemplate">
+              </mwl-calendar-week-view>
+              <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events3" [refresh]="refresh"
+                (eventTimesChanged)="eventTimesChanged($event)">
+              </mwl-calendar-day-view>
+            </div>
+          </div>
+          <div class="box-footer text-center">
+            <a class="uppercase" routerLink="/intranet/leaves">{{languages.viewmore}} <i _ngcontent-c7=""
+                class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">{{languages.booktransportation}}</h3>
+          </div>
+          <div class="box-body">
+            <ng-template #cellTooltipTemplate2 let-event="event" let-placement="placement">
+              <div class="cal-tooltip" [ngClass]="'cal-tooltip-' + placement">
+                <div class="cal-tooltip">
+                  <span style="font-size: 14px;">
+                    <strong> {{event.title}}</strong>
+                  </span>
+                  <br />
+                  <span style="font-size: 14px;">
+                    <strong>{{languages.car||'Car'}} : </strong>{{event.facilityDesc}}</span>
+                  <br />
+                  <span style="font-size: 14px;">
+                    <strong>{{languages.timerange}} : </strong>{{event.start | date : 'HH:mm'}} - {{ event.end | date :
+                    'HH:mm'}}</span>
+                  <br />
+                  <span style="font-size: 14px;">
+                    <strong>{{languages.bookedby}} : </strong> {{event.bookBy}}</span>
+                  <br />
+                </div>
+              </div>
+            </ng-template>
+            
+          </div>
+          <div class="box-footer text-center">
+            <a class="uppercase" routerLink="/intranet/booktransportation">{{languages.viewmore}} <i _ngcontent-c7=""
+                class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div> -->
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">On Desk - {{userInfo.divisionDesc}} Division</h3>
+            <div class="box-tools pull-right">
+              <i class="fa  fa-clock-o fa-cus"></i>
+              </div>
+          </div>
+          <div class="box-body">
+            <div class="box-ondesk">
+              <div class="row">
+                <div class="col-md-3">
+                  <a class="cursor" (click)="Showpopupondesk('total')" tooltip="Click to view detail">
+                    <label>Total</label>
+                    <h6>{{leaveOndesk.total}}</h6>
+                  </a>
+                </div>
+                <div class="col-md-3">
+                  <a class="cursor" (click)="Showpopupondesk('on')" tooltip="Click to view detail">
+                    <label>On</label>
+                    <h6>{{leaveOndesk.onCnt}}</h6>
+                  </a>
+                </div>
+                <div class="col-md-3">
+                  <a class="cursor" (click)="Showpopupondesk('off')" tooltip="Click to view detail">
+                    <label>Off</label>
+                    <h6 style="color:#FF191B">{{leaveOndesk.offCnt}}</h6>
+                  </a>
+                </div>
+                <div class="col-md-3" style="background:#317797">
+                  <h2 style="color:#fff; text-align:center;font-size: 33px;margin-top:8px; border-color:#317797">
+                    {{this.math.round(leaveOndesk.onDeskRate)}}%</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer text-center">
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{languages.subject}} : {{newsView.subject}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <span class="pull-right" style="margin-right: 30px; margin-top: 5px;">
+      <i class="fa fa-eye"></i>&nbsp;<span>{{newsView.viewCount}}</span>     
+    </span>
+    
+  </div>
+  <div class="modal-body">
+    <div [innerHTML]="newsView.contents"> </div>
+    <div>
+      <ul>
+        <li *ngFor="let doc of newsView.listDocs">
+          <a class="pointer" (click)="downloadFile(doc.docNo)">{{doc.dFileName}}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="content-author" style="margin-top: 10px; border-top: solid 1px #e0e0e0">
+      <small>
+        <label>{{languages.createdby}}</label>
+        <span class="text-bold"> {{newsView.createUser}}</span> {{languages.at}}
+        <span class="date">{{newsView.createDate|date:'dd/MM/yyyy'}}</span>
+      </small>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn bnt-default" (click)="bsModalRef.hide()">{{languages.close}}</button>
+  </div>
+</ng-template>
+
+<ng-template #headerTemplate let-days="days" let-locale="locale" let-dayClicked="dayClicked"
+  let-eventDropped="eventDropped">
+  <div class="cal-day-headers cursor-default">
+    <div class="cal-header" style="padding:0px;" *ngFor="let day of days" [class.cal-past]="day.isPast"
+      [class.cal-future]="day.isFuture" [class.cal-drag-over]="day.dragOver"
+      (mwlClick)="dayClicked.emit({date: day.date})" mwlDroppable (dragEnter)="day.dragOver = true"
+      (dragLeave)="day.dragOver = false"
+      (drop)="day.dragOver = false; eventDropped.emit({event: $event.dropData.event, newStart: day.date, fromHeader: true})">
+      <div [class]="'holiday' + day.date.getDate() + ' calendarholiday'" data-toggle="tooltip" data-placement="top">
+        <div class="name">{{[ languages.sun||'Su' ,languages.mo||'Mo', languages.tu||'Tu',
+          languages.we||'We', languages.th||'Th',
+          languages.fri||'Fri',languages.sa||'Sa'][getday(day.date)]}}</div>
+        <div class="day-number" *ngIf="getday(day.date) != '10'">{{day.date.getDate()}}</div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- <div [ngSwitch]="view">
+              <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events2"
+                [activeDayIsOpen]="true" [refresh]="refresh" (eventTimesChanged)="eventTimesChanged($event)">
+              </mwl-calendar-month-view>
+              <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
+                [excludeDays]="excludeDays" [headerTemplate]="headerTemplate" (eventTimesChanged)="eventTimesChanged($event)"
+                [tooltipTemplate]="cellTooltipTemplate2" [eventTitleTemplate]="eventTitleTemplate">
+              </mwl-calendar-week-view>
+              <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
+                (eventTimesChanged)="eventTimesChanged($event)">
+              </mwl-calendar-day-view>
+            </div> -->

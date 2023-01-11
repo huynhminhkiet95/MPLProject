@@ -1,0 +1,145 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{title}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home}}</a></li>
+      <li class="active">{{languages.facilitybooking}}</li>
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row" *ngIf="false">
+        <div class="box-header">
+            <button type="button" class="btn btn-default pull-left" aria-label="pull-right" (click)="ChangeMode('1')">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default pull-left" aria-label="pull-right" (click)="ChangeMode('2')">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+      <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="box box-primary  collapsed-box idrequest-search">
+              <div class="box-header with-border">
+                  <i class="ion ion-clipboard"></i>
+                  <h3 class="box-title"> {{languages.search}}</h3>
+                  <div class="pull-right box-tools clickable">
+                      <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse" data-toggle="tooltip" title="Collapse"
+                        style="margin-right: 5px;">
+                          <i class="fa fa-plus"></i></button>
+                    </div>
+              </div>
+              <div class="box-body" style="display: none;">
+                <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid" #f="ngForm">
+                  <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="postDate" class="col-sm-4 control-label">{{languages.facilities}}</label>
+                            <div class="col-sm-7">
+                              <select class="form-control" (change) = "reloadTime()" id="status" name="status" [(ngModel)]="searchModel.FacilityCode">
+                                <option value=""></option>  
+                                <option *ngFor="let c of facilityList2" [ngValue]="c.facilityCode" >{{c.facilityDesc}}</option>
+                              </select>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                          <label for="postDate" class="col-sm-4 control-label">{{languages.workinglocation||'Working Location'}}</label>
+                          <div class="col-sm-7">
+                            <select class="form-control" (change) = "reloadTime()" id="status" name="status" [(ngModel)]="searchModel.workLocId">
+                              <option value=""></option>  
+                              <option *ngFor="let c of workinglocs" [ngValue]="c.id" >{{c.locationName}}</option>
+                            </select>
+                        </div>
+                      </div>
+                  </div>
+                    <div class="col-md-4">
+                      <div class="form-group"*ngIf="modeDisplay == '1'">
+                        <label for="IdrNo" class="col-sm-4 control-label">{{languages.bookingdate}}</label>
+                        <div class="col-sm-4">
+                          <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                            [(value)]="bsRangeValue[0]">
+                          </dx-date-box>
+                        </div>
+                        <div class="col-sm-4">
+                          <dx-date-box width="100%" [min]="bsRangeValue[0]" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                            [(value)]="bsRangeValue[1]">
+                          </dx-date-box>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="box-footer group-btn-right" *ngIf="false">
+                  <button type="button"  class="btn btn-info pull-right btn-sm" (click)="openModalWithComponent()">{{languages.newbooking}}</button> 
+                  <button type="button" (click)="searchFacilityBookings()" class="btn btn-primary pull-right btn-sm">{{languages.search}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+              <dx-scheduler 
+              id="scheduler" #scheduler
+              [dataSource]="appointmentsData"
+              [views]='["week"]'
+              currentView="week"
+              [firstDayOfWeek]="1"
+              [startDayHour]="8"
+              [endDayHour]="20"
+              [cellDuration]="60"  
+              [showAllDayPanel]="true"
+              [currentDate]="currentDate"
+              (onAppointmentAdding) = "openModalWithComponent($event)"
+              (onAppointmentFormCreated) = "onAppointmentFormCreated($event)"
+              [height]="580"
+              appointmentTemplate="appointment-template"
+              resourceCellTemplate="headerTemplate"
+              appointmentTooltipTemplate="tooltip-template"
+              dateCellTemplate="dateCellTemplate">
+              <div *dxTemplate="let data of 'dateCellTemplate'" >
+                  <div>
+                  <span  class="name">{{[ languages.su||'Su',languages.mo||'Mo', languages.tu||'Tu', languages.we||'We', languages.th||'Th', languages.fr||'Fr',languages.sa||'Sa'][getday(data.date)]}}</span>
+                  <span  class="number" *ngIf="getday(data.date) != '10'">({{data.date.getDate()}})</span>
+                </div>
+              </div>
+              <dxi-resource
+                  fieldExpr="priority"
+                  [allowMultiple]="false"
+                  [dataSource]="prioritiesData"
+                  label="Priority"></dxi-resource>
+              <div style="width: 100%" *dxTemplate="let showtime of 'appointment-template'">
+                  <div style="width: 100%" class='showtime-preview'>
+                      <div style="width: 100%;color: rgb(2, 2, 24)">[{{showtime.GroupCode}}] {{showtime.text}}</div>
+                      <label class="control-label pull-left" style="width: 100%;color: rgb(2, 2, 24)"> {{showtime.createName}}</label>
+                  </div>
+              </div>
+          <div  *dxTemplate="let showtime of 'tooltip-template'">
+            <div style="width: 250px; height: 100px;" class="content" class="tooltip-group-facility-{{showtime.priority}}">
+              <span class="tooltip-description" style="width: 100%;color: rgb(2, 2, 24)">{{showtime.description}}</span> 
+            </div>
+          </div>
+              <dxo-editing [allowAdding]="true"></dxo-editing>
+              <dxo-editing [allowUpdating]="false"></dxo-editing>
+              </dx-scheduler>
+      </div>
+    </div>
+    <div class="row">
+          <div class="col-md-12">
+              <ul class="list-group">
+                  <li class="list-group-item col-sm-2" *ngFor="let item of facilityList2"> 
+                    <span [style.color]="item.colorCode" class="glyphicon glyphicon-bookmark" ></span>
+                    <span style="width: 100%;color: rgb(2, 2, 24)" ><strong>{{ item.facilityDesc }} </strong> </span>
+                    <br/>
+                    <p style="width: 100%;color: rgb(2, 2, 24);line-break:auto" > {{ item.facilityNote }}</p>
+                  </li>
+                </ul>
+          </div>
+    </div>
+  </section>
+</div>

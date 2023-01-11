@@ -1,0 +1,374 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{languages.assetdetail}}
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>{{languages.home}}</a></li>
+            <li><a routerLink="../../servicerequest"> {{languages.assetdetail}}</a></li>
+
+        </ol>
+    </section>
+
+    <section class="content">
+        <form class="form-horizontal" name="formEmployeeDetail" (ngSubmit)="f.form.valid && saveAsset()" #f="ngForm">
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{languages.general}}</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">{{languages.assetcode}}&nbsp;<span class="required"></span></label>
+                                        <div class="col-md-4">
+                                            <input type="text" (focusout)="CheckAssetCode()" class="form-control" id="assetCode" [(ngModel)]="model.assetCode"
+                                                name="assetCode" required #assetCode="ngModel" />
+                                            <span *ngIf="f.submitted && !assetCode.valid" class="help-block-custom">
+                                                <i class="fa fa-exclamation-circle" tooltip="Asset Code code is required"
+                                                    aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                        <label class="control-label col-md-2">{{languages.assetdesc}}&nbsp;<span class="required"></span></label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" [(ngModel)]="model.assetDesc" name="assetDesc"
+                                                required #assetDesc="ngModel" />
+                                            <span *ngIf="f.submitted && !assetDesc.valid" class="help-block-custom">
+                                                <i class="fa fa-exclamation-circle" tooltip="Asset Desc code is required"
+                                                    aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assetGroup" class="col-sm-2 control-label">
+                                            {{languages.assetgroup}}<span class="required"></span></label>
+
+                                        <div class="col-sm-4">
+                                            <select class="form-control" [(ngModel)]="model.assetGroup" name="assetGroup" required
+                                                #assetGroup="ngModel" (change)="changeOptionPC()">
+                                                <option value=""></option>
+                                                <option *ngFor="let c of assetGroups" [ngValue]="c.assetGroup">{{c.assetGroupDesc}}</option>
+                                            </select>
+                                            <span *ngIf="f.submitted && !assetGroup.valid" class="help-block-custom">
+                                                <i class="fa fa-exclamation-circle" tooltip="Asset group is required"
+                                                    aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                        <label for="assetGroup" class="col-sm-2 control-label"> {{languages.division}}<span class="required"></span></label>
+
+                                        <div class="col-sm-4">
+                                            <select class="form-control" [(ngModel)]="model.divisionCode" name="divisionCode" required
+                                                #divisionCode="ngModel">
+                                                <option value=""></option>
+                                                <option *ngFor="let c of listDivision" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                                            </select>
+                                            <span *ngIf="f.submitted && !divisionCode.valid" class="help-block-custom">
+                                                <i class="fa fa-exclamation-circle" tooltip="Division is required"
+                                                    aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-md-2 control-label">
+                                            {{languages.purchasedate}}</label>
+                                        <div class="col-md-4">
+                                            <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy"
+                                                type="date" [(value)]="bsPurchaseDate">
+                                            </dx-date-box>
+                                        </div>
+                                        <label class="control-label col-md-2">{{languages.purchaseprice}}</label>
+                                        <div class="col-md-2">
+                                            <!-- <input class="form-control" type="number" min="0" max="9999999999" [(ngModel)]="model.purchasingPrice" name="purchasingPrice"
+                                                #purchasingPrice="ngModel" /> -->
+                                            <!-- <dx-number-box format="#,##0.00" [value]="13415.24"></dx-number-box> -->
+                                            <input class="form-control text-right" [(ngModel)]="model.purchasingPrice"
+                                                name="purchasingPrice" #purchasingPrice="ngModel" (ngModelChange)="purchasingPriceChange($event)"
+                                                myCurrencyFormatter />
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" [(ngModel)]="model.currency" name="currency"
+                                                #currency="ngModel">
+                                                <option value=""></option>
+                                                <option value="VND">VND</option>
+                                                <option value="USD">USD</option>
+                                                <!-- <option *ngFor="let c of assetGroups" [ngValue]="c.assetGroup" >{{c.assetGroupDesc}}</option> -->
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">{{languages.purchasememo}}</label>
+                                        <div class="col-md-4">
+                                            <textarea class="form-control" [(ngModel)]="model.purchasingMemo" name="purchaseMemo"
+                                                #purchaseMemo="ngModel" style="height: 80px!important;width: 100%"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{languages.assetspecification}}</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.brand}}</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="brand" id="brand" [(ngModel)]="model.brand" #brand="ngModel"
+                                                class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Serial No</label>
+                                        <div class="col-md-8">
+                                            <input name="serialNo" id="serialNo" [(ngModel)]="model.serialNo" #serialNo="ngModel"
+                                                class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.description}}</label>
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" name="itemDescription" id="itemDescription"
+                                                [(ngModel)]="model.itemDescription" #itemDescription="ngModel" style="height: 80px!important;width: 100%"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf="assetId!='addnew'">
+                                        <label for="inputEmail3" class="col-md-4 control-label">
+                                            {{languages.disposaldate}}</label>
+                                        <div class="col-md-8">
+                                            <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy"
+                                                type="date" [(value)]="bsDisposalDate">
+                                            </dx-date-box>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf="assetId!='addnew'">
+                                        <label class="control-label col-md-4"> {{languages.disposalmemo}}</label>
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" name="disposalNote" id="disposalNote"
+                                                [(ngModel)]="model.disposalNote" #disposalNote="ngModel" style="height: 80px!important;width: 100%"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.model}}</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="assetModel" id="assetModel" [(ngModel)]="model.assetModel"
+                                                #assetModel="ngModel" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="isLaptop">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.os || "Os"}}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.os" name="os" #os="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of listOs" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of listOs" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.cputype || "Cpu Type"}}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.cpuType" name="cpuType"
+                                                #cpuType="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of listcputype" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of listcputype" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.cpumodel || "Cpu Model"}}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.cpuModel" name="cpuModel"
+                                                #cpuModel="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of listcpumodel" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of listcpumodel" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.ramcapacity || "Ram
+                                            Capacity"}}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.ramCapacity" name="ramCapacity"
+                                                #ramCapacity="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of listramcapacity" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of listramcapacity" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.storagetype || "Storage
+                                            Type"}}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.storageType" name="storageType"
+                                                #storageType="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of liststoragetype" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of liststoragetype" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.storagecapacity || "Storage
+                                            capacity"}}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.storageCapacity" name="storageCapacity"
+                                                #storageCapacity="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of liststoragecapacity" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of liststoragecapacity" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.storagemodel || "Storage
+                                            Model"
+                                            }}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.storageModel" name="storageModel"
+                                                #storageModel="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of liststoragemodel" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of liststoragemodel" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.oslicensevalid || "OS License
+                                            Valid"}}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.osLicenseValid" name="osLicenseValid"
+                                                #osLicenseValid="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of listoslicensevalid" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of listoslicensevalid" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.screensize || "Screen Size"}}</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" [(ngModel)]="model.screenSize" name="screenSize"
+                                                #screenSize="ngModel">
+                                                <option value=""></option>
+                                                <!-- <option *ngFor="let c of listscreensize" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                                <option *ngFor="let c of listscreensize" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button class="btn btn-primary pull-right" [disabled]="IsSubmit">{{languages.update}}</button>
+                            <input class="btn pull-right  pull-right-input" (click)="back()" type="button" value="Back" />
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{languages.documentsupport}}</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <app-fileupload #assetUploadFile projectId="100" sectionId="107" maxFiles="4"
+                                                maxSize="2">
+                                            </app-fileupload>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{languages.warranty}}</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.warrantyperiod}}</label>
+                                        <div class="col-md-7">
+                                            <input name="warrantyPeriod" type="number" min="0" maxlength="99999"
+                                                (change)="UpdateWarrantyDate()" id="warrantyPeriod" [(ngModel)]="model.warrantyPeriod"
+                                                #warrantyPeriod="ngModel" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-4 control-label">
+                                            {{languages.expireddate}}</label>
+                                        <div class="col-md-7">
+                                            <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy"
+                                                type="date" [(value)]="bsExpireddate">
+                                            </dx-date-box>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">{{languages.relatedlicenses}}</label>
+                                        <div class="col-md-7">
+                                            <textarea class="form-control" name="relatedLicenses" id="relatedLicenses"
+                                                [(ngModel)]="model.relatedLicenses" #relatedLicenses="ngModel" style="height: 80px!important; width: 100%"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="assetId != 'addnew'" class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{languages.assetmovement}}</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">{{languages.assignedemployee}}</label>
+                                        <div class="col-md-3">
+                                            <span>{{movements.employeeName}}</span>
+                                        </div>
+                                        <label class="control-label col-md-3">{{languages.assigneddate}}</label>
+                                        <div class="col-md-3">
+                                            <span>{{movements.handoverDate|date:'dd/MM/yyyy'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label"> Memo</label>
+                                        <div class="col-md-6">
+                                            <span>{{movements.movementMemo}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>

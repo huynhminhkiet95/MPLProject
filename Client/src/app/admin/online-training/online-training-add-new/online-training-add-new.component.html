@@ -1,0 +1,119 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ this.languages.motchannel || 'MOT Channel' }}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="box box-primary idrequest-search">
+        
+        <div class="box-body">
+
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <label for="iDService" class="col-sm-4 control-label">{{this.languages.subject}}</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="subject" name="subject" [(ngModel)]="model.subject"
+                    #subject="ngModel" />
+                  <span *ngIf="f.submitted && !subject.valid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                      tooltip="ID Service is required" aria-hidden="true"></i></span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="SvcType" class="col-sm-4 control-label">{{this.languages.expiredate}}</label>
+                <div class="col-sm-8">
+                    <dx-date-box  width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                    [(value)]="bsExpireDate">
+                  </dx-date-box>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <label for="iDService" class="col-sm-4 control-label">{{this.languages.type}}</label>
+                <div class="col-sm-8">
+                  <select class="form-control" id="type" name="type" [(ngModel)]="model.type" #type="ngModel"
+                    required>
+                    <option *ngFor="let c of listTypes" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                  </select>
+                  <span *ngIf="f.submitted && !type.valid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                      tooltip="ID Service is required" aria-hidden="true"></i></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary">
+              <div class="box-body">
+                <div class="row" style="margin-bottom: 10px;">
+                  <label for="remark" class="col-sm-3 control-label pull-left" style="text-align: left !important;">{{this.languages.description}}</label>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <app-tiny-editor [elementId]="'remark'" [menuBarOpt]="false" [statusBarOpt]="false" (onEditorKeyup)="keyupHandlerFunction($event)" [(tinymceModel)]="model.contents"
+                      [tmHeight]="400">
+                    </app-tiny-editor>
+                    <span *ngIf="f.submitted && !contents.valid" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="Contents is required" aria-hidden="true"></i>
+                    </span>
+                    <textarea class="form-control" id="contents" style="display:none" name="contents" #contents="ngModel"
+                      [(ngModel)]="areacontent.contents" required></textarea>
+                  </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                  <label for="attachment" class="col-sm-12 control-label pull-left" style="text-align: left !important;">{{this.languages.attachment}}</label>
+                </div>
+              <div class="form-group">
+                
+                  <div class="col-sm-12">
+                      <div class="row">
+                          <div class="col-md-8">
+                            <app-fileupload 
+                              projectId="100" 
+                              sectionId="107" 
+                              maxFiles="4"
+                              maxSize="2"
+                              fileExt="JPG, GIF, PNG">
+                            </app-fileupload>
+                          </div>
+                          <div class="col-md-4">
+                            <ul class="list-attachfile-view">
+                              <li *ngFor="let c of attachments" class="item-files">
+                                <i class="fa fa-bolt" aria-hidden="true"></i>
+                                <a target="_blank" (click)="downloadFile(c.docNo)">{{c.dFileName}}</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                  </div>
+              </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12 group-btn-right">
+        <button type="button" class="btn btn-default pull-right" (click)="bsModalRef.hide()">{{this.languages.close}}</button>
+        <button type="submit" class="btn btn-primary pull-right" >{{this.languages.save}}</button>
+    </div>
+  </div>
+</form>
+</div>
+ 

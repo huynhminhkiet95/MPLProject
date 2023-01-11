@@ -1,0 +1,345 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+        <div class="box box-primary idrequest-search">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group"> </div>
+                        <div class="form-group">
+                            <label for="JobTitle" class="col-sm-2 control-label pull-r"><span
+                                    class="pull-right">{{languages.jobtitle}}&nbsp;<span
+                                        class="required"></span></span></label>
+                            <div class="col-sm-4">
+                                <input type="text" id="JobTitle" class="form-control" name="jobTitle"
+                                    [(ngModel)]="model.JobTitle" #JobTitle="ngModel" required [disabled]="!isDraf" />
+                                <span *ngIf="JobTitle.invalid" class="help-block-custom"><i
+                                        class="fa fa-exclamation-circle" tooltip="Job Title is required"
+                                        aria-hidden="true"></i></span>
+                            </div>
+                            <label for="Qty" class="col-sm-2 control-label pull-left"><span
+                                    class="pull-right">{{languages.qty}}</span></label>
+                            <div class="col-sm-4">
+                                <input id="Qty" type="number" class="form-control" min="1" name="Qty"
+                                    [(ngModel)]="model.Qty" #Qty="ngModel" required [disabled]="!isDraf" />
+                                <span *ngIf="Qty.invalid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                                        tooltip="Qty is required" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="department" class="col-sm-2 control-label"><span
+                                    class="pull-right">{{languages.department}}&nbsp;<span
+                                        class="required"></span></span></label>
+                            <div class="col-sm-4" *ngIf="!isView">
+                                <select class="form-control" id="department" name="department"
+                                    [(ngModel)]="model.DeptCode" #department="ngModel" required [disabled]="!isDraf">
+                                    <option *ngFor="let c of departments" [ngValue]="c.deptCode">{{c.deptDesc}}</option>
+                                </select>
+                                <span *ngIf="department.invalid" class="help-block-custom"><i
+                                        class="fa fa-exclamation-circle" tooltip="Department is required"
+                                        aria-hidden="true"></i></span>
+                            </div>
+                            <div class="col-sm-4" *ngIf="isView">
+                                <input name="departmentDesc" readonly class="form-control" [(ngModel)]="model.DeptDesc">
+                            </div>
+                            <label for="ReportTo" class="col-sm-2 control-label"><span class="pull-right">
+                                    {{languages.reportto}}&nbsp;<span class="required"></span></span></label>
+                            <div class="col-sm-4">
+                                <input id="ReportTo" name="ReportTo" type="text" class="form-control"
+                                    [(ngModel)]="model.ReportTo" #ReportTo="ngModel" required [disabled]="!isDraf" />
+                                <span *ngIf="ReportTo.invalid" class="help-block-custom"><i
+                                        class="fa fa-exclamation-circle" tooltip="ReportTo is required"
+                                        aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ExpectedDate" class="col-sm-2 control-label pull-left"><span
+                                    class="pull-right">{{languages.expectedstartdate}}</span></label>
+                            <div class="col-sm-4">
+                                <dx-date-box [disabled]="!isDraf" width="100%" [showClearButton]="false"
+                                    displayFormat="dd/MM/yyyy" type="date" [(value)]="model.ExpectedStartDate">
+                                </dx-date-box>
+                            </div>
+                            <label for="ReportTo" class="col-sm-2 control-label"><span class="pull-right">
+                                    {{languages.employeeassign || 'Assign To HR'}}&nbsp;</span></label>
+                            <div class="col-sm-4" *ngIf="!isView">
+                                <dx-select-box [(value)]="model.hrEmployeeId" [items]="employeeAssignList"
+                                    displayExpr="employeeName" valueExpr="employeeId" [searchEnabled]="true">
+                                </dx-select-box>
+                            </div>
+                            <div class="col-sm-4" *ngIf="isView">
+                                <input name="HRAssignerName" readonly class="form-control"
+                                    [(ngModel)]="model.HRAssignerName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="radio" (change)='radioChange()' value="Y" [(ngModel)]="model.IsNew"
+                                            name="IsNew" [disabled]="!isDraf"> {{languages.newposition}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="radio" value="N" [(ngModel)]="model.IsNew" name="IsNew"
+                                            [disabled]="!isDraf">{{languages.replacement}}
+                                    </label>
+                                </div>
+                            </div>
+                            <label for="ReplaceFor" class="col-sm-2 control-label"><span
+                                    class="pull-right">{{languages.replacefor}}</span></label>
+                            <div class="col-sm-4">
+                                <input id="ReplaceFor" type="text" class="form-control" name="ReplaceFor"
+                                    [(ngModel)]="model.ReplaceFor" #ReplaceFor="ngModel"
+                                    [disabled]="model.IsNew == 'Y' || !isDraf" [required]="model.IsNew == 'N'" />
+                                <span name="ReplaceFor" *ngIf="ReplaceFor.invalid && model.IsNew == 'N'"
+                                    class="help-block-custom"><i class="fa fa-exclamation-circle"
+                                        tooltip="Replace for is required" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label pull-r"><span
+                                    class="pull-right">{{languages.reasonrequisition || 'Reason Requisition'}}&nbsp;<span
+                                        class="required"></span></span></label>
+                            <div class="col-sm-4">
+                                <input type="text" id="reasonRequisition" class="form-control" name="reasonRequisition"
+                                    [(ngModel)]="model.reasonRequisition" #reasonRequisition="ngModel" [disabled]="!isDraf" required />
+                                    <span *ngIf="reasonRequisition.invalid" class="help-block-custom"><i
+                                        class="fa fa-exclamation-circle" tooltip="Reason requisition is required"
+                                        aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="educationLevel" class="col-sm-2 control-label"><span
+                                    class="pull-right">{{languages.educationlevel}}&nbsp;<span
+                                        class="required"></span></span></label>
+                            <div class="col-sm-4" *ngIf="!isView">
+                                <select class="form-control" id="educationLevel" name="EducationLevel"
+                                    [(ngModel)]="model.EducationLevel" #educationLevel="ngModel" required
+                                    [disabled]="!isDraf">
+                                    <!-- <option *ngFor="let c of eduLevelList;" [ngValue]="c.codeId" selected="index == 1">
+                                        {{c.codeDesc}}</option> -->
+                                    <option *ngFor="let c of eduLevelList;" [ngValue]="c.codeId" selected="index == 1">
+                                        {{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                </select>
+                                <span *ngIf="educationLevel.invalid" class="help-block-custom"><i
+                                        class="fa fa-exclamation-circle" tooltip="EducationLevel is required"
+                                        aria-hidden="true"></i></span>
+                            </div>
+                            <div class="col-sm-4" *ngIf="isView">
+                                <input name="educationLevelDesc" readonly class="form-control"
+                                    [(ngModel)]="model.EducationLevelDesc">
+                            </div>
+                            <label for="gender" class="col-sm-2 control-label"><span
+                                    class="pull-right">{{languages.gender}}&nbsp;<span
+                                        class="required"></span></span></label>
+                            <div class="col-sm-4" *ngIf="!isView">
+                                <select class="form-control" id="gender" name="gender" [(ngModel)]="model.Gender"
+                                    #gender="ngModel" required [disabled]="!isDraf">
+                                    <!-- <option *ngFor="let c of genderList" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                    <option *ngFor="let c of genderList" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                </select>
+                                <span *ngIf="gender.invalid" class="help-block-custom"><i
+                                        class="fa fa-exclamation-circle" tooltip="Gender is required"
+                                        aria-hidden="true"></i></span>
+                            </div>
+                            <div class="col-sm-4" *ngIf="isView">
+                                <span *ngIf="model.Gender=='M'">Male</span>
+                                <span *ngIf="model.Gender=='F'">Female</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ageRange" class="col-sm-2 control-label pull-left"><span
+                                    class="pull-right">{{languages.agerange}}&nbsp;<span
+                                        class="required"></span></span></label>
+                            <div class="col-sm-4" *ngIf="!isView">
+                                <select class="form-control" id="ageRange" name="AgeRange" [(ngModel)]="model.AgeRange"
+                                    #ageRange="ngModel" required [disabled]="!isDraf">
+                                    <!-- <option *ngFor="let c of ageRangeList" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                    <option *ngFor="let c of ageRangeList" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                </select>
+                                <span *ngIf="ageRange.invalid" class="help-block-custom"><i
+                                        class="fa fa-exclamation-circle" tooltip="Age Arange is required"
+                                        aria-hidden="true"></i></span>
+                            </div>
+                            <div class="col-sm-4" *ngIf="isView">
+                                <input name="AgeRangeDesc" readonly class="form-control"
+                                    [(ngModel)]="model.AgeRangeDesc">
+                            </div>
+                            <label for="experience" class="col-sm-2 control-label pull-left"><span
+                                    class="pull-right">{{languages.experience}}&nbsp;<span
+                                        class="required"></span></span></label>
+                            <div class="col-sm-4" *ngIf="!isView">
+                                <select class="form-control" id="experience" name="Experience"
+                                    [(ngModel)]="model.ExperienceYear" #experience="ngModel" required
+                                    [disabled]="!isDraf">
+                                    <!-- <option *ngFor="let c of exYearsList;" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                                    <option *ngFor="let c of exYearsList;" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                                </select>
+                                <span *ngIf="experience.invalid" class="help-block-custom"><i
+                                        class="fa fa-exclamation-circle" tooltip="Experience is required"
+                                        aria-hidden="true"></i></span>
+                            </div>
+                            <div class="col-sm-4" *ngIf="isView">
+                                <input name="ExperienceYearDesc" readonly class="form-control"
+                                    [(ngModel)]="model.ExperienceYearDesc">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remark" class="col-sm-2 control-label"><span
+                                    class="pull-right">{{languages.jobdescription}}&nbsp;<span
+                                        class="required"></span></span></label>
+                            <div class="col-sm-10">
+                                <textarea id="jobDescription" name="remark" style="height:100px;width:100%"
+                                    [(ngModel)]="model.JobDescription" #jobDescription="ngModel" required
+                                    [disabled]="!isDraf"></textarea>
+                                <span *ngIf="jobDescription.invalid" class="help-block-custom">
+                                    <i class="fa fa-exclamation-circle" tooltip="Job Description is required"
+                                        aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="requirementSkill" class="col-sm-2 control-label"><span
+                                    class="pull-right">{{languages.requiredskill}}</span></label>
+                            <div class="col-sm-4">
+                                <textarea id="requirementSkill" name="RequirementSkill" style="height:100px;width:100%"
+                                    [(ngModel)]="model.RequiredSkill" #requirementSkill="ngModel"
+                                    [disabled]="!isDraf"></textarea>
+                            </div>
+                            <label for="languageSkill" class="col-sm-2 control-label"><span
+                                    class="pull-right">{{languages.languageskill}}</span></label>
+                            <div class="col-sm-4">
+                                <textarea id="languageSkill" name="LanguageSkill" style="height:100px;width:100%"
+                                    [(ngModel)]="model.LanguageSkill" #languageSkill="ngModel"
+                                    [disabled]="!isDraf"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="benefit" class="col-sm-2 control-label pull-left"><span
+                                    class="pull-right">{{languages.benefit}}</span></label>
+                            <div class="col-sm-4">
+                                <textarea id="benefit" name="Benefit" style="height:100px;width:100%"
+                                    [(ngModel)]="model.Benefit" #benefit="ngModel" [disabled]="!isDraf"></textarea>
+                            </div>
+                            <label for="workingLocation" class="col-sm-2 control-label pull-left"><span
+                                    class="pull-right">{{languages.workinglocation}}</span></label>
+                            <div class="col-sm-4">
+                                <textarea id="workingLocation" name="WorkingLocation" style="height:100px;width:100%"
+                                    [(ngModel)]="model.WorkingLocation" #workingLocation="ngModel"
+                                    [disabled]="!isDraf"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="isDraf">
+                            <label for="attachment" class="col-sm-2 control-label "><span
+                                    class="pull-right">{{languages.attachment}}</span></label>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <app-fileupload projectId="100" sectionId="107" maxFiles="4" maxSize="2"
+                                            fileExt="JPG, GIF, PNG">
+                                        </app-fileupload>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div *ngIf="documentInfos.length>0">
+                                    <label for="attachment" class="col-sm-2 control-label"><span
+                                            class="pull-right">{{languages.attachedfiles}}</span></label>
+                                    <div class="col-md-10">
+                                        <ul class="list-attachfile-view">
+                                            <li *ngFor="let c of documentInfos" class="item-files">
+                                                <i class="fa fa-bolt" aria-hidden="true"></i>
+                                                <a target="_blank" (click)="downloadFile(c.docNo)">{{c.dFileName}}</a>
+                                                <a target="_blank" *ngIf="isDraf" (click)="deleteFile(c.docNo)"><i
+                                                        class="fa fa-trash-o fa-1x"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="box box-primary">
+                                    <div class="box-body">
+                                        <dx-data-grid #gridContainer id="gridContainer" [wordWrapEnabled]="true"
+                                            [columnAutoWidth]="true" [dataSource]="empRequisitionItems" keyExpr="id">
+
+                                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                                            <dxi-column dataField="replyTypeDesc" caption="{{languages.actiontype}}">
+                                            </dxi-column>
+                                            <dxi-column [width]="200" dataField="assignerName"
+                                                caption="{{languages.name}}">
+                                            </dxi-column>
+                                            <dxi-column dataField="requisitionStatusDesc"
+                                                cellTemplate="diffCellTemplateStatus" caption="{{languages.status}}">
+                                            </dxi-column>
+                                            <dxi-column dataField="approvalTypeDesc"
+                                                caption="{{languages.approvaltype}}">
+                                            </dxi-column>
+                                            <dxi-column dataField="comment">
+                                            </dxi-column>
+                                            <dxi-column dataField="createDate" caption="{{languages.createdate}}"
+                                                dataType="datetime2">
+                                            </dxi-column>
+                                            <dxo-selection mode="single"></dxo-selection>
+                                            <dxo-paging [pageSize]="10"></dxo-paging>
+                                            <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                                                [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+                                            <dxo-editing mode="popup" [allowDeleting]="false">
+                                            </dxo-editing>
+                                            <div *dxTemplate="let d of 'diffCellTemplate'">
+                                                <a href="#" class="dx-link dx-link-delete dx-icon-trash"
+                                                    routerLink="../employee-requisition-approval-detail/{{d.value}}">
+                                                    <span> </span></a>
+                                            </div>
+                                            <div *dxTemplate="let s of 'diffCellTemplateStatus'">
+                                                <span class="label status-{{s.value}}">{{s.value}}</span>
+                                            </div>
+                                        </dx-data-grid>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col-md-12 group-btn-right">
+            <button style="margin-right: 15px;float: right;" type="button" class="btn btn-default"
+                (click)="bsModalRef.hide()">
+                {{languages.close}}</button>
+            <button style="margin-right: 15px;float: right;" *ngIf="isSubmit" type="submit" class="btn btn-primary"
+                (click)="Save('NEW')" [disabled]="f.form.invalid || IsSubmit"> {{languages.submit}}</button>
+            <button style="margin-right: 15px;float: right;" *ngIf="isCancel" class="btn btn-primary" (click)="Cancel()"
+                [disabled]="!f.form.valid"> {{languages.cancel}}</button>
+            <button style="margin-right: 15px;float: right;" *ngIf="isDraf" class="btn btn-primary"
+                (click)="Save('DRAF')"
+                [disabled]="f.form.invalid ||  IsSubmit">{{languages.draftsave||'Draft Save'}}</button>
+        </div>
+    </div>
+</div>

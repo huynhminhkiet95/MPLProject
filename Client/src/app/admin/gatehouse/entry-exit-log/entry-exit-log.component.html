@@ -1,0 +1,183 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.entryexitlog || "Entry and Exit Log"}}
+    </h1>
+    <ol class="breadcrumb">
+      <li><a routerLink="../../dashboard"><i class="fa fa-dashboard"></i> {{languages.home || "Home"}}</a></li>
+      <li> {{languages.entryexitlog || "Entry and Exit Log"}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <div class="row">
+      <div class="col-md-5">
+
+        <!-- Profile Image -->
+        <div class="box box-primary">
+
+          <div class="box-header with-border">
+            <h3 class="box-title"> {{languages.avatar || "Avatar"}}</h3>
+          </div>
+
+          <div class="box-body box-profile">
+            <!-- <div class="col-sm-offset-1" style="margin-bottom: 10px;">
+                <strong>{{languages.readBarcode || "Read Barcode"}}</strong>
+              </div> -->
+            <div class="border">
+              <img class="profile-user-img img-responsive" style="margin-bottom: 10px; margin-top: 10px;"
+                onError="this.src='/assets/img/128-missing_avatar.svg.png';"
+                [src]="'https://mpi.mplogistics.vn/uploads/'+entryExitLogModel.avartarThumbnail" alt="">
+            </div>
+
+
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+      </div>
+      <!-- /.col -->
+      <div class="col-md-7">
+
+        <div class="box box-primary nav-tabs-custom">
+          <div class="box-header with-border">
+            <h3 class="box-title"> {{languages.general || "General"}}</h3>
+          </div>
+          <div class="tab-content">
+
+            <div class="row" style="margin-bottom: 10px;">
+
+              <div class="col-sm-3">
+
+              </div>
+              <div class="col-sm-5">
+                <div class="input-group input-group-sm">
+                  <input class="form-control" type="text" id="vehicleNoS" autoFocus (change)="search()"
+                    style="height: 30px!important;" name="vehicleNo" #vehicleNo="ngModel"
+                    [(ngModel)]="searchModel.vehicleNo">
+                  <span class="input-group-btn">
+                    <button type="button" (click)="search()" class="btn btn btn-info">Load!</button>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="active tab-pane" id="settings">
+              <form name="formaddnew" class="form-horizontal" #f="ngForm" novalidate>
+
+                <div class="form-group">
+                  <label for="vehicle" class="col-sm-3 control-label">{{languages.vehicle || "Vehicle"}}</label>
+
+                  <div class="col-sm-5">
+                    <input type="text" readonly class="form-control" [(ngModel)]="entryExitLogModel.vehicle"
+                      id="vehicle" name="vehicle" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="vehicle" class="col-sm-3 control-label">{{languages.autosave || "Auto Save"}}</label>
+
+                  <div class="col-sm-2">
+                    <input type="checkbox" [(ngModel)]="model.autosave" id="autosave" name="autosave">
+                  </div>
+                  <div *ngIf="model.autosave" class="col-sm-3">
+                    <select type="checkbox" class="form-control" [(ngModel)]="model.mode" id="mode" name="mode">
+                      <option value="IN">In</option>
+                      <option value="OUT">Out</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail" class="col-sm-3 control-label">{{languages.vehicleNo || "Vehicle No"}}</label>
+
+                  <div class="col-sm-5">
+                    <input type="text" readonly class="form-control" [(ngModel)]="entryExitLogModel.vehicleNo"
+                      id="vehicleNo" name="vehicleNo">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="name" class="col-sm-3 control-label">{{languages.name || "Name"}}</label>
+
+                  <div class="col-sm-5">
+                    <input type="text" readonly name="employeeName" [(ngModel)]="entryExitLogModel.employeeName"
+                      class="form-control" id="employeeName" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="mobileNo" class="col-sm-3 control-label">{{languages.mobileNo || "Mobile No"}}</label>
+
+                  <div class="col-sm-5">
+                    <input type="mobileNo" readonly class="form-control" [(ngModel)]="entryExitLogModel.mobile"
+                      id="mobile" name="mobile">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="devision" class="col-sm-3 control-label">{{languages.division || "Division"}}</label>
+
+                  <div class="col-sm-5">
+                    <input type="text" readonly class="form-control" id="devision"
+                      [(ngModel)]="entryExitLogModel.divisionDesc" name="devision" #devision="ngModel">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="department"
+                    class="col-sm-3 control-label">{{languages.department || "Department"}}</label>
+
+                  <div class="col-sm-5">
+                    <input type="text" readonly class="form-control" id="department"
+                      [(ngModel)]="entryExitLogModel.deptDesc" name="department" #department="ngModel">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="relatedPerson"
+                    class="col-sm-3 control-label">{{languages.relatedPerson || "Related Person"}}</label>
+
+                  <div class="col-sm-5">
+                    <input type="text" maxlength="12" class="form-control" id="relatedPerson"
+                      [(ngModel)]="entryExitLogModel.relatedPerson" name="relatedPerson">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="memo" class="col-sm-3 control-label">{{languages.memo || "Memo"}}</label>
+
+                  <div class="col-sm-5">
+                    <input type="text" maxlength="12" class="form-control" id="memo"
+                      [(ngModel)]="entryExitLogModel.memo" name="memo">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="memo" class="col-sm-3 control-label"></label>
+                  <div class="col-sm-5">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <button [disabled]="loading" type="button" class="btn btn-block btn-primary pull-right"
+                          (click)="insert('In')">{{languages.in || "In"}}</button>
+                      </div>
+                      <div class="col-md-6">
+                        <button [disabled]="loading" type="button" (click)="insert('Out')"
+                          class="btn btn-primary btn-block pull-right">{{languages.out || "Out"}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+
+          </div>
+          <!-- /.tab-content -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+  </section>
+  <!-- /.content -->
+</div>

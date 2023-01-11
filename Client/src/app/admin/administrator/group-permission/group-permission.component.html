@@ -1,0 +1,76 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.grouppermissions||"Group Permission"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li>
+        <a routerLink="../../servicerequest"> {{languages.grouppermissions || "GroupPermisson"}}</a>
+      </li>
+
+    </ol>
+  </section>
+  <section class="content">
+    <div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary group-permission">
+            <div class="box-header with-border">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title">Menu</h3>
+              <a class="btn btn-info pull-right btn-sm" (click)="addNewGroup()"
+                                style="margin-left:10px;">{{languages.grouppermissions || "Group Permisson"}}</a>
+            </div>
+            <div class="box-body">
+              <div class="form-group dv-system">
+                <div class="row system-row">
+                  <label for="systems" class="col-sm-1 control-label">Select System</label>
+                  <div class="col-sm-2">
+                    <select class="form-control" id="systems" name="systems" [(ngModel)]="systemId" (change)="onChangeSystem($event.target.value)">
+                      <option *ngFor="let i of systemList" [ngValue]="i.systemId" >{{i.systemName}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <tabset>
+                <tab *ngFor="let c of listGroup" heading="{{c.groupDesc}}" id="{{c.groupId}}" (select)="selectTabGroup($event)">
+                  <div id="{{c.groupId}}" style="position: relative;"></div>
+                </tab>
+              </tabset>
+
+              <div style="padding:10px;">
+                <dx-tree-list #gridContainer
+                  id="tasks"
+                  [dataSource]="dataSource"
+                  keyExpr="menuId"
+                  parentIdExpr="parentId"
+                  [columnAutoWidth]="true"
+                  [showBorders]="true"
+                  [showRowLines]="true"
+                  showCheckBoxesMode="normal"
+                  (onSelectionChanged)="selectRowMenu($event)">
+
+                  <dxo-editing mode="row" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
+                  </dxo-editing>
+                  <dxo-header-filter [visible]="true"></dxo-header-filter>
+                  <dxo-selection mode="multiple" [recursive]="true"></dxo-selection>
+
+                  <dxi-column [width]="300" dataField="menuName" [allowEditing]="false" cation="Menu Name" dataType="string"></dxi-column>
+                  <dxi-column [width]="100" alignment="center" dataField="seqNo" caption="SegNo" dataType="number"></dxi-column>
+                </dx-tree-list>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

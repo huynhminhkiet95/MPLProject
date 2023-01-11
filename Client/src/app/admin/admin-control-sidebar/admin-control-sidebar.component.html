@@ -1,0 +1,54 @@
+<aside class="control-sidebar control-sidebar-dark">
+  <!-- Create the tabs -->
+  <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+    <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+    <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <!-- Home tab content -->
+    <div class="tab-pane" id="control-sidebar-home-tab">
+      <h3 class="control-sidebar-heading">Recent Activity</h3>
+      <ul class="control-sidebar-menu">
+         
+        <li *ngFor="let item of messageList">
+          <a href="javascript:void(0)">
+              <i class="menu-icon fa fa-user bg-yellow"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">{{item.userName}} <small>({{item.createdDate|date:'dd/MM hh:mm:ss'}})</small></h4>
+
+                <p>{{item.content}}</p>
+              </div>
+            </a>
+        </li>
+        
+      </ul>
+      <div>
+
+      </div>
+      <form name="fMessage">
+        <div class="input-group">
+          <input class="form-control" name="messageContent" [(ngModel)]="msgModel.content" #messageContent="ngModel" style="height: 34px!important;" placeholder="Type message...">
+
+          <div class="input-group-btn">
+            <button type="button" (click)="sendMessage()" class="btn btn-success"><i class="fa fa-plus"></i></button>
+          </div>
+        </div>
+    </form>
+      <!-- /.control-sidebar-menu -->
+    </div>
+    <!-- /.tab-pane -->
+    <!-- Stats tab content -->
+     
+    <!-- /.tab-pane -->
+    <!-- Settings tab content -->
+    <div class="tab-pane" id="control-sidebar-settings-tab">
+      
+    </div>
+    <!-- /.tab-pane -->
+  </div>
+</aside>
+<!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+<div class="control-sidebar-bg"></div>

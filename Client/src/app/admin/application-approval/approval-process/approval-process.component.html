@@ -1,0 +1,406 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.serviceapproval||'Service Approval'}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home||'Home'}}</a></li>
+      <li>{{languages.serviceapproval||'Service Approval'}}</li>
+      <li class="active">{{model.svrNo}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">{{languages.general||'General'}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="row">
+
+              <div class="col-md-8">
+                  <div class="row">
+                      <label class="col-md-2 control-label">{{languages.subject||'Subject'}}</label>
+                      <div class="col-md-10">
+                          <a tooltip="Click to view detail" class=" pointer" (click)="viewDetail()"><span>
+                              {{model.svrSubject}} </span></a>
+                      </div>
+                  </div>
+                  <div class="row" style="margin-right: 15px;">
+                    <div class="col-md-6">
+                        <label class="col-md-4 control-label">{{languages.servicetype||'Service Type'}}</label>
+                        <div class="col-md-8">
+                            <span>{{model.applicationDesc}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-md-4 control-label">{{languages.duedate||'Due date'}}</label>
+                        <div class="col-md-8">
+                            <span>{{model.dueDate|date:'dd/MM/yyyy'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-2 control-label">{{languages.background||'Background'}}</label>
+                    <div class="col-md-10">
+                        <textarea style="min-height: 75px;
+                        border: none;"   [innerHTML]="model.background"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                  <label class="col-md-2 control-label">{{languages.requiredetail||'Require Detail'}}</label>
+                  <div class="col-md-10">
+                      <textarea style="min-height: 75px;
+                      border: none;"  [innerHTML]="model.requiredDetail"></textarea>
+                  </div>
+              </div>
+              </div>
+
+              <div class="col-md-4">
+                <app-fileupload #UploadFile autoSave="true" maxFiles="4" maxSize="5">
+                </app-fileupload>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="id">
+                  <dxo-group-panel [visible]="true"></dxo-group-panel>
+                  <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                  <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+                  <dxo-sorting mode="none">
+                    <!-- or "multiple" | "none" -->
+                  </dxo-sorting>
+                  <dxi-column dataField="replyType" caption="{{languages.actiontype||'Action Type'}}">
+                  </dxi-column>
+                  <dxi-column dataField="createUser" caption="{{languages.name||'Name'}}">
+                  </dxi-column>
+                  <dxi-column dataField="svrStatusDesc" caption="{{languages.status||'Status'}}" cellTemplate="diffStatusTemplate">
+                  </dxi-column>
+                  <dxi-column dataField="approveType" caption="{{languages.approvaltype||'Approval Type'}}">
+                  </dxi-column>
+                  <dxi-column dataField="comment" cellTemplate="EditCommentTemplate">
+                  </dxi-column>
+                  <dxi-column dataField="process" caption="Processer">
+                  </dxi-column>
+                  <dxi-column dataField="createDate" dataType="datetime2">
+                  </dxi-column>
+                  <dxo-selection mode="single"></dxo-selection>
+
+                  <dxo-paging [pageSize]="10"></dxo-paging>
+                  <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                    [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+                  <dxo-editing mode="popup" [allowDeleting]="false">
+                  </dxo-editing>
+                  <div *dxTemplate="let d of 'diffCellTemplate'">
+                    <a href="#" class="dx-link dx-link-delete dx-icon-trash"
+                      routerLink="../itservicerequest/{{d.value}}">
+                      <span> </span></a>
+                  </div>
+
+                  <div *dxTemplate="let d of 'diffStatusTemplate'">
+                    <span class="label status-{{d.value}}">{{d.value}}</span>
+                  </div>
+                  
+                  <div *dxTemplate="let d of 'EditCommentTemplate'">
+                    <span>{{d.value}}</span>
+                    <a *ngIf="Checkper(d)" tooltip="Click to edit" (click)="OpenEditCommentF(d)">
+                      <i class="fa  fa-pencil-square-o"></i></a>
+                  </div>
+                </dx-data-grid>
+
+              </div>
+            </div>
+
+            <div class="row"
+              *ngIf="model.svrStatus!='CLOS' && model.svrStatus!='DROP' && model.replyType!='' && model.approvalType!=''">
+              <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid && replyRequest()" #f="ngForm"
+                novalidate>
+                <div *ngIf="showRadioApproval" class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.approval||'Approval'}}</label>
+                  <div class="col-sm-2">
+                    <div class="checkbox">
+                      <label>
+                        <input type="radio" value="1" [(ngModel)]="replyModel.existedUserId" name="existedUserId">
+                        {{languages.approve||'Approve'}}
+                      </label>
+                    </div>
+
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="checkbox">
+                      <label>
+                        <input type="radio" value="0" [(ngModel)]="replyModel.existedUserId" name="existedUserId">
+                        {{languages.reject||'Reject'}}
+                      </label>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="form-group" *ngIf="model.namedRole=='ADV' && model.replyType=='ACTI'">
+                  <label class="col-sm-2 control-label">{{languages.costcenter||'Cost center'}}</label>
+                  <div class="col-sm-3">
+                    <select class="form-control" [(ngModel)]="replyModel.costCenter" name="costCenter" required
+                      #costCenter="ngModel">
+                      <option value=""></option>
+                      <!-- <option *ngFor="let c of listcostCenter" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                      <option *ngFor="let c of listcostCenter" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                    </select>
+                    <span *ngIf="f.submitted && !costCenter.valid" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="Cost center is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.comment||'Comment'}}</label>
+                  <div class="col-sm-5">
+                    <textarea name="comment" id="comment" [(ngModel)]="replyModel.comment" #comment="ngModel"
+                      style="width:300px;height:100px;margin-top:10px;"></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"> </label>
+                  <div class="col-sm-5">
+                    <button type="submit" class="btn btn-primary"
+                      [disabled]="model.isUse!='1'||model.svrStatus=='CLOS'||model.sVRStatus=='DROP'||model.replyType==''||model.approvalType==''">{{languages.update||'Submit'}}</button>
+                    <button *ngIf="IsShowDocumentAccount" type="button" (click)="showAccountDocument()" class="btn btn-info">{{languages.viewaccountdocument || 'View Account Document'}}</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+          <div class="box-footer">
+            <button class="btn btn-default" (click)="back()">{{languages.back||'Back'}}</button>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+  <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="dialog-child-name">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="dialog-child-name" class="modal-title pull-left">{{languages.servicerequestdetail||'Service Request
+            Detail'}}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div style="width: 800px;border:solid 1px #e0e0e0;padding: 20px 3px;">
+            <table style="width: 100%; border-collapse: separate;
+        border-spacing: 10px;">
+              <tbody>
+                <tr>
+                  <td colspan="4">
+                    <h4 style="text-align: center;font-size: 25px;margin-top: 0;">SERVICE REQUEST</h4>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <h5 style="text-align: center">{{modeldetail.applicationDesc}}</h5>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label>Subject</label></td>
+                  <td><span>{{modeldetail.svrSubject}}</span></td>
+                  <td><label>Request Number</label></td>
+                  <td><span>{{modeldetail.svrNo}}</span></td>
+                </tr>
+                <tr>
+                  <td><label>Application Type</label></td>
+                  <td><span>{{modeldetail.applicationDesc}}</span></td>
+                  <td><label>Barcode</label></td>
+                  <td><span>
+                      <ngx-barcode [bc-value]="modeldetail.svrNo" [bc-height]="40" [bc-margin]="0" [bc-width]="1"
+                        [bc-display-value]="false"></ngx-barcode>
+                    </span></td>
+                </tr>
+                <tr>
+                  <td><label>Due Date</label></td>
+                  <td><span>{{modeldetail.dueDate|date:'dd/MM/yyyy'}}</span></td>
+                  <td><label>Priority</label></td>
+                  <td><span>{{modeldetail.proiorityDesc}}</span></td>
+                </tr>
+                <tr>
+                  <td><label>Related Customer</label></td>
+                  <td><span>{{modeldetail.relatedCustomer}}</span></td>
+                  <td><label>Related Party</label></td>
+                  <td><span>{{modeldetail.thirdParty}}</span></td>
+                </tr>
+                <tr>
+                  <td><label>Background</label></td>
+                  <td><span>{{modeldetail.background}}</span></td>
+                  <td><label>Require Detail</label></td>
+                  <td><span>{{modeldetail.requiredDetail}}</span></td>
+                </tr>
+                <tr>
+                  <td><label>Local Amount</label></td>
+                  <td><span>{{modeldetail.localDocAmount|number:'3.2-5'}}</span></td>
+                  <td><label>USD Amount</label></td>
+                  <td><span>{{modeldetail.usdDocAmount|number:'3.2-5'}}</span></td>
+                </tr>
+                <tr>
+                  <td><label>Planned Budget</label></td>
+                  <td><span>{{modeldetail.hasBudget}}</span></td>
+                  <td><label>Reference Doc No</label></td>
+                  <td><span>{{modeldetail.refDocumentNo}}</span></td>
+                </tr>
+                <tr>
+                  <td><label>Remark</label></td>
+                  <td><span>{{modeldetail.remark}}</span></td>
+                  <td><label>Related Division</label></td>
+                  <td><span>{{modeldetail.divisionDesc}}</span></td>
+                </tr>
+                <tr>
+                  <td><label>Created By</label></td>
+                  <td><span>{{modeldetail.createUserName}}</span></td>
+                  <td><label>Created On</label></td>
+                  <td><span>{{modeldetail.createDate|date:'dd/MM/yyyy'}}</span></td>
+                </tr>
+
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" (click)="hideChildModal()">{{languages.close }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div bsModal #childModal2="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="dialog-child-name">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <form class="form-horizontal" name="formAssetsMovement" #f2="ngForm">
+          <div class="modal-header">
+            <h4 id="dialog-child-name" class="modal-title pull-left">{{languages.selectitem||'Item for Stationary
+              Purchase Request '}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal2()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="box box-primary idrequest-search">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div>
+                      <table class="table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th>{{this.languages.itemname||'Item Name'}}</th>
+                            <th>{{this.languages.unit||'Unit'}}</th>
+                            <th>{{this.languages.Quantity||'Request Quantity'}}</th>
+                            <th>{{this.languages.approvalquantity||'Approval Quantity'}}</th>
+                          </tr>
+                        </thead>
+                        <tbody *ngFor="let item of ItemSelected">
+                          <tr>
+                            <td>
+                              {{item.svR_SPR_Items.itemDesc}}
+                            </td>
+                            <td>
+                              {{item.svR_SPR_Items.unit}}
+                            </td>
+                            <td>
+                              {{item.qty}}
+                            </td>
+                            <td>
+                              <input min="1" max="9999" [(ngModel)]="item.appQty" [ngModelOptions]="{standalone: true}"
+                                type="number">
+                            </td>
+                          </tr>
+                        </tbody>
+
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="group-btn-right">
+              <button *ngIf="model.namedRole=='SRA' && model.replyType != ''" type="button"
+                class="btn btn-primary pull-right" (click)="updateItemToPurchase()">Update</button>
+              <button type="button" class="btn btn-default pull-right"
+                (click)="hideChildModal2()">{{languages.close}}</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div bsModal #childModal3="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="dialog-child-name">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <form class="form-horizontal" name="editComentF" #f3="ngForm">
+          <div class="modal-header">
+            <h4 id="dialog-child-name" class="modal-title pull-left">{{languages.updateservice||'Update Comment'}}</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="childModal3.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="box box-primary idrequest-search">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                      <textarea style="width:100%;height:100px;"  [(ngModel)]="SVRDetailSelected.comment" [ngModelOptions]="{standalone: true}"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="group-btn-right">
+              <button type="button"
+                class="btn btn-primary pull-right" (click)="updateCommentDetail()">Update</button>
+              <button type="button" class="btn btn-default pull-right"
+                (click)="childModal3.hide()">{{languages.close}}</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,114 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+      <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="box box-primary">
+          <div class="box-body box-profile">
+            <!-- <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> -->
+            <div class="border-avatar" style="font-size: 80px; text-align: center">
+                <img *ngIf="avatar!=''"  class="profile-user-img img-responsive img-circle" src="{{avatar}}" alt="">
+                <i *ngIf="avatar===''" class="fa fa-user" aria-hidden="true"></i>
+            </div>
+            <h3 class="profile-username text-center">{{model.employeeName}}</h3>
+            <p class="text-muted text-center">Since {{model.dateofJoin|date:'dd/MM/yyyy'}}</p>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+ 
+      </div>
+      <!-- /.col -->
+      <div class="col-md-9">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#settings" data-toggle="tab">Information</a></li>
+            <!-- <li><a href="#activity" data-toggle="tab">Activity</a></li>
+            <li><a href="#timeline" data-toggle="tab">Timeline</a></li> -->
+            
+          </ul>
+          <div class="tab-content" style="min-height:300px">
+            <div class=" tab-pane" id="activity">
+              <!-- Post -->
+               
+              <!-- /.post -->
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="timeline">
+              <!-- The timeline -->
+              
+            </div>
+            <!-- /.tab-pane -->
+
+            <div class="active tab-pane" id="settings">
+                <ul class="list-info-profile">
+                <li>
+                  <label>Employee Code</label>
+                    <span>{{model.employeeCode}}</span>
+                </li>
+                <li>
+                  <label>Subsidiary</label>
+                    <span>{{subsidiary.subsidiaryName}}</span>
+                </li>
+                <li>
+                  <label>Division</label>
+                    <span>{{subsidiary.divisionDesc}}</span>
+                </li>
+                <li>
+                  <label>Department</label>
+                    <span>{{subsidiary.deptDesc}}</span>
+                <li>
+                    <label>Designation</label>
+                      <span>{{model.designation}}</span>
+                  </li>
+                  <li>
+                      <label>Gender</label>
+                        <!-- <span>{{subsidiary.gender}}</span> -->
+                        <span *ngIf="subsidiary.gender=='M'">Male</span>
+                        <span *ngIf="subsidiary.gender=='F'">Female</span>
+                    </li>
+                <li>
+                  <label>Email</label>
+                    <span>{{model.email}}</span>
+                </li>
+                <li>
+                  <label>Phone(Line)</label>
+                    <span>{{model.tel}}</span>
+                </li>
+                <li>
+                  <label>Mobile</label>
+                    <a href="tel:{{model.mobile}}">  <span>{{model.mobile}}</span></a> 
+                </li>
+                <li>
+                  <label>Working Location</label>
+                    <span>{{model.locationName}}</span>
+                </li>
+              </ul>
+
+              <ul class="list-info-profile">
+                <li *ngFor="let item of listAccount">
+                    <label>{{item.accountType}}</label>
+                    <a *ngIf="item.isExternal==1" [href]="createLink(item)" tooltip="Click to open on app">{{item.accountId}}</a>
+                    <span *ngIf="item.isExternal==0">{{item.accountId}}</span>
+                </li>
+              </ul>
+            </div>
+            
+          </div>
+          <!-- /.tab-content -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Close</button>
+</div>

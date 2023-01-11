@@ -1,0 +1,150 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{languages.serviceapproval||"Service Approval"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home}}</a></li>
+      <li class="active"> {{languages.serviceapproval||"Service Approval"}}</li>
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title"> {{languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label"> {{languages.submitdate}}</label>
+                    <div class="col-sm-4 date-from">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsRangeValue[0]">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [min]="bsRangeValue[0]" [showClearButton]="false"
+                        displayFormat="dd/MM/yyyy" type="date" [(value)]="bsRangeValue[1]">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="Subject" class="col-sm-4 control-label"> {{languages.application}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Type" name="Type" #Type="ngModel">
+                        <option value="0"></option>
+                        <option *ngFor="let c of listServiceTypes" [ngValue]="c.applicationCode">{{c.applicationDesc}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.status}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Status" name="Status" #Status="ngModel">
+                        <option value="0"></option>
+                        <!-- <option *ngFor="let c of statusList" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of statusList" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">
+                      {{languages.costcenter  || 'Cost Center'}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.CostCenter" name="CostCenter"
+                        #CostCenter="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listCostcenter" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listCostcenter" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                  <div class="col-lg-c4 col-md-c6">
+                     
+                    <div class="form-group">
+                      <label for="inputEmail3" class="col-xs-auto col-sm-4 control-label">
+                        {{languages.ispending  || 'Is Pending'}}</label>
+                      <div class="col-xs-1 col-sm-4">
+                         <input type="checkbox" name="ispending"  [(ngModel)]="searchModel.isPending" #isPending="ngModel">
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <button type="button" (click)="search()"
+              class="btn btn-primary pull-right btn-sm">{{languages.search}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="id">
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+              <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+              <dxi-column dataField="svrSubject" caption="{{languages.subject}}" cellTemplate="diffCellTemplate">
+              </dxi-column>
+              <dxi-column dataField="application" alignment="center" caption="{{languages.application}}">
+              </dxi-column>
+              <dxi-column dataField="createDate" alignment="center" caption="{{languages.submitdate}}" dataType="date" format="dd/MM/yyyy">
+              </dxi-column>
+              <dxi-column dataField="createUserName" alignment="center" caption="{{languages.employeename}}">
+              </dxi-column>
+              <dxi-column dataField="costCenterDesc" alignment="center"
+                caption="{{languages.costcenterdesc || 'Cost Center'}}">
+              </dxi-column>
+
+              <dxi-column caption="{{languages.status}}" alignment="center" dataField="svrStatusDesc"
+                cellTemplate="diffStatusTemplate2">
+              </dxi-column>
+              <dxi-column caption="{{languages.approveddate}}" alignment="center" dataField="approvedDate"
+                dataType="date" format="dd/MM/yyyy">
+              </dxi-column>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+              <dxo-editing mode="popup" [allowDeleting]="false">
+              </dxo-editing>
+              <div *dxTemplate="let d of 'diffCellTemplate'">
+                <a (click)="approvaldetail(d.data.svrNo)">
+                {{d.value}} </a>
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate'">
+                <div class="dx-btn-group">
+                  <a (click)="edit(d.value)"><i class="fa fa-pencil-square-o fa-1x"></i></a>
+                  <a (click)="delete(d.value)"><i class="fa fa-trash-o fa-1x"></i></a>
+                </div>
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate2'">
+                <span class="label status-{{d.value}}">{{d.value}}</span>
+              </div>
+            </dx-data-grid>
+          </div>
+          <div class="box-footer"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

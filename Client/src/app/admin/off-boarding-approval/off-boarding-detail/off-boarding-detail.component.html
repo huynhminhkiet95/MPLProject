@@ -1,0 +1,97 @@
+<!-- <ng-template #template> -->
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{languages.offboardnotice||'Off Board Notice'}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="hidemodal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">{{languages.generate||'Generate'}}</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="leaveDateType" class="col-sm-2 control-label">{{languages.leavetype}}
+  
+                    </label>
+                    <div class="col-sm-4">
+                       
+                      <input id="leaveDateType" class="form-control"  [(ngModel)]="offBoardNoticeModel.leaveTypeDesc"
+                      name="leaveDateType" #leaveDateType="ngModel" disabled >
+                    </div>
+                    <label for="leaveDateType" class="col-sm-2 control-label">{{languages.expectedleave||'Expected Leave'}}
+  
+                    </label>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [showClearButton]="false" [disabled]="true"
+                        displayFormat="dd/MM/yyyy" type="date" [(value)]="offBoardNoticeModel.expectedLeaveDate">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="reasontoleave"
+                      class="col-sm-2 control-label">{{languages.reasontoleave||'Reason to Leave'}}</label>
+                    <div class="col-sm-4">
+                      <input id="reasonToLeaveDesc" type="text" class="form-control"  [(ngModel)]="offBoardNoticeModel.reasonToLeaveDesc"
+                      name="reasonToLeaveDesc" #reasonToLeaveDesc="ngModel" disabled >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="remark" class="col-sm-2 control-label">{{languages.remark||'Remark'}}</label>
+                    <div class="col-md-10">
+                        <div style="padding: 5px; min-height: 150px; border: solid 1px #e0e0e0;" [innerHTML]="offBoardNoticeModel.reasonRemark"></div>
+                    </div>
+                  </div>
+                   
+                  <div class="form-group">
+                    <label for="reasontoleave"
+                      class="col-sm-2 control-label">{{languages.hdpcomment||'HDP Comment'}}</label>
+                    <div class="col-sm-10">
+                      <textarea id="hdpConfirmRemark"  [(ngModel)]="offBoardNoticeModel.hdpConfirmRemark"
+                      name="hdpConfirmRemark" #hdpConfirmRemark="ngModel" [disabled]="offBoardNoticeModel.isHOD===1 || offBoardNoticeModel.isHOD===3" ></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="hodConfirmRemark"
+                      class="col-sm-2 control-label">{{languages.hodcomment||'HOD Comment'}}</label>
+                    <div class="col-sm-10">
+                      <textarea id="hodConfirmRemark"   [(ngModel)]="offBoardNoticeModel.hodConfirmRemark"
+                      name="hodConfirmRemark" #hodConfirmRemark="ngModel" [disabled]="offBoardNoticeModel.isHOD===2 || offBoardNoticeModel.isHOD===3"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group" *ngIf="offBoardNoticeModel.isHOD===3">
+                    
+                    <label for="leaveDateType" class="col-sm-2 control-label">{{languages.confirmedlastday||'Confirmed Last Day'}}
+  
+                    </label>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [showClearButton]="false"
+                        displayFormat="dd/MM/yyyy" type="date" [(value)]="offBoardNoticeModel.confirmedLastday">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  
+  
+    <div class="row">
+      <div class="col-sm-12">
+        <button *ngIf="(offBoardNoticeModel.isHOD==2 && offBoardNoticeModel.hdpConfirmDate==null) || (offBoardNoticeModel.isHOD==1 && offBoardNoticeModel.hodConfirmDate==null)||(offBoardNoticeModel.isHOD==3 && offBoardNoticeModel.hrConfirmDate==null)" style="margin-right: 15px;float: right;" type="button" class="btn btn-primary"
+          (click)="saveConfirmed()">{{languages.submit}}</button>
+        <button style="margin-right: 15px;float: right;" type="button" class="btn btn-default"
+          (click)="hidemodal()">{{languages.close}}</button>
+      </div>
+    </div>
+  </div>

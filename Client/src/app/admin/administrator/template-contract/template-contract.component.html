@@ -1,0 +1,48 @@
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <h1>
+            {{languages.templatecontract|| "Template Contract"}}
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+            </li>
+            <li class="active"> {{languages.econtracttemplate || "EContractTemplate" }}</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource">
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+                    <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+                    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                    <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                    <dxi-column dataField="eContractTypeDesc" dataType="string" caption="eContractTypeDesc" cellTemplate="diffTitleTemplate">
+                    </dxi-column>
+                    <div *dxTemplate="let d of 'diffTitleTemplate'">
+                        <a class="pointer" (click)="openTemplate(d.data)">
+                            <span>
+                                {{d.value}}
+                            </span>
+                        </a>
+                    </div>
+                    <dxo-selection mode="single"></dxo-selection>
+                    <dxo-paging [pageSize]="10"></dxo-paging>
+                    <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                        [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+                </dx-data-grid>
+            </div>
+        </div>
+    </section>
+
+    <!-- <inline-diff [oldText]="oldDocumentContents" [newText]="newDocumentContents" [lineContextSize]="4"></inline-diff> -->
+
+
+    <!-- <app-tiny-editor [elementId]="'remark'" (onEditorKeyup)="keyupHandlerFunction($event)"
+        [(tinymceModel)]="model.contents" [tmHeight]="400">
+    </app-tiny-editor> -->
+</div>

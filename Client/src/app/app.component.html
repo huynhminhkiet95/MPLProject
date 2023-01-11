@@ -1,0 +1,8 @@
+<router-outlet></router-outlet>
+<router-outlet name="modal"></router-outlet> 
+<ng2-slim-loading-bar></ng2-slim-loading-bar>
+<ngx-spinner bdOpacity=0.9 bdColor="rgba(51,51,51,0.26)" size="large" color = "#ff9d00" type = "square-spin">
+</ngx-spinner>
+<div *ngIf="this._global._themeOption.showfloatlogo =='true'" id="lion-dance" style="position: fixed; left: 52px;bottom:33px ;">
+    <img style="width: 106px;" src="{{_global._themeOption?.floatlogo}}" alt="" />
+</div>

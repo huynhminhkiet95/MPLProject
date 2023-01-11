@@ -1,0 +1,86 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.workinglocation || "Working Location" }}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active"> {{languages.workinglocation || "Working Location" }}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-footer">
+            <button type="button" (click)="openCOWorkLocPopup('', 'Add New Working Location')"
+              class="btn btn-info pull-right btn-sm"> {{languages.new || 'New'}} </button>
+          </div>
+        </div>
+        <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" (onRowRemoving)="delete($event)">
+
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+          <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+          <dxo-editing [allowDeleting]="true" mode="row">
+            <!-- 'batch' | 'cell' | 'form' | 'popup' -->
+          </dxo-editing>
+
+          <dxi-column dataField="id" dataType="string" caption="{{languages.workinglocationcode || 'Working Location Code'}}">
+          </dxi-column>
+          <dxi-column dataField="locationName" dataType="string" caption="{{languages.locationname || 'Location Name'}}">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-column>
+          <dxi-column dataField="locationAddress" dataType="string" caption="{{languages.locationaddress || 'Location Address'}}">
+          </dxi-column>
+          <dxi-column dataField="starTime" dataType="time3" caption="{{languages.starttime || 'Start Time'}}">
+          </dxi-column>
+          <dxi-column dataField="endTime" dataType="time3" caption="{{languages.endtime || 'End Time'}}">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-column>
+          <dxi-column dataField="workingTime" dataType="string" caption="{{languages.workingtime || 'Working Time'}}">
+          </dxi-column>
+          <dxi-column dataField="locationType" dataType="string" caption="{{languages.locationtype || 'Location Type'}}">
+          </dxi-column>
+          <dxi-column dataField="wifissid" dataType="string" caption="{{languages.wifissid || 'Wifi SSID'}}">
+          </dxi-column>
+          <dxi-column dataField="lat" dataType="string" caption="{{languages.latitude || 'Lat'}}">
+          </dxi-column>
+          <dxi-column dataField="lon" dataType="string" caption="{{languages.longitude || 'Lon'}}">
+          </dxi-column>
+          <dxi-column dataField="macAddressWifi" dataType="string" caption="{{languages.macaddresswifi || 'MAC Address Wifi'}}">
+          </dxi-column>
+          <dxi-column dataField="wifiName" dataType="string" caption="{{languages.wifiName || 'Wifi Name'}}">
+          </dxi-column>
+
+          <dxi-column caption="" dataField="id" cellTemplate="diffEditTemplate">
+          </dxi-column>
+
+          <dxo-selection mode="single"></dxo-selection>
+
+          <div *dxTemplate="let d of 'diffEditTemplate'">
+            <div class="dx-btn-group">
+              <a (click)="openCOWorkLocPopup(d.data, 'Update Working Location')" class="fa fa-pencil-square-o">
+              </a>
+            </div>
+          </div>
+
+          <dxo-paging [pageSize]="10"></dxo-paging>
+          <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+            [showInfo]="true"></dxo-pager>
+        </dx-data-grid>
+      </div>
+    </div>
+  </section>
+</div>

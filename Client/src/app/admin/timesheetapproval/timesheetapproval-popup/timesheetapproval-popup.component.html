@@ -1,0 +1,127 @@
+
+ <div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+      <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="box box-primary idrequest-search">
+              <div class="box-header with-border">
+                  <i class="ion ion-clipboard"></i>
+                  <h3 class="box-title">General</h3>
+                   
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6">
+                      <ul class="ul-list-content">
+                          <li>
+                              <label  class="lbl-title">Date</label>
+                              <span> {{model.startTime|date:'dd/MM/yyyy'}}</span>
+                          </li>
+                          <li>
+                            <label  class="lbl-title">Start Time</label>
+                            <span>{{model.startTime|date:'HH:mm'}}</span>
+                          </li>
+                          <li>
+                            <label  class="lbl-title">working Hour</label>
+                            <span>{{model.workHour}}</span>
+                          </li>
+                          <li>
+                            <label  class="lbl-title">Manual Post Type</label>
+                            <span>{{model.codeDesc}}</span>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <ul class="ul-list-content">
+                      <li>
+                          <label  class="lbl-title"></label>
+                          <span></span>
+                      </li>
+                      <li>
+                        <label  class="lbl-title">End Time</label>
+                        <span>{{model.endTime|date:'HH:mm'}}</span>
+                      </li>
+                      <li>
+                        <label  class="lbl-title">OverTime</label>
+                        <span>{{model.overtTimeHour}}</span>
+                      </li>
+                      <li>
+                        <label  class="lbl-title">Reason</label>
+                        <span>{{model.manualPostReason}}</span>
+                      </li>
+                  </ul>
+                  </div>
+               </div>
+              </div>
+            </div>
+             
+          </div>
+          <!-- /.col -->
+          
+          <!-- /.col -->
+        </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <!-- <div class="box-header">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title">List ID Request</h3>
+          </div> -->
+          <div class="box-body">
+           
+                
+          <div class="row">
+            <form  name="form" class="form-horizontal" (ngSubmit)="f.form.valid && replyRequest(f)" #f="ngForm" novalidate>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Approval Type</label>
+                    <div class="col-sm-2">
+                        <div class="checkbox">
+                            <label>
+                              <input type="radio"  value="Approved" [(ngModel)]="replyModel.approveType"  name="approveType"> Approve
+                            </label>
+                        </div>
+                           
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <label>
+                              <input type="radio" value="Rejected" [(ngModel)]="replyModel.approveType" name="approveType" [disabled]="isDisableApprocomment"> Reject
+                            </label>
+                          </div>
+
+                      </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Approval Comment &nbsp;<span class="required"></span></label>
+                    <div class="col-sm-5">
+                        <textarea name="approveComment" id="approveComment" [(ngModel)]="model.approveComment" #approveComment="ngModel" style="width:300px;height:100px;margin-top:10px;"[disabled]="isDisableApprocomment" required></textarea>
+                        <span *ngIf="f.submitted && !approveComment.valid" class="help-block-custom"><i class="fa fa-exclamation-circle" tooltip="ApproveComment is required" aria-hidden="true"></i></span>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3  control-label"> </label>
+                    <div class="col-sm-5">
+                         <button type="submit" class="btn btn-primary" [disabled]="model.leaveStatus=='CLOS'||model.leaveStatus=='DROP'||model.approvalType||isDisableApprocomment">Submit</button>
+                    </div>
+                </div>
+            </form>
+               
+          </div>
+          </div>
+          <div class="box-footer"></div>
+        </div>
+         
+      </div>
+      <!-- /.col -->
+      
+      <!-- /.col -->
+    </div>
+ </div>

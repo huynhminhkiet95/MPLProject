@@ -1,0 +1,205 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.leaveapproval||'Leave Approval'}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home||'Home'}}</a></li>
+      <li>{{languages.leaveapproval||'Leave Approval'}}</li>
+      <li class="active">{{model.lvNo}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">{{languages.general||'General'}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="ul-list-content">
+                  <li>
+                    <label class="lbl-title">{{languages.leaveperiod||'leaveperiod'}}</label>
+                    From <span class="date">{{model.fromDate|date:'dd/MM/yyyy'}}</span> {{languages.to||'To'}}
+                    <span class="date">{{model.toDate|date:'dd/MM/yyyy'}}</span>
+                    <span> ({{model.leaveDays}} {{languages.days||'days'}})</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.type||'Leave Type'}}</label>
+                    <span>{{languages[model.leaveTypeDesc|removewhitespaces]||model.leaveTypeDesc}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.remark||'Remark'}}</label>
+                    <span style="max-width:430px;display:inline-block"> 
+                      <textarea style="width:430px; min-height: 100px;resize: none;" readonly [value]="model.remark"></textarea>
+                    </span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.attchedfile||'Attched File'}}</label>
+                    <div>
+                      <ul class="list-attachfile-view">
+                        <li *ngFor="let c of model.documents" class="item-files">
+                          <i class="fa fa-bolt" aria-hidden="true"></i>
+                          <a target="_blank" (click)="fileSvc.downloadFile(c.docNo)">{{c.dFileName}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="ul-list-content">
+                  <li>
+                    <label class="lbl-title">{{languages.requester||'Requester'}}</label>
+                    <span>{{model.employeeName}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.requestdate||'Request date'}}</label>
+                    <span>{{model.submitDate|date:'dd/MM/yyyy'}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.status||'Status'}}</label>
+                    <span>{{languages[model.leaveStatusDesc|removewhitespaces]||model.leaveStatusDesc}}</span>
+                  </li>
+                  <li *ngIf="model.leaveStatus=='CAN'">
+                    <label class="lbl-title">{{languages.reasoncancel||'Reason Cancel'}}</label>
+                    <span>{{model.reasonCancel}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer group-btn-right">
+            <!-- <button type="button" class="btn btn-default pull-right btn-sm">Export Excel</button>  -->
+            <!-- <button type="button" (click)="openModalWithComponent()" class="btn btn-info pull-right btn-sm">New Request</button>  -->
+            <!-- <button type="button" (click)="search()" class="btn btn-primary pull-right btn-sm">Search</button> -->
+          </div>
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <!-- <div class="box-header">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title">List ID Request</h3>
+          </div> -->
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-8">
+                <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="id">
+                  <dxo-group-panel [visible]="true"></dxo-group-panel>
+                  <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                  <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                  <dxi-column dataField="replyTypeDesc" caption="{{languages.actiontype||'Action Type'}}">
+                  </dxi-column>
+                  <dxi-column dataField="assignerName" caption="{{languages.name||'Name'}}">
+                  </dxi-column>
+                  <dxi-column dataField="leaveStatusDesc" caption="{{languages.status||'Status'}}" cellTemplate="diffStatusTemplate">
+                  </dxi-column>
+                  <dxi-column dataField="approvalType" caption="{{languages.approvaltype||'Approval Type'}}">
+                  </dxi-column>
+                  <dxi-column dataField="comment" caption="{{languages.comment||'Comment'}}">
+                  </dxi-column>
+                  <dxi-column dataField="createDate" dataType="datetime2" caption="{{languages.createdate||'create Date'}}">
+                  </dxi-column>
+
+                  <dxo-selection mode="single"></dxo-selection>
+
+                  <dxo-paging [pageSize]="10"></dxo-paging>
+                  <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                    [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+                  <dxo-editing mode="popup" [allowDeleting]="false">
+                  </dxo-editing>
+                  <div *dxTemplate="let d of 'diffCellTemplate'">
+                    <a href="#" class="dx-link dx-link-delete dx-icon-trash"
+                      routerLink="../itservicerequest/{{d.value}}">
+                      <span> </span></a>
+                  </div>
+                  <div *dxTemplate="let d of 'actionTemplate'">
+                    <div class="dx-btn-group">
+                      <a (click)="edit(d.value)"><i class="fa fa-pencil-square-o fa-1x"></i></a>
+                      <a (click)="delete(d.value)"><i class="fa fa-trash-o fa-1x"></i></a>
+                    </div>
+                  </div>
+                  <div *dxTemplate="let d of 'diffStatusTemplate'">
+                    <span class="label status-{{d.value|lowercase}}">{{d.value}}</span>
+                  </div>
+                </dx-data-grid>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid && replyRequest()" #f="ngForm"
+                novalidate>
+                <div *ngIf="showRadioApproval" class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.approval||'Approval'}}</label>
+                  <div class="col-sm-2">
+                    <div class="checkbox">
+                      <label>
+                        <input type="radio" value="1" [(ngModel)]="replyModel.existedUserId" name="existedUserId">
+                        {{languages.approve||'Approve'}}
+                      </label>
+                    </div>
+
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="checkbox">
+                      <label>
+                        <input type="radio" value="0" [(ngModel)]="replyModel.existedUserId" name="existedUserId">
+                        {{languages.reject||'Reject'}}
+                      </label>
+                    </div>
+
+                  </div>
+                </div>
+                <div *ngIf="showRadioApproval" class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.comment||'Comment'}}</label>
+                  <div class="col-sm-5">
+                    <textarea name="comment" id="comment" [(ngModel)]="replyModel.comment" #comment="ngModel"
+                      style="width:300px;height:100px;margin-top:10px;"></textarea>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:20px;">
+                  <label class="col-sm-2 control-label"> </label>
+                  <div class="col-sm-5">
+                    <button *ngIf="showRadioApproval" type="submit" class="btn btn-primary"
+                      [disabled]="model.leaveStatus=='CLOS'||model.leaveStatus=='DROP'||model.approvalType">{{languages.update||'Submit'}}</button>
+                    <button type="button" class="btn btn-default" (click)="Back()">{{languages.back||'Back'}}</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+          <div class="box-footer"></div>
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>

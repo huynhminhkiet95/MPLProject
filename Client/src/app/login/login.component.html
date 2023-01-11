@@ -1,0 +1,201 @@
+<ul class="cb-slideshow">
+    <li><span>Image 01</span>
+        <div>
+            <h3>TEAMWORK</h3>
+        </div>
+    </li>
+    <li><span>Image 02</span>
+        <div>
+            <h3>MAKES</h3>
+        </div>
+    </li>
+    <li><span>Image 03</span>
+        <div>
+            <h3>THE DREAM WORK</h3>
+        </div>
+    </li>
+    <!-- <li><span>Image 01</span>
+        <div>
+            <h3>TEAMWORK</h3>
+        </div>
+    </li>
+    <li><span>Image 02</span>
+        <div>
+            <h3>MAKES</h3>
+        </div>
+    </li>
+    <li><span>Image 03</span>
+        <div>
+            <h3>THE DREAM WORK</h3>
+        </div>
+    </li> -->
+</ul>
+<div class="container-fluid">
+    <div style="z-index: 9999;" class="col-12 col-sm-12 align">
+        <alert></alert>
+    </div>
+    <div class="row" style="margin-top: 50px;">
+
+        <div class="col-6 col-sm-6 align" style="z-index: 999;">
+            <img src="{{globals._themeOption.ownerlogo}}" alt="">
+
+
+        </div>
+        <div class="col-6 col-sm-6 labeltext" style="height: 105px; margin-bottom: 30px;margin-top: 30px;">
+            <div style="border: 2px solid rgba(255, 255, 255, 0.29);
+          border-left: 0px;
+          margin-bottom: 12px;
+          margin-top: 12px;
+          border-right: 0px;
+          height: 100%;">
+                <div class="text-center"><strong style="
+              font-size: 27px;
+              color: #ffffff78;
+              font-family: cursive;
+          ">TEAM WORK</strong></div>
+                <div class="text-center"><strong style="
+              font-size: 17px;
+              color: #ffffff78;
+              font-family: cursive;
+          ">MAKES THE</strong></div>
+                <div class="text-center"><strong style="
+              font-size: 27px;
+              color: #ffffff78;
+              font-family: cursive;
+          ">DREAM WORK</strong></div>
+
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-3"></div>
+        <div class="col-sm-4 col-md-4 col-lg-3" *ngIf="boardisactive">
+            <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+                <div class="modal-content" style="background-color: #ffffff3b; z-index: 9999;">
+                    <div class="modal-body" style="padding: 35px 15px 13px 8px;">
+                        <input type="hidden" id="iplocal" [(ngModel)]="model.iplocal" name="iplocal" #iplocal="ngModel"
+                            class="form-control">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input type="text" class="form-control color-binary-input-login" name="username"
+                                    [(ngModel)]="model.username" #username="ngModel" required placeholder="Username"
+                                    autocomplete="off">
+                                <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input class="form-control color-binary-input-login" type="password"
+                                    [(ngModel)]="model.password" name="password" #password="ngModel" required
+                                    placeholder="Password" autocomplete="off">
+                                <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <div class="material-switch" style="padding-left: 13px;">
+                                        <input type="checkbox" [(ngModel)]="model.Remember" name="Remember"
+                                            #Remember="ngModel" id="Remember">
+                                        <label for="Remember" class="label-warning"></label>
+                                        <span class="text-color-binary-login">Remember me</span>
+                                    </div>
+                                    <!-- <div class="material-switch" style="padding-left: 13px;">
+                                        <input id="someSwitchOptionWarning" name="someSwitchOption001" type="checkbox" />
+                                        <label for="someSwitchOptionWarning" class="label-warning"></label>
+                                        <span class="text-color-binary-login">Remember me</span>
+                                    </div> -->
+                                </div>
+                                <div class="col-xs-5" style="text-align: center;cursor: pointer;">
+                                    <p class="hint-text text-color-binary-login"><a (click)="openModal(template)">Forgot
+                                            Password?</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-5">
+                            </div>
+                            <div class="col-sm-7" style="padding: 0px 18px 0px 25px;">
+                                <button type="submit" [disabled]="loading ||!f.valid"
+                                    class="btn btn-primary btn-block btn-lg color-binary-login">
+                                    <!-- <img *ngIf="loading"
+                                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" /> -->
+                                    Login</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="z-index: 9999;" class="text-footer-login-left"><span>Powered by wesquare. All rights are reserved.</span>
+</div>
+<div style="z-index: 9999;" class="text-footer-login-right-mp"><img src="{{globals._themeOption.loginlogo}}"
+        alt="MP Logistics" /></div>
+<div style="z-index: 9999;" class="text-footer-login-right-ent"><img src="../../assets/img/logo/logo-enterprise.svg"
+        alt="Enterprise VN" /></div>
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Reset password</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <form name="formResetPass" (ngSubmit)="f2.form.valid && resetPassword()" #f2="ngForm">
+            <div class="row" style="padding: 19px; z-index: 999;">
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label class="col-sm-4" style="padding-left:0;
+              ">
+                            Email(*)
+                        </label>
+                        <input type="email" [(ngModel)]="resetModel.email" required name="email" #email="ngModel"
+                            class="col-sm-8 form-control" [email]="resetModel.email!='' && resetModel.email!=null" />
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12" style="padding-left:0;
+              ">
+                            Login Name
+                        </label>
+                        <input [(ngModel)]="resetModel.loginName" name="loginName" #loginName="ngModel"
+                            class="col-sm-8 form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12" style="padding-left:0;
+              ">
+                            Registed Mobile(Last 4)
+                        </label>
+                        <input [(ngModel)]="resetModel.mobile" name="mobile" #mobile="ngModel"
+                            class="col-sm-8 form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-12" style="padding-left:0;">
+                            Tel No(Ext)
+                        </label>
+                        <input [(ngModel)]="resetModel.ext" name="ext" #ext="ngModel" class="col-sm-8 form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-5" style="padding: 15px;">
+                    <re-captcha (resolved)="resolved($event)" size="compact"
+                        siteKey="6Ldfd0kUAAAAACX98Pe4T6srH-n4UP5_mMblZ8Kv"></re-captcha>
+                    <div class="form-group">
+                        <p style="margin-top:20px">
+                            <button type="submit" [disabled]="!googleCapcha.isvalid || (!email.valid || email.pristine)"
+                                class="btn btn-primary">Send</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</ng-template>
+
+<!-- <firework></firework> -->

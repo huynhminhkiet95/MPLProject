@@ -1,0 +1,69 @@
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <div class="user-panel">
+        <div style="text-align: center">
+            <img src="{{global._themeOption.ownerlogo}}" style="width:94px" alt="Minh Phuong Logistics"/>
+        </div>
+      <!-- <img  src="/assets/img/mp-logistics-logo-white.svg" style="height:30px;max-width:100%" alt="MP Logistics"> -->
+    </div>
+     
+    <ul class="sidebar-menu">
+      <!-- <li class="header">
+        MAIN NAVIGATION
+      </li> -->
+      <li *ngFor="let item of menus" class="treeview">
+          <a (click)="show()" *ngIf="item.menuChils.length==0 && item.component!=''" href="#"  routerLink="{{item.component}}">
+              <i class="{{item.icon}}"></i>
+              <span>{{item.language}}</span>
+              <span class="pull-right-container">
+                <i *ngIf="item.menuChils.length>0" class="fa fa-angle-left pull-right"></i>
+              </span>
+          </a>
+         
+          <a *ngIf="item.menuChils.length>0" href="#">
+            <i class="{{item.icon}}"></i>
+            <span>{{item.language}}</span>
+            <span class="pull-right-container">
+              <i *ngIf="item.menuChils.length>0" class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+              <li *ngFor="let childitem of item.menuChils">
+               
+                <a *ngIf="childitem.component!='opendoor' && childitem.component!='dashboardslide'" class="item-menu" (click)="show()" routerLink="{{childitem.component}}" routerLinkActive ="active-link">
+                  <i class="fa fa-circle-o"></i>{{childitem.language||childitem.menuName}}</a>
+                <a *ngIf="childitem.component=='opendoor'" (click)="openTheDoor()" style="cursor: pointer;" routerLinkActive ="active-link">
+                    <i class="fa fa-circle-o"></i>{{childitem.language}}</a>
+                    <a *ngIf="childitem.component=='dashboardslide'" (click)="openwelcomeboard()" style="cursor: pointer;" routerLinkActive ="active-link">
+                      <i class="fa fa-circle-o"></i>{{childitem.language}}</a>
+              </li>
+          </ul>
+      </li>
+        <li class="treeview">
+          <a   href="#">
+            <i class="fa fa-cloud"></i>
+            <span  >Files</span>
+            <span  class="pull-right-container">
+              <i  class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: none;">
+              <li>
+              
+              <a (click)="openTheNextCloud()" style="cursor: pointer;">
+                    <i   class="fa fa-circle-o"></i>Nextcloud</a>
+              </li>
+          </ul>
+      </li>
+      <!-- <li class="treeview">
+        <a (click)="openwelcomeboard()">
+          <i class="fa fa-fw fa-object-group"></i>
+          <span>Dashboard slide</span>
+        </a>
+    </li> -->
+    </ul>
+  </section>
+  <!-- /.sidebar -->
+</aside>

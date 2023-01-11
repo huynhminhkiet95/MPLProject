@@ -1,0 +1,173 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{languages.activitydetail||'Activity: '}} {{model.subject}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && Save()" #f="ngForm" novalidate>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-9">
+                <div class="box box-widget">
+                  <div class="box-header with-border">
+                    <div class="user-block">
+                      <!-- <img class="img-circle" src="/assets/img/missing_avatar.svg.png" alt="User Image"> -->
+                      <img class="img-circle"  onError="this.src='/assets/img/missing_avatar.svg.png';" src="{{model.createdAvatar}}">
+                      <span class="username"><a href="#">{{model.createdUserName}}</a></span>
+                      <span class="description" appDateTimeFormat>{{model.createdOn}}</span>
+                    </div>
+                    <!-- /.user-block -->
+                    <div class="box-tools">
+                    </div>
+                    <!-- /.box-tools -->
+                  </div>
+                  <!-- /.box-header -->
+                  <div class="box-body">
+                      <div [innerHTML]="model.details"> </div>
+                  </div>
+                  <!-- /.box-body -->
+                  <div class="box-footer box-comments">
+                    <div class="box-comment" *ngFor="let item of listLogs">
+                      <!-- User image -->
+                      <!-- <img class="img-circle img-sm" src="/assets/img/missing_avatar.svg.png" alt="User Image"> -->
+                      <img class="img-circle" style="max-height:40px" onError="this.src='/assets/img/missing_avatar.svg.png';" src="{{item.avatar}}">
+                      <div class="comment-text">
+                        <span class="username">
+                          {{item.createdByName}}
+                          <span class="text-muted pull-right" appDateTimeFormat>{{item.createdOn}}</span>
+                        </span> 
+                        <p>
+                          {{item.details}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.box-footer -->
+                  <div class="box-footer">
+                
+                      <img class="img-responsive img-circle img-sm" src="{{currentuser.avartarThumbnail}}"
+                        alt="Alt Text" style="margin-right: 5px;">
+                      <div class="input-group">
+                        <input style="height:34px!important" name="comment" [(ngModel)]="model.comment" #comment="ngModel" placeholder="Type Message ..."
+                          class="form-control">
+                        <span class="input-group-btn">
+                          <button type="button" (click)="addComment()" class="btn btn-success btn-flat">Send</button>
+                        </span>
+                      </div>
+                   
+                  </div>
+                  <!-- /.box-footer -->
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Date</label>
+
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-calendar"></i>
+                    </div>
+                    <label class="form-control" appDateTimeFormat  [formatDateString]="'DD/MM/YYYY'">{{model.activityDate}}</label>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <div class="form-group">
+                  <label>Asigned Person</label>
+
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-user"></i>
+                    </div>
+                    <dx-select-box [(value)]="model.assignedPerson" [disabled]="true" [items]="listEmp" displayExpr="employeeName"
+                      valueExpr="employeeId" [searchEnabled]="true">
+                    </dx-select-box>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <div class="form-group">
+                  <label>Type Activity</label>
+
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-bookmark-o"></i>
+                    </div>
+                    <select class="form-control"  disabled [(ngModel)]="model.activityType" name="type" #type="ngModel">
+                      <option value=""></option>
+                      <!-- <option *ngFor="let c of activityTypes" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                      <option *ngFor="let c of activityTypes" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                    </select>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <div class="form-group">
+                  <label>Due Date</label>
+
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-calendar"></i>
+                    </div>
+                   
+                    <label class="form-control" appDateTimeFormat  [formatDateString]="'DD/MM/YYYY'">{{model.dueDate}}</label>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <div class="form-group">
+                  <label>Related Party</label>
+
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-briefcase"></i>
+                    </div>
+                    <input class="form-control" disabled [(ngModel)]="model.relatedParty" name="relatedparty"
+                      #relatedparty="ngModel" />
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <div class="form-group" style="padding-top:10px;">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <button type="button" [disabled]="model.status=='TODO'" (click)="updateStatus('TODO')" class="btn btn-sm btn-block status-todo">To do</button>
+                          <button type="button" [disabled]="model.status=='INPR'" (click)="updateStatus('INPR')" class="btn btn-sm btn-block status-inpr">InProgess</button>
+                          <button type="button" [disabled]="model.status=='DONE'" (click)="updateStatus('DONE')" class="btn btn-sm btn-block status-closed">Done</button>
+                      </div>
+                  </div>
+                    
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <div class="form-group">
+              <div class="col-sm-10">
+                <div class="row">
+                  <div class="col-md-12">
+                    <app-fileupload #UploadFile projectId="111" sectionId="107" maxFiles="4" maxSize="10">
+                    </app-fileupload>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 group-btn-right">
+        <button type="button" class="btn btn-default pull-right"
+          (click)="bsModalRef.hide()">{{languages.close}}</button>
+        <!-- <button type="submit" class="btn btn-primary pull-right" [disabled]="IsSubmit">{{languages.update||'Update'}}</button> -->
+      </div>
+    </div>
+  </form>
+</div>

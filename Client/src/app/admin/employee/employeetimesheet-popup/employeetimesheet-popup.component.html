@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Employee TimeSheet</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <dx-data-grid #gridContainer id="gridContainer" keyExpr="address" [showBorders]="true" [dataSource]="dataSource"
+        (onEditorPreparing)="onEditorPreparing($event)" (onRowUpdating)="update($event)">
+
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+        <dxi-column dataField="address" dataType="string" caption="{{this.languages.address  || 'Address'}}">
+        </dxi-column>
+        <dxi-column dataField="timesheetCode" dataType="string" caption="{{this.languages.timesheetcode || 'TimeSheet Code'}}">
+        </dxi-column>
+        <dxi-column dataField="isMain" caption="{{this.languages.ismain || 'Is Main'}}">
+          <dxo-lookup [dataSource]="listIsmain" displayExpr="Name" valueExpr="Name">
+          </dxo-lookup>
+        </dxi-column>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="false">
+        </dxo-editing>
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+          [showInfo]="true"></dxo-pager>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+
+</div>

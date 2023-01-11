@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-7">
+      <div draggable="true" ngClass="{{dragAreaClass}}" id="containeruploadfile">
+          <div class="row">
+            <div class="col-md-12 text-center" >
+              <a href="javascript:void(0)" (click)="file.click()" >
+                Click to browse 
+              </a>
+              Or Drag & Drop to upload your files(maximum {{maxSize}} MB)
+        
+                <input type="file" 
+                      #file 
+                      [multiple]="(maxFiles > 1)"
+                      (change) = "onFileChange($event)"
+                      style="display:none"  />
+            </div>
+          </div>
+        
+        </div>
+  </div>
+  <div class="col-md-5">
+    
+      <ul class="list-attached-file" *ngIf="!isVatar">
+          <li *ngFor="let itemAttach of files2">
+              <a target="_blank" class="downloadFile" (click)="downloadFile(itemAttach.docNo)"> <i class="fa fa-paperclip"></i>
+              <span class="doc-name" >{{itemAttach.dFileName}}</span></a>
+              <a  *ngIf="canDelete(itemAttach)" (click)="deleteFileOnserver(itemAttach)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+              <a *ngIf="isImage(itemAttach)" style="padding-left: 10px; cursor: pointer;" (click)="viewImage(itemAttach.docNo)"><i class="fa fa-eye"></i> {{globals._resources.viewfile||'View File'}}</a>
+          </li>
+      </ul>
+      <ul *ngIf="!isVatar" class="list-select">
+          <li *ngFor="let itemAttach of files">
+              <span class="doc-name">{{itemAttach.name}}</span>
+              <a (click)="deleteFile(itemAttach)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+          </li>
+      </ul>
+      
+      <div *ngIf="isVatar">
+          <div *ngIf="url">
+                <angular-cropper #angularCropper [cropperOptions]="config" [imageUrl]="url"></angular-cropper>
+          </div>
+      </div>
+  </div>
+</div>

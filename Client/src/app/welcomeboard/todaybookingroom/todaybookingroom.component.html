@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 effect2" id="todaybookingroom">
+        <dx-scheduler
+        id="scheduler"
+        [dataSource]="appointmentData"
+        [views]='["day", "workWeek", "month"]'
+        currentView="day"
+        [firstDayOfWeek]="0"
+        [startDayHour]="8"
+        [endDayHour]="20"
+        [showAllDayPanel]="false"
+        [groups]="['facilityCode']"
+        [currentDate]="currentDate"
+        [crossScrollingEnabled]="false"
+        [cellDuration]="60"
+        [height]="700"
+        appointmentTemplate="appointment-template"
+        appointmentTooltipTemplate="tooltip-template"
+        (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
+        >
+    
+        <dxo-editing [allowAdding]="false"></dxo-editing>
+    
+        <!-- <dxi-resource
+            fieldExpr="movieId"
+            [useColorAsDefault]="true"
+            [dataSource]="moviesData">
+        </dxi-resource> -->
+        <dxi-view
+        name="1Days"
+        type="day"
+        [intervalCount]="1"
+        [startDate]="currentDate">
+    </dxi-view>
+        <dxi-resource
+            fieldExpr="facilityCode"
+            [dataSource]="theatreData">
+        </dxi-resource>
+    
+        <div *dxTemplate="let showtime of 'appointment-template'">
+            <div class='showtime-preview'>
+               
+                <div class="booking-content">
+                    <p class="booking-title">{{showtime.text}}</p>
+                    <!-- <p class="booking-memo">{{showtime.description}}</p> -->
+                </div>
+                <!-- <div class='dropdown-appointment-dates'>
+                    {{(showtime.startDate | date:'shortTime') + ' - ' + (showtime.endDate | date:'shortTime')}}
+                </div> -->
+            </div>
+        </div>
+    
+        <div *dxTemplate="let showtime of 'tooltip-template'">
+            <div class='movie-tooltip'>
+                <!-- <img [src]="getMovieById(showtime.movieId).image" />
+                <div class='movie-info'>
+                    <div class='movie-title'>
+                        {{getMovieById(showtime.movieId).text + ' (' + getMovieById(showtime.movieId).year + ')'}}
+                    </div>
+                    <div>
+                        {{'Director: ' + getMovieById(showtime.movieId).director}}
+                    </div>
+                    <div>
+                        {{'Duration: ' + getMovieById(showtime.movieId).duration + ' minutes'}}
+                    </div>
+                </div><br />
+                <dx-button text='Edit details' (onClick)='editDetails(showtime)' type="default">
+                </dx-button> -->
+            </div>
+        </div>
+    </dx-scheduler>
+    </div>
+  </div>
+</div>

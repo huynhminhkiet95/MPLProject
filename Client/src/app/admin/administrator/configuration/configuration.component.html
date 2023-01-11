@@ -1,0 +1,36 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.configuration|| "Configuration"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active"> {{languages.configuration || "Configuration" }}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <tabset>
+      <tab heading="Generate" id="tab1">
+        <app-configuration-generate>
+        </app-configuration-generate>
+      </tab>
+      <tab heading="Sytem Info">
+        <app-configuration-system>
+
+        </app-configuration-system>
+      </tab>
+      <!-- <tab heading="Login Page">
+        <app-configuration-login>
+
+        </app-configuration-login>
+      </tab> -->
+    </tabset>
+  </section>
+</div>

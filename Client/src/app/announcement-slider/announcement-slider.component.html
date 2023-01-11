@@ -1,0 +1,65 @@
+<div [ngStyle]="{'background-image':themes.image,'background-repeat':'no-repeat','background-position': 'bottom left','background-attachment': 'fixed','background-size': 'cover', 'position': 'relative'}">
+  <div id="main-content">
+
+    <a style="display: block; position: absolute;top:10px;right: 20px;">
+      <img src="../assets/img/mp-logistics-logo-yellow.svg">
+      <br>
+      <img src="../assets/img/enterprise-logo-w168.jpg">
+    </a>
+    <!-- <ul style="text-align: center; list-style: none;color: #000099;text-transform: uppercase">
+      <li style="display: block">
+        <div class="bubbles">
+          <h1 style="color: #FEFC03;font-size: 60px;padding-top: 100px;">Warmly Welcome</h1>
+        </div>
+      </li>
+      <li style="margin-top: 60px;display: block">
+        <div class="bubbles">
+          <h4 style="color: #fff; font-size: 50px">&lsquo;&lsquo;{{data.bookSubject||"Subject"}} &rsquo; &rsquo;</h4>
+        </div>
+      </li>
+      <li style="margin-top: 60px;display: block">
+        <div class="bubbles">
+          <div [innerHTML]="data.bookMemo" style="color: #fff;font-size: 50px;"></div>
+        </div>
+      </li>
+      <li style="margin-top: 40px;display: block; position: absolute; bottom: 40px; left: 0;width: 100%">
+        <div class="bubbles">
+          <h4 style="font-size: 35px;color: #fff;text-align: center;width: 100%">{{data.bookDateStart}} at {{data.facilityDesc||"Sai gon"}}</h4>
+        </div>
+      </li>
+    </ul> -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="10000" style="height: 100%">
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" *ngFor="let item of listAnnounce;let i = index" [ngClass]="{'active':i==0}"  data-slide-to="{i}"></li>
+         
+      </ol>
+      <div class="carousel-inner">
+        <div *ngFor="let item of listAnnounce;let i = index" [ngClass]="{'active':i==0,'item':1==1}" class="item">
+          <div class="carousel-content">
+            <div class="announce-detail">
+              <article>
+                  <h2>{{item.subject||uppercase }}</h2>
+                  <div class="content" [innerHTML]="item.contents">
+                       
+                  </div>  
+                  <div class="author">
+                    <p> {{item.createUserName}} at <span class="date">{{item.createDate|date:'dd/MM/yyyy'}}</span></p> 
+                  </div>
+                  <div class="announcetype">{{item.annType}}</div>
+              </article>
+            </div>
+          </div>
+        </div>
+         
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+</div>

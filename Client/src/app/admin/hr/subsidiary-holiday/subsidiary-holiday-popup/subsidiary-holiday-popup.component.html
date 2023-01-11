@@ -1,0 +1,89 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{languages.holidaycalendar||'Holiday Calendar'}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid &&  save()" #f="ngForm" novalidate>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-primary idrequest-search">
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{languages.holidaysubject||'Holiday
+                                        Subject'}}<span class="required"></span></label>
+                                    <div class="col-sm-8">
+                                        <!-- <input class="form-control" [(ngModel)]="model.HolidaySubject" name="HolidaySubject"  #HolidaySubject="ngModel" /> -->
+                                        <dx-text-box [(value)]="model.HolidaySubject">
+                                            <dx-validator>
+                                                <dxi-validation-rule type="required" message="HolidaySubject is required"></dxi-validation-rule>
+                                            </dx-validator>
+                                        </dx-text-box>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"> {{languages.date||'Date'}}</label>
+                                    <div class="col-md-4 col-xs-4">
+                                        <dx-date-box width="100%" displayFormat="dd/MM/yyyy" type="date" [(value)]="model.HDateF">
+                                            <dx-validator>
+                                                <dxi-validation-rule type="required" message="Date From is required"></dxi-validation-rule>
+                                            </dx-validator>
+                                        </dx-date-box>
+                                    </div>
+                                    <div class="col-md-4 col-xs-4">
+                                        <dx-date-box width="100%" [min]="model.HDateF" displayFormat="dd/MM/yyyy" type="date"
+                                            [(value)]="model.HDateT">
+                                            <dx-validator>
+                                                <dxi-validation-rule type="required" message="Date To is required"></dxi-validation-rule>
+                                            </dx-validator>
+                                        </dx-date-box>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{languages.holidaynote||'Holiday Note'}}<span
+                                            class="required"></span></label>
+                                    <div class="col-md-8">
+                                        <!-- <input class="form-control" [(ngModel)]="model.HolidayNote" name="HolidayNote"
+                                            #HolidayNote="ngModel" /> -->
+                                        <dx-text-box [(value)]="model.HolidayNote">
+                                            <dx-validator>
+                                                <dxi-validation-rule type="required" message="HolidayNote is required"></dxi-validation-rule>
+                                            </dx-validator>
+                                        </dx-text-box>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{languages.subsidiary||'Subsidiary'}}
+                                        <span class="required"></span></label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" [(ngModel)]="model.SubsidiaryId" name="SubsidiaryId"
+                                            #SubsidiaryId="ngModel">
+                                            <option *ngFor="let c of listSubsidiaries" [value]="c.subsidiaryId">{{c.subsidiaryName}}</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 group-btn-right">
+                <button type="button" class="btn btn-default pull-right" (click)="bsModalRef.hide()">{{languages.close}}</button>
+                <dx-button id="button" class="pull-right" [text]="languages.submit" type="success" [useSubmitBehavior]="true">
+                </dx-button>
+
+            </div>
+        </div>
+    </form>
+</div>

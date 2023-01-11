@@ -1,0 +1,15 @@
+.img-thumbnail
+{
+    height: 213px;
+    width: 100%;
+}
+
+@media (max-width: 768px)
+{
+    .img-thumbnail
+    {
+        height: 113px;
+        width: 100%;
+    }
+   
+}

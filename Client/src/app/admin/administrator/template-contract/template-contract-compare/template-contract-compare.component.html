@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Compare</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+
+    <div class="box box-primary">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-12">
+              <inline-diff [oldText]="model.oldDocument" [newText]="model.newDocument" [lineContextSize]="4"></inline-diff>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </form>
+</div>
+<div class="modal-footer">
+  <div class="col-md-12 group-btn-right">
+    <button type="button" class="btn btn-default pull-right"
+      (click)="bsModalRef.hide()">Close</button>
+  </div>
+</div>

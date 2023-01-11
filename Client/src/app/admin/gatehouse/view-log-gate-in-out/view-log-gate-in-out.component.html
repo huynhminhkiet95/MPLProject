@@ -1,0 +1,144 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        {{languages.viewGateLog || "View Gate Log"}}
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home || "Home"}}</a></li>
+        <li class="active">{{languages.viewGateLog || "View Gate Log"}}</li>
+      </ol>
+    </section>
+  
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary idrequest-search">
+            <div class="box-header with-border">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title"> {{languages.search || "Search"}}</h3>
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                  data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                  <i class="fa fa-minus"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <form class="form-horizontal" name="formsearch" #ff="ngForm">
+
+                <div class="row">
+                  <div class="col-lg-c4 col-md-c6">
+                    <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-4 control-label">{{languages.type || "Type"}} </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" [(ngModel)]="searchModel.type" name="type" #type="ngModel">
+                          <option value=""></option>
+                          <option *ngFor="let c of types" [ngValue]="c">{{c}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-c4 col-md-c6">
+                    <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-4 control-label">{{languages.vehicleNo || "Vehicel No"}} </label>
+                      <div class="col-sm-8">
+                        <input class="form-control" [(ngModel)]="searchModel.vehicleNo" name="vehicleNo" type="text">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-c4 col-md-c6">
+                    <div class="form-group">
+                      <label for="postDate" class="col-sm-4 control-label">{{languages.submitdate || "Date"}}</label>
+                      <div class="col-sm-4 date-from">
+                        <dx-date-box width="100%" [(ngModel)]="searchModel.dateF" 
+                                    name="dateF" 
+                                    [showClearButton]="false" 
+                                    displayFormat="dd/MM/yyyy"
+                                    type="date">
+                        </dx-date-box>
+                      </div>
+                      
+                      <div class="col-sm-4">
+                        <dx-date-box width="100%" [(ngModel)]="searchModel.dateT" 
+                                     name="dateT" 
+                                     [showClearButton]="false"
+                                     displayFormat="dd/MM/yyyy" 
+                                     type="date">
+                        </dx-date-box>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+            <div class="box-footer group-btn-right">
+              <!-- <button type="button" (click)="exportExcel()"
+                class="btn btn-info pull-right btn-sm">{{languages.excelexport || "Export Excel"}}</button> -->
+              <button type="button" (click)="search()" class="btn btn-primary pull-right btn-sm">{{languages.search || "Search"}}
+              </button>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+      <!-- Info boxes -->
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary">
+            <div class="box-body">
+              <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="lvNo" onRowRemoving="delete($event)">
+                <dxo-export [enabled]="true" fileName="View_Gate_Log" [allowExportSelectedData]="true"></dxo-export>
+
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+                <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+                <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+                <dxi-column dataField="employeeName" caption="{{languages.employee || 'Employee'}}">
+                </dxi-column>
+                <dxi-column dataField="divisionDesc" caption="{{languages.division || 'Division'}}">
+                </dxi-column>
+                <dxi-column dataField="deptDesc" caption="{{languages.department || 'Department'}}">
+                </dxi-column>
+                <dxi-column dataField="createDate" caption="{{languages.dateTime || 'Date Time'}}" dataType="datetime2">
+                </dxi-column>
+                <dxi-column dataField="mode" caption="{{languages.type || 'Type'}}">
+                </dxi-column>
+                <dxi-column dataField="vehicle" caption="{{languages.vehicle || 'Vehicle'}}">
+                </dxi-column>
+                <dxi-column dataField="vehicleNo" caption="{{languages.vehicleNo || 'Vehicle No'}}">
+                </dxi-column>
+                <dxi-column dataField="relatedPerson" caption="{{languages.relatedPerson || 'Related Person'}}">
+                </dxi-column>
+                <dxi-column dataField="memo" caption="{{languages.memo || 'Memo'}}">
+                </dxi-column>
+                <dxo-selection mode="single"></dxo-selection>
+  
+                <dxo-paging [pageSize]="10"></dxo-paging>
+                <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                  [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+                <!-- <dxo-editing mode="popup" [allowDeleting]="true">
+                </dxo-editing> -->
+                <!-- <div *dxTemplate="let d of 'diffCellTemplate'">
+                  <a (click)="viewDetail(d.data)">
+                  {{d.value}} </a>
+                </div> -->
+                <!-- <div *dxTemplate="let d of 'diffStatusTemplate'">
+                  <div class="dx-btn-group">
+                    <a (click)="edit(d.value)"><i class="fa fa-pencil-square-o fa-1x"></i></a>
+                    <a (click)="delete(d.value)"><i class="fa fa-trash-o fa-1x"></i></a>
+                  </div>
+                </div> -->
+              </dx-data-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>

@@ -1,0 +1,9 @@
+.dx-datagrid-headers
+{
+    background-color: yellow;
+}
+
+.dx-datagrid-headers .dx-datagrid-text-content
+{
+    text-align: center;
+}

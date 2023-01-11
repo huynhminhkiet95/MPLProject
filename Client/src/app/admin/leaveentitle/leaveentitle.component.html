@@ -1,0 +1,236 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{languages.leaveentitle || "Leave Entitle"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i>{{languages.home}}</a></li>
+      <li><a routerLink="../../servicerequest"> {{languages.leaveentitle || "Leave Entitle"}}</a></li>
+
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-121">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">{{languages.employee}}</h3>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch">
+              <div class="row">
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">{{languages.subsidiary}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Subsidiary" name="Subsidiary" #Subsidiary="ngModel">
+                        <option *ngFor="let c of listSubsidiaries" [ngValue]="c.subsidiaryId">{{c.subsidiaryName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">{{languages.viewmode || "View Mode"}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.viewmode" id="viewmode" name="viewmode" #viewmode="ngModel">
+                        <option value=""></option>
+                        <option value="Individual Employee">Individual Employee</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">{{languages.year || "Year"}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.year" id="year" name="year" required #year="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listyear" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listyear" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">{{languages.division}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.divisionCode" name="divisionCode"
+                        #divisionCode="ngModel" (change)="changeEmployee()">
+                        <option value=""></option>
+                        <option *ngFor="let c of listDivision" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">{{languages.employee || "Employee"}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-8">
+                      <!-- <select class="form-control" [(ngModel)]="searchModel.employeeId" id="employeeId" name="employeeId"
+                                          required #employeeId="ngModel" (change)="changedisablebtn()">
+                                          <option *ngFor="let c of listusers" [ngValue]="c.employeeId">{{c.employeeName}}</option>
+                                        </select> -->
+                    
+                      <!-- <dx-select-box [(value)]="searchModel.employeeId" [items]="listusers" displayExpr="employeeName"
+                                                          valueExpr="employeeId" [searchEnabled]="true" (onValueChanged)="changedisablebtn()">
+                                          <dx-validator>
+                                            <dxi-validation-rule type="required" message="">
+                                            </dxi-validation-rule>
+                                          </dx-validator>
+                                        </dx-select-box> -->
+                    
+                      <dx-select-box #selectBox [(value)]="searchModel.employeeId" [items]="listusers" displayExpr="employeeName"
+                        valueExpr="employeeId" [searchEnabled]="true" (onValueChanged)="changeDisableBtn()" itemTemplate="listItem">
+                        <dx-validator>
+                          <dxi-validation-rule type="required" message="">
+                          </dxi-validation-rule>
+                        </dx-validator>
+                        <div *dxTemplate="let itemData of 'listItem'; let itemIndex = index">
+                          <span class="tbl-inner-drop">
+                            {{itemData.employeeName}}
+                          </span>
+                          <br />
+                          <span>{{itemData.deptDesc}} - {{itemData.employeeCode}} </span>
+                        </div>
+                      </dx-select-box>
+                    </div>
+
+                  </div>
+                </div>
+                
+              </div>
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <button (click)="OpenPopupAddleaveEntitle()" class="btn btn-primary pull-right" [disabled]="isDisableAdd">{{languages.addleaveentitle ||
+              "Add Leave Entitle"}}</button>
+           
+            <button class="btn btn-info pull-right" (click)="searchLeaveenTitles()" >{{languages.search}}</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div class="box-title">List leave entitle </div>
+             </div>
+          <div class="box-body">
+            <dx-data-grid id="gridContainer" [dataSource]="dataSource">
+              <dxi-column dataField="leaveType" dataType="string" caption="{{languages.leavetype}}">
+              </dxi-column>
+              <dxi-column dataField="lMonth" dataType="string" caption="{{languages.month || 'Month'}}">
+              </dxi-column>
+              <dxi-column dataField="leaveAdjustTypeDesc" dataType="string" caption="{{languages.adjusttype || 'Adjust Type'}}">
+              </dxi-column>
+              <dxi-column caption="{{languages.adjustvalue || 'Adjust Value'}}" dataType="string" dataField="adjValue"></dxi-column>
+              <dxi-column dataField="manualAdjReason" dataType="string" caption="{{languages.adjustreason || 'Adjust Reason'}}">
+              </dxi-column>
+              <dxi-column dataField="createDate"  caption="{{languages.createdate}}" dataType="datetime2">
+              </dxi-column>
+              <dxi-column dataField="createUser" dataType="string" caption="{{languages.createuser}}">
+              </dxi-column>
+              <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+              <dxo-editing mode="popup" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
+                <dxo-popup title="Employee Info" [showTitle]="true" [width]="600" [height]="345">
+                </dxo-popup>
+              </dxo-editing>
+             
+            </dx-data-grid>
+           
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                 <div class="box-title">List leave</div>
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource2" keyExpr="lvNo">
+                      <dxi-column caption="{{languages.id}}" dataField="lvNo" [visible]="true" dataType="string"></dxi-column>
+                      
+                      <dxi-column dataField="leaveTypeDesc" caption="{{languages.leavetype}}" dataType="string">
+                      </dxi-column>
+                      <dxi-column dataField="leaveDays" dataType="number" caption="{{languages.leavedays}}">
+                      </dxi-column>
+                      <dxi-column dataField="fromDate" dataType="date2" caption="{{languages.fromdate}}">
+                      </dxi-column>
+                      <dxi-column dataField="toDate" dataType="date2" caption="{{languages.todate}}">
+                      </dxi-column>
+                      <dxi-column dataField="leaveStatusDesc" caption="{{languages.status}}" alignment="center" cellTemplate="diffStatusTemplate"></dxi-column>
+                      <dxo-selection mode="single"></dxo-selection>
+                      <dxo-paging [pageSize]="20"></dxo-paging>
+                      <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[20, 50, 100]" [showInfo]="true"></dxo-pager>
+                      <div *dxTemplate="let d of 'diffStatusTemplate'">
+                        <span class="label status-{{d.value}}">{{d.value}}</span>
+                      </div>
+                      <dxi-column dataField="submitDate" dataType="date2" caption="{{languages.submitdate}}">
+                      </dxi-column>
+                      <dxo-summary>
+                       <dxi-total-item
+                              column="leaveDays"
+                              summaryType="sum"
+                             
+                              >
+                          </dxi-total-item> 
+                           
+                      </dxo-summary>
+                      
+                    </dx-data-grid>
+                  </div>
+                </div>
+              </div>
+              <div class="box-footer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div class="box-title">Balance </div>
+             </div>
+          <div class="box-body">
+            <dx-data-grid id="gridContainer" [dataSource]="dataSource1" >
+              <dxi-column dataField="leaveTypeDesc" dataType="string" caption="{{languages.leavetype}}">
+              </dxi-column>
+              <dxi-column dataField="balance" dataType="number" caption="{{languages.balance || 'Balance'}}">
+              </dxi-column>
+        
+              
+              <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+              <dxo-editing mode="popup" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
+                <dxo-popup title="Employee Info" [showTitle]="true" [width]="600" [height]="345">
+                </dxo-popup>
+              </dxo-editing>
+             
+            </dx-data-grid>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+    </div>
+  </section>
+
+
+
+
+</div>

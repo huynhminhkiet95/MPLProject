@@ -1,0 +1,124 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.stationaryreport||'Stationary Report'}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home}}</a></li>
+      <li class="active">{{languages.leavereport}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title"> {{languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{languages.submitdate}}</label>
+                    <div class="col-sm-4 date-from">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="searchModel.DateF">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [min]="searchModel.DateF" [showClearButton]="false"
+                        displayFormat="dd/MM/yyyy" type="date" [(value)]="searchModel.DateT">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{languages.division}} </label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.DivisionId" (change)="changedDivision()"
+                        name="DivisionId" #DivisionId="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of listDivision" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{languages.department}} </label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.DepartmentId"
+                        name="DepartmentId" #DepartmentId="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of departments2" [ngValue]="c.deptCode">{{c.deptDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <button type="button" (click)="search()" class="btn btn-primary pull-right btn-sm">{{languages.search}}
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="employeeId">
+              <dxo-export [enabled]="true" fileName="StationaryReport"></dxo-export>
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+              <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+              <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+              <dxi-column dataField="svrNo" caption="{{languages.Code||'Code'}}">
+              </dxi-column>
+              <dxi-column dataField="divisionDesc" caption="{{languages.division}}">
+              </dxi-column>
+              <dxi-column dataField="deptDesc" caption="{{languages.department}}">
+              </dxi-column>
+              <dxi-column dataField="employeeName" caption="{{languages.employeename}}">
+              </dxi-column>
+              <dxi-column dataField="createDate" caption="{{languages.createdDate||'Created Date'}}">
+              </dxi-column>
+              <dxi-column dataField="itemDesc" caption="{{languages.itemDesc||'Item Name'}}">
+              </dxi-column>
+              <dxi-column dataField="unit" caption="{{languages.unit}}">
+              </dxi-column>
+              <dxi-column dataField="qty" caption="{{languages.qty}}">
+              </dxi-column>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+              <dxo-editing mode="popup" [allowDeleting]="false">
+              </dxo-editing>
+            </dx-data-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->
+</div>

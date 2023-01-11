@@ -1,0 +1,185 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{title}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li>{{languages.requisitionapproval}}</li>
+      <li class="active">{{empReqId}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">General</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="ul-list-content">
+                  <li>
+                    <label class="lbl-title">{{languages.jobtitle}} : </label>
+                      <span>{{model.JobTitle}}</span>
+                      <span>({{model.Qty}})</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.jobtype}} : </label>
+                    <span *ngIf="IsNew">{{languages.newposition}}</span>
+                    <span *ngIf="!IsNew" span>{{languages.replacement}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.jobdescription}} : </label>
+                    <span>{{model.JobDescription}}</span>
+                  </li>
+
+                  <li>
+                    <label class="lbl-title">{{languages.requiredskill}} : </label>
+                    <span>{{model.RequiredSkill}}</span>
+                  </li>
+
+                  <li>
+                    <label class="lbl-title">{{languages.attachedfiles}} : </label>
+                    <div>
+                      <ul class="list-attachfile-view">
+                        <li *ngFor="let c of documentInfos" class="item-files">
+                          <i class="fa fa-bolt" aria-hidden="true"></i>
+                          <a target="_blank" (click)="downloadFile(c.docNo)">{{c.dFileName}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="ul-list-content">
+                  <li>
+                    <label class="lbl-title">{{languages.requester}} : </label>
+                    <span>{{model.UserName}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.requestdate}} : </label>
+                    <span>{{model.CreateDate|date:'dd/MM/yyyy'}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.startdate}} : </label>
+                    <span>{{model.ExpectedStartDate|date:'dd/MM/yyyy'}}</span>
+                  </li>
+                  <li></li>
+
+                  <li>
+                      <label class="lbl-title"></label>
+                    <button style="margin-top: 10px" type="button" class="btn btn-info" (click)="ShowDetail()">View Detail</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer group-btn-right">
+          </div>
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="id">
+                  <dxo-group-panel [visible]="true"></dxo-group-panel>
+                  <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                  <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                  <dxi-column dataField="replyTypeDesc" caption="{{languages.actiontype}}">
+                  </dxi-column>
+                  <dxi-column dataField="assignerName" caption="{{languages.name}}">
+                  </dxi-column>
+                  <dxi-column dataField="requisitionStatusDesc" cellTemplate="diffCellTemplateStatus"
+                    caption="{{languages.status}}">
+                  </dxi-column>
+                  <dxi-column dataField="approvalTypeDesc" caption="{{languages.approvaltype	}}">
+                  </dxi-column>
+                  <dxi-column dataField="comment">
+                  </dxi-column>
+                  <dxi-column dataField="createDate" caption="{{languages.createdate}}" dataType="datetime2">
+                  </dxi-column>
+                  <dxo-selection mode="single"></dxo-selection>
+                  <dxo-paging [pageSize]="10"></dxo-paging>
+                  <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                    [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+                  <dxo-editing mode="popup" [allowDeleting]="false">
+                  </dxo-editing>
+                  <div *dxTemplate="let d of 'diffCellTemplate'">
+                    <a href="#" class="dx-link dx-link-delete dx-icon-trash"
+                      routerLink="../employee-requisition-approval-detail/{{d.value}}">
+                      <span> </span></a>
+                  </div>
+                  <div *dxTemplate="let s of 'diffCellTemplateStatus'">
+                    <span class="label status-{{s.value}}">{{s.value}}</span>
+                  </div>
+                </dx-data-grid>
+              </div>
+            </div>
+            <div class="row" *ngIf="model.EmpReqStatus!='CLOS' && model.EmpReqStatus!='DROP'">
+              <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid && replyRequest()" #f="ngForm"
+                novalidate>     
+                <div *ngIf="showRadioApproval" class="form-group">`
+                  <label class="col-sm-2 control-label">{{languages.approval}}</label>
+                  <div class="col-sm-2">
+                    <div class="checkbox">
+                      <label>
+                        <input type="radio" value="1" [(ngModel)]="modelApproval.ApprovalType" name="approvalType">
+                        {{languages.approve}}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="checkbox">
+                      <label>
+                        <input type="radio" value="0" [(ngModel)]="modelApproval.ApprovalType" name="approvalType">
+                        {{languages.reject}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.comment}}</label>
+                  <div class="col-sm-5">
+                    <textarea name="comment" id="comment" [(ngModel)]="modelApproval.Comment" #comment="ngModel"
+                      style="width:300px;height:100px;margin-top:10px;"
+                      [disabled]=" !isAction && !isApprove || ( model.EmpReqStatus=='CLOS'|| model.EmpReqStatus=='DROP')"></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"> </label>
+                  <div class="col-sm-5">
+                    <button type="submit" class="btn btn-primary"
+                      [disabled]="(!isAction && !isApprove)  || ( model.EmpReqStatus=='CLOS'|| model.EmpReqStatus=='DROP') || model.ApprovalType!=null">{{languages.submit}}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="box-footer"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,32 @@
+<div  [ngStyle] = "{'background-image':themes.image,'background-repeat':'no-repeat','background-position': 'bottom left','background-attachment': 'fixed','background-size': 'cover', 'position': 'relative'}">
+  <div id="main-content">
+
+    <a style="display: block; position: absolute;top:10px;right: 20px;">
+      <img src="../assets/img/mp-logistics-logo-yellow.svg">
+      <br>
+      <img src="../assets/img/enterprise-logo-w168.jpg">
+    </a>
+    <ul style="list-style: none;color: #000099;text-transform: uppercase" [className]="this.float">
+      <li style="display: block">
+        <div class="bubbles">
+          <h1 style="color: #FEFC03;font-size: 60px;padding-top: 100px;"  >Warmly Welcome</h1>
+        </div>
+      </li>
+      <li style="margin-top: 60px;display: block">
+        <div class="bubbles">
+          <h4 style="color: #fff; font-size: 50px">&lsquo;&lsquo;{{data.bookSubject||"Subject"}} &rsquo; &rsquo;</h4>
+        </div>
+      </li>
+      <li style="margin-top: 60px;display: block">
+        <div class="bubbles">
+          <div [innerHTML]="data.bookMemo" style="color: #fff;font-size: 50px;"></div>
+        </div>
+      </li>
+      <li style="margin-top: 40px;display: block; position: absolute; bottom: 40px;width: 100%; margin-left: 115px;">
+        <div class="bubbles">
+          <h4 style="font-size: 35px;color: #fff;text-align: center;width: 100%">{{data.bookDateStart}} at {{data.facilityDesc||"Sai gon"}}</h4>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

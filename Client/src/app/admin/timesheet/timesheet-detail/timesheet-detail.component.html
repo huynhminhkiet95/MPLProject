@@ -1,0 +1,90 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{languages.updateworktime}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && update()" #f="ngForm" novalidate>
+    <div class="row">
+      <div class="col-md-13 col-sm-13 col-xs-13">
+        <div class="box box-primary idrequest-search">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="iDService" class="col-sm-2 control-label">{{languages.date}}</label>
+                  <label class="col-sm-5 lbl-content">{{model.date2|date:'dd/MM/yyyy'}}</label>
+                </div>
+                <div class="row wraper-timepicker">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="iDService" class="col-sm-4 control-label">{{languages.starttime}}</label>
+                      <div class="col-md-8">
+                        <timepicker [(ngModel)]="model.startTime" name="startTime" (ngModelChange)="changed()"
+                          [showMeridian]="true" (isValid)="isValid = $event"></timepicker>
+                          <button type="button" (click)="setCurrentStartTime()"
+                          class="btn btn-primary">{{languages.currenttime}}</button>
+                      </div>
+                     
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="gender" class="col-sm-4 control-label">{{languages.endtime}}</label>
+                      <div class="col-md-8">
+                        <timepicker [(ngModel)]="model.endTime" name="endTime" (ngModelChange)="changed()"
+                          [showMeridian]="true" (isValid)="isValid = $event"></timepicker>
+                          <button type="button" (click)="setCurrentEndTime()"
+                          class="btn btn-primary">{{languages.currenttime}}</button>
+                      </div>
+                     
+                    </div>
+                  </div>
+                </div>
+               
+                <div class="form-group">
+                  <label for="iDService" class="col-sm-2 control-label">{{languages.workhour}}</label>
+                  <label for="iDService"
+                    class="col-sm-4 lbl-content">{{model.workHour|number:'1.1-1'}}</label>
+                  <label for="iDService" class="col-sm-2 control-label">{{languages.overtime}}</label>
+                  <label for="iDService"
+                    class="col-sm-2 lbl-content">{{model.overtTimeHour|number:'1.1-1'}}</label>
+                </div>
+                <div class="form-group">
+                  <label for="iDService" class="col-sm-2 control-label">{{languages.posttype}}</label>
+                  <div class="col-sm-4">
+                    <select class="form-control" [(ngModel)]="model.manualPostType" name="manualPostType"
+                      #manualPostType="ngModel">
+                      <!-- <option *ngFor="let c of listStatus" [ngValue]="c.codeId" >{{c.codeDesc}}</option> -->
+                      <option *ngFor="let c of listStatus" [ngValue]="c.codeId">
+                        {{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2  control-label">{{languages.remark}}<span class="required"></span></label>
+                  <div class="col-sm-4">
+                    <textarea name="manualPostReason" style="width:100%;height:60px"
+                      [(ngModel)]="model.manualPostReason" #manualPostReason="ngModel" required>
+                          </textarea>
+                    <span *ngIf="manualPostReason.invalid && f.submit" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="Remark is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 group-btn-right">
+        <button type="button" class="btn btn-default pull-right"
+          (click)="bsModalRef.hide()">{{languages.close}}</button>
+        <button type="submit" class="btn btn-primary pull-right">{{languages.save}}</button>
+      </div>
+    </div>
+  </form>
+</div>

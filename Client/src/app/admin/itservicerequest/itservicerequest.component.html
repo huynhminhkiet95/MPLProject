@@ -1,0 +1,207 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.servicerequest}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home}}</a></li>
+      <li class="active"> {{languages.servicerequest}}</li>
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">{{languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse" data-toggle="tooltip"
+                title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+              
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="ISRNo" class="col-sm-4 control-label">{{languages.isrno}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" [(ngModel)]="searchModel.ISRNo" #ISRNo="ngModel" name="ISRNo"
+                        id="ISRNo" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{languages.itservice}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.ITService" name="ITService" #ITService="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listItServices" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listItServices" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{languages.postdate}}</label>
+                    <div class="col-sm-4 date-from">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsRangeValue[0]">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [min]="bsRangeValue[0]" [showClearButton]="false" displayFormat="dd/MM/yyyy"
+                        type="date" [(value)]="bsRangeValue[1]">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.servicetype}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.SvcType" name="SvcType" #SvcType="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listServiceTypes" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listServiceTypes" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{languages.createuser}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="IdrNo" name="IdrNo" [(ngModel)]="searchModel.CreateUserName"
+                        #CreatedUser="ngModel" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="Subject" class="col-sm-4 control-label"> {{languages.subject}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="Subject" name="Subject" [(ngModel)]="searchModel.Subject"
+                        #Subject="ngModel" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="Status" class="col-sm-4 control-label">{{languages.status}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Status" name="Status" #Status="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listItSvcStatus" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listItSvcStatus" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{languages.subsidiary}}</label>
+
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Subsidiary" name="Subsidiary" #Subsidiary="ngModel">
+                        <option *ngFor="let c of listSubsidiaries" [value]="c.subsidiaryId">{{c.subsidiaryName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="Status" class="col-sm-4 control-label">{{languages.status}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Status" name="Status" #Status="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of listItSvcStatus" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{languages.subsidiary}}</label>
+
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Subsidiary" name="Subsidiary" #Subsidiary="ngModel">
+                        <option *ngFor="let c of listSubsidiaries" [value]="c.subsidiaryId">{{c.subsidiaryName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div> -->
+
+              </div>
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <button type="button" (click)="openModalWithComponent()" class="btn btn-info pull-right btn-sm">{{languages.new}}</button>
+            <button type="button" (click)="searchIdRequest()" class="btn btn-primary pull-right btn-sm">{{languages.search}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="isrNo">
+              <dxo-paging [pageSize]="pageSize" [(pageIndex)]="pageIndex" ></dxo-paging>
+              <dxi-column caption="{{ languages.isrno }}" dataField="isrNo" dataType="string" cellTemplate="diffCellTemplate"></dxi-column>
+              <dxi-column dataField="srSubject" dataType="string" caption="{{languages.subject}}" cellTemplate="diffCellTemplateSubject">
+              </dxi-column>
+              <dxi-column dataField="postDate"  caption="{{languages.postdate}}" dataType="datetime2">
+              </dxi-column>
+              <dxi-column dataField="itServiceDesc" dataType="string" caption="{{languages.itservicedesc ||'ServiceDesc' }}">
+              </dxi-column>
+              <dxi-column dataField="division" dataType="string" caption="{{languages.division|| 'Division'}}">
+              </dxi-column>
+              <dxi-column dataField="department" dataType="string" caption="{{languages.department|| 'Department'}}">
+              </dxi-column>
+              <dxi-column dataField="createUser" dataType="string" caption="{{languages.createuser}}">
+              </dxi-column>
+              <dxi-column dataField="srStatusDesc" alignment="center" caption="Status" caption="{{languages.status}}"
+                cellTemplate="diffStatusTemplate">
+              </dxi-column>
+              <dxi-column caption="" dataField="isrno" cellTemplate="diffStatusTemplate1"></dxi-column>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+                [showInfo]="true"  infoText="Page #{0}. Total: {1} ({2} items)"></dxo-pager>
+              <dxo-editing mode="popup">
+              </dxo-editing>
+              <div *dxTemplate="let d of 'diffCellTemplate'">
+                <a class="pointer" (click)="back(d.value)"><span>{{d.value}}</span></a>
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate'">
+                <span class="label status-{{d.value}}">{{ d.value}}</span>
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate1'">
+                <div  class="dx-btn-group">
+                    <a *ngIf="d.data.srStatusDesc == 'New' && d.data.createUser == currentuser.employeeName || IsRoleID" (click)="deleteservicerequest(d.data.isrNo)" class="fa fa-trash-o fa-1x"></a>
+                </div>
+              </div>
+              <div *dxTemplate="let d of 'diffCellTemplateSubject'">
+                <span>{{(d.value.length>50)? ( d.value | slice:0:50)+'...':( d.value) }}</span>
+              </div>
+            </dx-data-grid>
+          </div>
+          <div class="box-footer"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

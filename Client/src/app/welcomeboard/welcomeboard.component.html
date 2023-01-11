@@ -1,0 +1,111 @@
+<div class="welcomeboard-header">
+    <div class="row">
+        <div class="col-lg-6">
+            <img src="/assets/img/logo5.png" height="50px">
+        </div>
+        <div class="col-lg-6">
+          <div class="box-time">
+               <span class="time"> {{today | date:'h:mm'}}</span>
+               <span class="day"> {{today | date:'EEEE d MMMM'}}</span>
+          </div>
+        </div>
+    </div>
+</div>
+<div id="welcomeboard" class="carousel">
+  <figure>
+      <div class="carousel-item item4">
+          <h1 style="color: #003d76">TODAY FACILITY BOOKING</h1>
+          <div style="margin-top: 20px;">
+              <app-todaybookingroom></app-todaybookingroom>
+          </div>
+        </div>
+    <div class="carousel-item item1">
+      <h1>WELCOME ON BOARD</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div style="margin-top: 50px;">
+              <ul class="users-list clearfix" style="padding:0;">
+                <li *ngFor="let c of listnewEmployee" class="employee-box effect2" [@heroState]="state">
+                  <img *ngIf="c.avartarThumbnail==null" src="/assets/img/128-missing_avatar.svg.png" alt="User Image"
+                    style="width: 100px;">
+                  <img *ngIf="c.avartarThumbnail!=null" [src]="c.avartarThumbnail" alt="User Image" style="width: 128px;">
+                  <a class="users-list-name">{{c.employeeName}}</a>
+                  <span class="users-list-date">{{c.deptDesc}}</span>
+                  <span class="users-list-date">{{c.dateofJoin | date: 'dd-MM-yyyy'}}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item item2">
+      <h1></h1>
+      <div style="text-align:center"><img src="/assets/img/bg/3.png"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <ul class="users-list clearfix" style="padding:0;">
+              <li *ngFor="let t of listBirth" class="employee-box effect2">
+                <img class="img-circle" onError="this.src='/assets/img/128-missing_avatar.svg.png';" src="/uploads/{{t.avartarThumbnail}}"
+                  style="width: 100px;">
+                <span class="users-list-name">{{t.employeeName}}</span>
+                <span class="users-list-date">{{t.dob|date:'dd/MM'}}</span>
+                <span class="users-list-date">({{t.divisionDesc}})</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="carousel-item item3">
+      <h1 style="color: #003d76">ANNOUNCEMENT FOR EMPLOYEE</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <ul class="list-announce-db">
+              <li *ngFor="let c of listAnnounce">
+                <!-- <a class="pointer" (click)="openNewsModel(template,c)" style="display:block">
+                  <h3>
+                    {{c.subject}}
+                  </h3>
+                  <div [innerHTML]="c.contents" class="announce-content">
+
+                  </div>
+                  <span class="direct-chat-timestamp pull-right">{{c.createDate|date:'dd/MM/yyyy'}}</span>
+                </a>
+                <p>
+                  <small>{{c.annType}} Created by {{c.createUser}} </small>
+                </p> -->
+                <div class="box box-primary">
+                  <div class="box-header">
+                    <h3 class="box-title"> {{c.subject}}</h3>
+                  </div>
+                  <div class="box-body">
+                    <div [innerHTML]="c.contents" class="announce-content">
+
+                    </div>
+                  </div>
+                  <div class="box-footer">
+                    <small style="font-size:18px">{{c.annType}} by {{c.createUser}} </small>
+                    <span style="font-size:18px" class="direct-chat-timestamp pull-right">{{c.createDate|date:'dd/MM/yyyy'}}</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </figure>
+  <nav>
+    <button class="nav prev">Prev</button>
+    <button class="nav next">Next</button>
+  </nav>
+  <div class="welcome-setting">
+    <a><i class="fa fa-cog"></i></a>
+  </div>
+</div>

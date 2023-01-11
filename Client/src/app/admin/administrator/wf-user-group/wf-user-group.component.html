@@ -1,0 +1,51 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.usergroup || "User Group" }}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active"> {{languages.usergroup || "User Group" }}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource"
+          (onRowInserting)="insertUserGroup($event)" 
+          (onRowRemoving)="deleteUserGroup($event)">
+
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+          <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+          <dxi-column dataField="groupCode" dataType="string" caption="Group Code">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-column>
+          <dxi-column dataField="fullName" dataType="string" caption="Employee Name">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-column>
+          
+          <dxo-selection mode="single"></dxo-selection>
+          <dxo-editing mode="row" [allowDeleting]="true" [allowAdding]="true">
+          </dxo-editing>
+
+          <dxo-paging [pageSize]="10"></dxo-paging>
+          <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+            [showInfo]="true"></dxo-pager>
+        </dx-data-grid>
+      </div>
+    </div>
+  </section>
+</div>

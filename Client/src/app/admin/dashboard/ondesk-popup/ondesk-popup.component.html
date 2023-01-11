@@ -1,0 +1,39 @@
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <label class="radio-inline"><input type="radio" name="optradio" (click)="checked($event)" [checked]="isTotal">Total ({{leaveOndesk.total}})</label>
+        <label class="radio-inline"><input type="radio" name="optradio" (click)="checked($event)" [checked]="isOn">On ({{leaveOndesk.onCnt}})</label>
+        <label class="radio-inline"><input type="radio" name="optradio" (click)="checked($event)" [checked]="isOff">Off ({{leaveOndesk.offCnt}})</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource">
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+          <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+          <!-- <dxo-paging [enabled]="false"></dxo-paging> -->
+          <dxi-column dataField="deptDesc" dataType="string" caption="{{this.languages.department}}">
+          </dxi-column>
+          <dxi-column dataField="employeeName" dataType="string" caption="{{this.languages.name}}">
+          </dxi-column>
+          <dxi-column dataField="ondesc" dataType="string" caption="{{this.languages.ondesk || 'On Desk'}}">
+          </dxi-column>
+
+        </dx-data-grid>
+      </div>
+    </div>
+  </div>
+  <div class="model-footer">
+
+  </div>
+</ng-template>

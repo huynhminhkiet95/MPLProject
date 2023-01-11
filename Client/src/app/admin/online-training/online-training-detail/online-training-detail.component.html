@@ -1,0 +1,138 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">
+    {{ languages.subject }}: <span subjectformat> {{ subject }}</span>
+  </h4>
+  
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="bsModalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <span class="pull-right" style="margin-right: 30px; margin-top: 5px;">
+    <i class="fa fa-eye"></i>&nbsp;<span>{{newsView.viewCount?.viewCount||0}}</span>     
+  </span>
+</div>
+
+<div class="modal-body">
+  <div class="box box-primary idrequest-search">
+    <div class="box-header with-border">
+      <i class="fa fa-file-text-o"></i>
+      <h3 class="box-title">{{ this.languages.contents || "Contents" }}</h3>
+      <div class="pull-right box-tools"></div>
+    </div>
+
+    <div class="box-body">
+      <div [innerHTML]="contents | safehtml: 'html'"></div>
+    </div>
+
+    <div class="box-footer">
+      <div class="box-header with-border">
+        <i class="fa fa-file-archive-o"></i>
+        <h3 class="box-title">
+          {{ this.languages.attachedfiles || "Attached Files" }}
+        </h3>
+        <div class="pull-right box-tools"></div>
+      </div>
+
+      <ul>
+        <li *ngFor="let doc of newsView.listDocs">
+          <a class="pointer" (click)="downloadFile(doc.docNo)">{{
+            doc.dFileName
+          }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box box-primary idrequest-search">
+    <div class="box-header with-border">
+      <i class="fa fa-comment-o"></i>
+      <!-- <h3 class="box-title">{{ this.languages.comment || "Comment" }}</h3> -->
+      <div class="pull-right box-tools">
+        <ul class="list-inline">
+          <li>
+              <a class="link-black text-sm" (click)="like()">
+                <i [ngClass]="{'fa-liked': newsView.viewCount?.liked==true}" class="fa fa-thumbs-o-up margin-r-5">                 
+                </i> Like({{newsView.viewCount?.likeCount}})</a>
+          </li>
+          <li class="pull-right">
+            <a class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments
+              ({{listLogs.length||0}})</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-body box-comments">
+      <div class="box-comment" *ngFor="let item of listLogs">
+        <!-- User image -->
+        <img
+          class="img-circle"
+          style="max-height:40px"
+          onError="this.src='/assets/img/missing_avatar.svg.png';"
+          src="{{ urlFileServer }}{{ item.avartarThumbnail }}"
+        />
+        <div class="comment-text">
+          <span class="username">
+            {{ item.employeeName }}
+            <span class="text-muted pull-right" appDateTimeFormat>{{
+              item.createdOn
+            }}</span>
+          </span>
+          <p style="margin-bottom: 0px !important;">
+            {{ item.details }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-footer">
+      <img
+        class="img-responsive img-circle img-sm"
+        src="{{ currentuser.avartarThumbnail }}"
+        alt="Alt Text"
+        style="margin-right: 5px;"
+      />
+      <div class="input-group">
+        <input data-emojiable="true"
+          style="height:34px !important"
+          name="comment"
+          [(ngModel)]="commentModel.userComment"
+          #comment="ngModel"
+          placeholder="Comment..."
+          class="form-control"
+          id="commentcontent"
+        />
+        <span class="input-group-btn">
+          <button
+            type="button"
+            (click)="addComment(newsView.id)"
+            class="btn btn-success btn-flat"
+          >
+            {{ this.languages.send || "Send" }}
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="content-author"
+    style="margin-top: 10px; border-top: solid 1px #e0e0e0"
+  >
+    <small style="color: gray;">
+      <label>{{ languages.createdby }}</label>
+      <span class="text-bold"> {{ newsView.createUser }}</span>
+      {{ languages.at }}
+      <span class="date">{{ newsView.createDate | date: "dd/MM/yyyy" }}</span>
+    </small>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn bnt-default" (click)="bsModalRef.hide()">
+    {{ languages.close }}
+  </button>
+</div>

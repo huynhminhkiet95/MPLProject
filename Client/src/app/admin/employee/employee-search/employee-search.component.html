@@ -1,0 +1,256 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.employee}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active"> {{languages.employee}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+
+          <form class="form-horizontal" (ngSubmit)="search()" name="formsearch" #ff="ngForm">
+            <div class="box-header with-border">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title"> {{languages.search}}</h3>
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                  data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                  <i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+
+              <div class="row">
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{languages.name}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="employeeName" name="employeeName"
+                        [(ngModel)]="searchModel.employeeName" #employeeName="ngModel" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.subsidiary}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" (change)="changedSudidiary()" [(ngModel)]="searchModel.subsidary"
+                        name="subsidary" #subsidary="ngModel">
+                        <option *ngFor="let c of listSubsidiary" [ngValue]="c.subsidiaryId">{{c.subsidiaryName}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{languages.employeecode}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="employeecode" name="employeecode"
+                        [(ngModel)]="searchModel.employeecode" #employeecode="ngModel" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="Subject" class="col-sm-4 control-label">{{languages.mobileno}}</label>
+
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="mobile" name="mobile" [(ngModel)]="searchModel.mobile"
+                        #mobile="ngModel" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.division}}</label>
+
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.division" (change)="changedDivision()"
+                        name="division" #division="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of devisions" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">{{languages.workingLocation||'Working Location'}}</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" [(ngModel)]="searchModel.workingLocation" name="workingLocation"  #workingLocation="ngModel">
+                          <option value=""></option>
+                          <option *ngFor="let c of listWorkLocs" [ngValue]="c.id">{{c.locationName}}</option>
+                        </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="Subject" class="col-sm-4 control-label">{{languages.resigndate}}</label>
+                    <div class="col-sm-8">
+                        <div class="row">
+                          <div class="col-date date-from">
+                            <dx-date-box width="100%" [disabled]="!searchModel.CheckisLeftEmployee" [showClearButton]="false"
+                              displayFormat="dd/MM/yyyy" type="date" [(value)]="bsRangeValue[0]">
+                            </dx-date-box>
+                          </div>
+                          <div class="col-date">
+                            <dx-date-box width="100%" [min]="bsRangeValue[0]" [disabled]="!searchModel.CheckisLeftEmployee"
+                              [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date" [(value)]="bsRangeValue[1]">
+                            </dx-date-box>
+                          </div>
+                          <div class="col-sm-1">
+                            <input type="checkbox" name="CheckisLeftEmployee" #CheckisLeftEmployee="ngModel"
+                              [(ngModel)]="searchModel.CheckisLeftEmployee">
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.department}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.department" name="department"
+                        #department="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of departments2" [ngValue]="c.deptCode">{{c.deptDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">{{languages.designation ||'Designation '}}</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" [(ngModel)]="searchModel.designation" name="designation"  #designation="ngModel">
+                          <option value=""></option>
+                          <option *ngFor="let c of listDesignation" [ngValue]="c.codeId">{{c.codeDesc}}</option>
+                        </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.status||'Status'}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.emplStatus"
+                        name="emplStatus" #emplStatus="ngModel">
+                        <option *ngFor="let c of listEmpStatus" [ngValue]="c.codeId">{{c.codeDesc}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="box-footer group-btn-right">
+              <a *ngIf="!isViewMode" class="btn btn-info pull-right btn-sm" routerLink='../addnew'
+                style="margin-left:10px;">
+                {{languages.new}}</a>
+              <button type="submit" class="btn btn-primary pull-right btn-sm"> {{languages.search}}</button>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+
+        <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="employeeId"
+          (onRowClick)='rowClickEvent'>
+          <dxo-export [enabled]="!isViewMode" fileName="Employees" [allowExportSelectedData]="true"></dxo-export>
+          <!-- <dxo-selection mode="multiple" width="50px"></dxo-selection> -->
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+          <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+          <dxo-column-chooser [enabled]="!isViewMode"></dxo-column-chooser>
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+          <dxi-column dataField="avartarThumbnail" caption="" width="40px" cellTemplate="cellTemplateImage">
+          </dxi-column>
+         
+          <dxi-column caption=" {{languages.employeename}}" dataType="string" dataField="employeeName"
+            cellTemplate="diffCellTemplate"></dxi-column>
+            <dxi-column dataField="employeeCode" [visible]="!isViewMode" dataType="string" caption="{{languages.employeecode||'EmployeeCode'}}">
+            </dxi-column>
+          <dxi-column dataField="subsidiaryName" dataType="string" caption="{{languages.subsidiary}}">
+          </dxi-column>
+          <dxi-column dataField="divisionDesc" dataType="string" caption="{{languages.division}}">
+          </dxi-column>
+          <dxi-column dataField="deptDesc" dataType="string" caption="{{languages.department}}">
+          </dxi-column>
+          <dxi-column dataField="designation" caption="{{languages.designation}}" dataType="string">
+          </dxi-column>
+          <dxi-column dataField="dateofJoin" format="dd/MM/yyyy" [visible]="!isViewMode" caption="{{languages.dateofjoin}}" dataType="date">
+          </dxi-column>
+          <dxi-column dataField="email" dataType="string">
+          </dxi-column>
+          <dxi-column dataField="timeSheetCode"  [visible]="!isViewMode" dataType="string">
+          </dxi-column>
+          <dxi-column dataField="address" [visible]="!isViewMode" dataType="string" caption="{{languages.address||'Address'}}">
+          </dxi-column>
+          <dxi-column dataField="dob" [visible]="!isViewMode" format="dd/MM/yyyy" dataType="date" caption="{{languages.dob||'DOB'}}">
+          </dxi-column>
+          <dxi-column dataField="idNo" [visible]="!isViewMode" dataType="string" caption="{{languages.idno||'IDNo'}}">
+          </dxi-column>
+          <dxi-column dataField="workingLocation" [visible]="!isViewMode" dataType="string" caption="{{languages.workingLocation||'Working Location'}}">
+          </dxi-column>
+          <dxi-column dataField="employeeNote" [visible]="!isViewMode" dataType="string" caption="{{languages.notes||'Notes'}}">
+          </dxi-column>
+          <!-- <dxi-column dataField="mobile" [visible]="!isViewMode" caption="{{languages.mobile}}" dataType="string">
+          </dxi-column> -->
+          <dxi-column dataField="employeeId"  [fixed]="true" fixedPosition="right" [visible]="!isViewMode" caption="" dataType="string" cellTemplate="diffCellTemplatePopupPermisson">
+          </dxi-column>
+
+          <dxo-paging [pageSize]="_pagerOption.pageSize"  [pageIndex]="_pagerOption.pageIndex"></dxo-paging>
+          <dxo-editing mode="popup" [allowDeleting]="false">
+          </dxo-editing>
+          <div *dxTemplate="let d of 'diffCellTemplate'">
+            <a class="pointer" (click)="viewDetail(d.data.employeeId)">
+             {{d.value}}
+            </a>
+          </div>
+          <div *dxTemplate="let d of 'diffCellTemplatePopupPermisson'">
+            <div class="dx-btn-group">
+                <a tooltip="Reset Password" *ngIf="!isViewMode" (click)="showResetPasswordPopup(d.value)" class="fa fa-key"></a>
+                <a tooltip="Reset User Device" *ngIf="!isViewMode && IsRoleID" (click)="showResetDevicePopup(d.value)" class="fa fa-fw fa-refresh"></a>
+                <a tooltip="Set permission group" *ngIf="!isViewMode && IsRoleID" (click)="showpopup(d.value)" class="fa fa-fw fa-lock"></a>
+                <a tooltip="View workflow" *ngIf="!isViewMode" (click)="viewLeaveWorkFlow(d.data)" class="fa fa-fw  fa-check-square-o"></a>
+            </div>
+          </div>
+          <div *dxTemplate="let data of 'cellTemplateImage'">
+            <img style="height:25px;border-radius:50%" onError="this.src='/assets/img/missing_avatar.svg.png';"
+              [src]="urlPath + data.value" />
+          </div>
+        </dx-data-grid>
+      </div>            
+    </div>
+  </section>
+  <!-- /.content -->
+</div>

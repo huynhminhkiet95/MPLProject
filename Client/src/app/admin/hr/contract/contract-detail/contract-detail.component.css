@@ -1,0 +1,11 @@
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td 
+{
+    padding: 2px 8px 3px!important;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    border-top: 0px solid #f4f4f4 !important;
+}
+
+::ng-deep .numberAlign input {  
+    text-align: right;  
+  }

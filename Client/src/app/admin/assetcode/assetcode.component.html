@@ -1,0 +1,106 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.assetcode|| "Asset Code"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active"> {{languages.stdcode || "Stdcode" }}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title"> {{languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label">{{languages.codetype || "CodeType"}}</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" name="codeType" [(ngModel)]="searchModel.codeType"
+                        #codeType="ngModel" (change)="search()">
+                        <option *ngFor="let c of listcodetype" [ngValue]="c">{{c}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <button type="button" (click)="search()" class="btn btn-primary pull-right btn-sm">
+              {{languages.search}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <dx-data-grid #gridContainer
+          id="gridContainer"
+          [dataSource]="dataSource"
+          (onEditorPreparing)="onEditorPreparing($event)"
+          (onRowInserting)="insertStdCode($event)"
+          (onRowInserted)="insertStdCode($event)"
+          (onRowUpdating)="updateStdCode($event)"
+          (onRowUpdated)="updateStdCode($event)">
+
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+          <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+          <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+          <!-- <dxi-column caption="CodeType" dataType="string" dataField="codeType"><dxo-lookup
+            [dataSource]="listcodetype"
+            >
+        </dxo-lookup>
+      </dxi-column> -->
+          <!-- <dxi-column dataField="employeeName" caption="employeeName">
+                </dxi-column> -->
+          <dxi-column dataField="codeId" dataType="string" caption="Code Id">
+          </dxi-column>
+          <dxi-column dataField="codeDesc" dataType="string" caption="Code Desc">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-column>
+          <dxi-column dataField="isUse" dataType="string" caption="Is Use">
+          </dxi-column>
+          <dxi-column dataField="numericVariant" dataType="number" caption="Numeric Variant">
+          </dxi-column>
+          <dxi-column dataField="tagVariant" dataType="string" caption="Tag Variant">
+          </dxi-column>
+          <dxi-column dataField="seqNo" dataType="number" caption="SeqNo">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-column>
+          <dxo-selection mode="single"></dxo-selection>
+          <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="true">
+          </dxo-editing>
+          <dxo-paging [pageSize]="10"></dxo-paging>
+          <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+            [showInfo]="true"></dxo-pager>
+        </dx-data-grid>
+      </div>
+    </div>
+  </section>
+</div>

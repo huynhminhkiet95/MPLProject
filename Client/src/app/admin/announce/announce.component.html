@@ -1,0 +1,159 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{title}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{this.languages.home}}</a></li>
+      <li class="active">{{this.languages.announcement}}</li>
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">{{this.languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse" data-toggle="tooltip"
+                title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{this.languages.postdate}}</label>
+                    <div class="col-sm-4 date-from">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsRangeValue[0]">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%"  [min]="bsRangeValue[0]" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsRangeValue[1]">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="Subject" class="col-sm-4 control-label">{{this.languages.subject}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="Subject" name="Subject" [(ngModel)]="searchModel.Subject"
+                        #Subject="ngModel" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{this.languages.announcetype}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.Type" name="Type" #Type="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listServiceTypes" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listServiceTypes" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+          <div class="box-footer group-btn-right">
+            <button type="button" (click)="openModalWithComponent()" class="btn btn-info pull-right btn-sm">{{this.languages.new}}</button>
+            <button type="button" (click)="search()" class="btn btn-primary pull-right btn-sm">{{this.languages.search}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="id">
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+              <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+              <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+              <dxi-column dataField="subject" dataType="string" caption="{{this.languages.subject}}" cellTemplate="diffSubjectTemplate">
+              </dxi-column>
+              <dxi-column dataField="annType" dataType="string" caption="{{this.languages.announcetype}}">
+              </dxi-column>
+              <dxi-column dataField="createDate" dataType="date" format="dd/MM/yyyy" caption="{{this.languages.createdate}}">
+              </dxi-column>
+              <dxi-column dataField="createUserName" dataType="string" caption="{{this.languages.createuser}}">
+              </dxi-column>
+              <dxi-column dataField="expireDate" dataType="date" format="dd/MM/yyyy" caption="{{this.languages.expiredate}}">
+              </dxi-column>
+              <dxi-column caption="" dataField="annId" cellTemplate="diffStatusTemplate"></dxi-column>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+                [showInfo]="true"></dxo-pager>
+              <dxo-editing mode="popup" [allowDeleting]="false">
+              </dxo-editing>
+              <div *dxTemplate="let d of 'diffSubjectTemplate'">
+                <a class="pointer" (click)="openNewsModel(template,d)">
+                  <span>
+                    {{d.value}}
+                  </span>
+                </a>
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate'">
+                  <div class="dx-btn-group">
+                      <a *ngIf="d.data.createUser==currentuser.employeeId || _isAdmin" (click)="edit(d.value)" class="fa fa-pencil-square-o fa-1x">
+                      </a>
+                      <a *ngIf="d.data.createUser==currentuser.employeeId || _isAdmin" (click)="delete(d.value)" class="fa fa-trash-o fa-1x">
+                      </a>
+                    </div>
+
+              </div>
+            </dx-data-grid>
+          </div>
+          <div class="box-footer"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{languages.subject}} : {{newsView.subject}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <span class="pull-right" style="margin-right: 30px; margin-top: 5px;">
+      <i class="fa fa-eye"></i>&nbsp;<span>{{newsView.viewCount}}</span>     
+    </span>
+  </div>
+  <div class="modal-body">
+    <div [innerHTML]="newsView.contents"> </div>
+    <div>
+      <ul>
+        <li *ngFor="let doc of newsView.listDocs">
+          <a class="pointer" (click)="downloadFile(doc.docNo)">{{doc.dFileName}}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="content-author" style="margin-top: 10px; border-top: solid 1px #e0e0e0">
+      <small>
+        <label>{{languages.createdby}}</label>
+        <span class="text-bold"> {{newsView.createUser}}</span> {{languages.at}}
+        <span class="date">{{newsView.createDate|date:'dd/MM/yyyy'}}</span>
+      </small>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn bnt-default" (click)="bsModalRef.hide()">{{languages.close}}</button>
+  </div>
+</ng-template>

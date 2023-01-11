@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef1.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="seqno">
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+    <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+    <dxi-column dataField="roleDesc" dataType="string" caption="{{this.languages.roledesc || 'RoleDesc'}}"
+     >
+    </dxi-column>
+    <dxi-column dataField="namedRoleDesc" dataType="string" caption="{{this.languages.namedroledesc || 'Name Role Desc'}}">
+    </dxi-column>
+    <dxi-column dataField="namedRoleName" dataType="string" caption="{{this.languages.namedrolename || 'Named Role Name'}}">
+    </dxi-column>
+  </dx-data-grid>
+
+</div>

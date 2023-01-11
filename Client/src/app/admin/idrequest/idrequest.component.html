@@ -1,0 +1,157 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{languages.idrequest}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i>{{languages.home}}</a>
+      </li>
+      <li class="active">{{languages.idrequest}}</li>
+    </ol>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title"> {{languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && searchIdRequest()" #f="ngForm">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="IdrNo" class="col-sm-4 control-label">{{languages.idrno}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" [(ngModel)]="searchModel.IdrNo" name="IdrNo" #IdrNo="ngModel"
+                        class="form-control" id="IdrNo" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{languages.postdate}}</label>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsRangeValue[0]">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [min]="bsRangeValue[0]" [showClearButton]="false"
+                        displayFormat="dd/MM/yyyy" type="date" [(value)]="bsRangeValue[1]">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="idService" class="col-sm-4 control-label">{{languages.idservice}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" id="idService" name="idService" [(ngModel)]="searchModel.idService"
+                        #idService="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listIDServices" value="c.codeType">{{c.codeDesc}} </option> -->
+                        <option *ngFor="let c of listIDServices" value="c.codeType">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}} </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="createUser" class="col-sm-4 control-label">{{languages.createuser}}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" name="CreateUserName" id="CreateUserName"
+                        [(ngModel)]="searchModel.CreateUserName" #CreateUserName="ngModel" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="status" class="col-sm-4 control-label">{{languages.status}}</label>
+
+                    <div class="col-sm-8">
+                      <select class="form-control" id="status" name="status" [(ngModel)]="searchModel.status"
+                        #status="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listIDStatus" value="c.codeType">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listIDStatus" value="c.codeType">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="subsidiary" class="col-sm-4 control-label">{{languages.subsidiary}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="SubsidiaryId" #SubsidiaryId="ngModel" id="SubsidiaryId"
+                        [(ngModel)]="searchModel.SubsidiaryId">
+                        <option *ngFor="let c of listSubsidiaries" value="c.subsidiaryId">{{c.subsidiaryName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <button type="button" (click)="openModalWithComponent()"
+              class="btn btn-info pull-right btn-sm">{{languages.new}}</button>
+            <button type="button" (click)="searchIdRequest()"
+              class="btn btn-primary pull-right btn-sm">{{languages.search}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <dx-data-grid id="gridContainer" [dataSource]="listIdRequest" keyExpr="id">
+              <dxi-column caption="{{languages.id}}" dataType="string" dataField="idrNo"
+                cellTemplate="diffCellTemplate"></dxi-column>
+              <dxi-column dataField="idServiceDesc" dataType="string" caption="{{languages.idservice}}">
+              </dxi-column>
+              <dxi-column dataField="createDate" caption="{{languages.createdate}}" dataType="datetime2">
+              </dxi-column>
+              <dxi-column dataField="createUser" dataType="string" caption="{{languages.createuser}}">
+              </dxi-column>
+              <dxi-column dataField="requestStatusDesc" cellTemplate="diffStatusTemplate" alignment="center"
+                caption="{{languages.requeststatus}}">
+              </dxi-column>
+              <dxi-column dataField="subsidiaryName" dataType="string" caption="{{languages.subsidiary}}">
+              </dxi-column>
+              <dxi-column caption="" dataField="idrNo" cellTemplate="diffDeleteTemplate">
+
+              </dxi-column>
+              <dxo-paging [enabled]="true" [pageSize]="10"></dxo-paging>
+              <dxo-editing mode="popup" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
+                <dxo-popup title="Employee Info" [showTitle]="true" [width]="600" [height]="345">
+                </dxo-popup>
+              </dxo-editing>
+              <div *dxTemplate="let d of 'diffCellTemplate'">
+                <a href="#" routerLink="../idrequestdetail/{{d.value}}">
+                  <span>{{d.value}}</span>
+                </a>
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate'">
+                <span class="label status-{{d.value}}">{{d.value}}</span>
+              </div>
+              <div *dxTemplate="let d of 'diffDeleteTemplate'">
+                <div class="dx-btn-group">
+                  <a *ngIf="checkrole==true" (click)="deleteidrrequest(d.value)">
+                    <i class="fa fa-trash-o fa-1x"></i>
+                  </a>
+                </div>
+              </div>
+            </dx-data-grid>
+          </div>
+          <div class="box-footer"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

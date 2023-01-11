@@ -1,0 +1,71 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.department|| "Department"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active"> {{languages.stdcode || "Stdcode" }}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <dx-data-grid #gridContainer
+          id="gridContainer"
+          [dataSource]="dataSource"
+          (onEditorPreparing)="onEditorPreparing($event)"
+          (onRowInserting)="saveDepartmentAdmin($event,1)"
+          (onRowUpdating)="saveDepartmentAdmin($event,2)"
+          (onRowRemoving)="saveDepartmentAdmin($event,3)">
+
+          <dxo-filter-row [visible]="true"></dxo-filter-row>
+          <dxo-group-panel [visible]="true"></dxo-group-panel>
+          <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+          <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
+          <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+          <dxi-column dataField="deptCode" dataType="string" caption="Dept Code">
+          </dxi-column>
+          <dxi-column dataField="deptDesc" dataType="string" caption="Dept Desc">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-column>
+          <dxi-column dataField="divisionCode" dataType="string" caption="Division" [setCellValue]="setStateValue">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+            <dxo-lookup [dataSource]="listDivision" displayExpr="divisionDesc" valueExpr="divisionCode">
+            </dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="parentDept" dataType="string" caption="Parent Dept">
+            <dxo-lookup [dataSource]="getFilteredDept" displayExpr="deptDesc" valueExpr="deptCode">
+            </dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="employeeId" dataType="string" caption="Employee">
+            <dxo-lookup [dataSource]="getFilteredEmployees" displayExpr="employeeName" valueExpr="employeeId">
+            </dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="subsidiaryId" dataType="string" caption="Subsidiary">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+            <dxo-lookup [dataSource]="listSubsidary" displayExpr="subsidiaryName" valueExpr="subsidiaryId">
+            </dxo-lookup>
+          </dxi-column>
+          
+          <dxo-selection mode="single"></dxo-selection>
+          <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+          </dxo-editing>
+          <dxo-paging [pageSize]="10"></dxo-paging>
+          <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+            [showInfo]="true"></dxo-pager>
+        </dx-data-grid>
+      </div>
+    </div>
+  </section>
+</div>

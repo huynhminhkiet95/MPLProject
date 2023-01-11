@@ -1,0 +1,8 @@
+{
+  "editor.tabSize": 2,
+  "editor.tokenColorCustomizations": {
+    "[Material Theme]": {
+      "semanticHighlighting": true
+    }
+  },
+}

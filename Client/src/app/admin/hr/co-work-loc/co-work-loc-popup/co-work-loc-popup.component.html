@@ -1,0 +1,121 @@
+<!-- <ng-template #template> -->
+
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+</div>
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && Save()" #f="ngForm" novalidate>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <!-- <div class="box-header with-border">
+                  <i class="ion ion-clipboard"></i>
+                  <h3 class="box-title"> ID Request New</h3>
+              </div> -->
+          <div class="box-body">
+
+            <div class="row">
+              <div class="col-md-12">
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.locationName || 'Location Name'}} &nbsp;<span
+                      class="required"></span></label>
+                  <div class="col-sm-4">
+                    <input class="form-control" maxlength="50" [(ngModel)]="model.locationName" name="locationName"
+                      #locationName="ngModel" required />
+
+                    <span *ngIf="f.submitted && !locationName.valid" class="help-block-custom"><i
+                        class="fa fa-exclamation-circle" tooltip="Location Name is required"
+                        aria-hidden="true"></i></span>
+                  </div>
+
+                  <label class="col-sm-2 control-label">{{languages.locationaddress || 'Location Address'}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" maxlength="50" [(ngModel)]="model.locationAddress" name="locationAddress"
+                      #locationAddress="ngModel" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.starttime || 'Start Time'}}</label>
+                  <div class="col-sm-4">
+                    <dx-date-box width="100%" [showClearButton]="true" displayFormat="HH:mm" type="time"
+                      [(value)]="model.starTime">
+                    </dx-date-box>
+
+                  </div>
+
+                  <label class="col-sm-2 control-label">{{languages.endtime || 'End Time'}}</label>
+                  <div class="col-sm-4">
+                    <dx-date-box width="100%" [showClearButton]="true" displayFormat="HH:mm" type="time"
+                      [(value)]="model.endTime">
+                    </dx-date-box>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.workingtime || 'Working Time'}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" maxlength="50" [(ngModel)]="model.workingTime" name="workingTime"
+                      #workingTime="ngModel" />
+                  </div>
+
+                  <label class="col-sm-2 control-label">{{languages.locationtype || 'Location Type'}}</label>
+                  <div class="col-sm-4">
+                      <select class="form-control" [(ngModel)]="model.locationType" name="locationType"  #locationType="ngModel">
+                        <!-- <option *ngFor="let c of locTypes" [ngValue]="c.codeDesc">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of locTypes" [ngValue]="c.codeDesc">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.lat || 'Lat'}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" maxlength="50" [(ngModel)]="model.lat" name="lat" #lat="ngModel" />
+                  </div>
+
+                  <label class="col-sm-2 control-label">{{languages.lon || 'Lon'}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" maxlength="50" [(ngModel)]="model.lon" name="lon" #lon="ngModel" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.wifissid || 'Wifi SSID'}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" maxlength="50" [(ngModel)]="model.wifiSsid" name="wifiSsid" #wifiSsid="ngModel" />
+                  </div>
+
+                  <label class="col-sm-2 control-label">{{languages.macaddresswifi || 'MAC Address Wifi'}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" maxlength="50" [(ngModel)]="model.macAddressWifi" name="macAddressWifi"
+                      #macAddressWifi="ngModel" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.wifiname || 'Wifi Name'}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" maxlength="50" [(ngModel)]="model.wifiName" name="wifiName" #wifiName="ngModel" />
+                  </div>                
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 group-btn-right">
+        <button type="button" class="btn btn-default pull-right"
+          (click)="bsModalRef.hide()">{{languages.close}}</button>
+        <button type="submit" class="btn btn-primary pull-right">{{languages.save}}</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- </ng-template> -->

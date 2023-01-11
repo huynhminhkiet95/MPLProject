@@ -1,0 +1,89 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{languages.menunavigation||"Menus"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li>
+        <a routerLink="../../servicerequest"> {{languages.menunavigation || "Menus"}}</a>
+      </li>
+    </ol>
+  </section>
+
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary group-permission">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">Group Permissions</h3>
+          </div>
+          <div class="box-body">
+            <div class="dv-list-menu">
+              <dx-tree-list #gridContainer
+                id="menus"
+                [dataSource]="dataSource"
+                keyExpr="menuId"
+                parentIdExpr="parentId"
+                [expandedRowKeys]="[1, 2]"
+                [showBorders]="true"
+                [showRowLines]="true"
+                (onInitNewRow)="initNewRow($event)"
+                (onEditingStart)="onEditingStart($event)"
+                (onEditorPreparing)="onEditorPreparing($event)"
+                (onRowInserting)="modifyMenu($event,1)"
+                (onRowUpdating)="modifyMenu($event,2)" 
+                (onRowRemoving)="modifyMenu($event,3)">
+                
+                <dxo-selection mode="single"></dxo-selection>
+                <dxo-search-panel [visible]="true" [width]="300" placeholder="Search..."></dxo-search-panel>
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+                <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+                <dxi-column [width]="250" dataField="menuId" dataType="string" caption="Menu Id">
+                    <dxi-validation-rule type="required"></dxi-validation-rule>
+                </dxi-column>
+                <dxi-column [width]="400" dataField="menuName" dataType="string" caption="Menu Name">
+                  <dxi-validation-rule type="required"></dxi-validation-rule>
+                </dxi-column>
+                <dxi-column [width]="250" dataField="pageId" dataType="string" caption="Page Id">
+                  <!-- <dxi-validation-rule type="required"></dxi-validation-rule> -->
+                </dxi-column>
+                <dxi-column class="tr-parent" [width]="250" dataField="parentId" dataType="string" caption="Parent Name">
+                  <dxo-lookup
+                    [dataSource]="arrParentData"
+                    valueExpr="menuId"
+                    displayExpr="menuName">
+                  </dxo-lookup>
+                  <dxi-validation-rule type="required"></dxi-validation-rule>
+                </dxi-column>
+                <dxi-column [width]="50" alignment="center" dataField="new" dataType="boolean" caption="New"></dxi-column>
+                <dxi-column [width]="50" alignment="center" dataField="search" dataType="boolean" caption="Search"></dxi-column>
+                <dxi-column [width]="50" alignment="center" dataField="sav" dataType="boolean" caption="Save"></dxi-column>
+                <dxi-column [width]="50" alignment="center" dataField="preview" dataType="boolean" caption="Preview"></dxi-column>
+                <dxi-column [width]="50" alignment="center" dataField="del" dataType="boolean" caption="Delete"></dxi-column>
+                <dxi-column [width]="50" alignment="center" dataField="excel" dataType="boolean" caption="Excel"></dxi-column>
+                
+                <dxo-editing class="col-button" alignment="center" mode="row" 
+                  [allowUpdating]="true" 
+                  [allowDeleting]="true" 
+                  [allowAdding]="true">
+                </dxo-editing>
+
+                <dxo-paging [pageSize]="50"></dxo-paging>
+                <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[50, 100, 150, 200]"
+                  [showInfo]="true"></dxo-pager>
+              </dx-tree-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

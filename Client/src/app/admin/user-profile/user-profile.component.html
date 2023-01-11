@@ -1,0 +1,461 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      <small></small>
+    </h1>
+
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i>{{languages.home || 'Home'}}</a>
+      </li>
+      <li class="active">{{languages.userprofile || 'User profile'}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <div class="row">
+      <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="box box-primary">
+          <div class="box-body box-profile">
+            <!-- <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> -->
+            <div class="border-avatar">
+              <img *ngIf="avatar.src!='null'" class="profile-user-img img-responsive img-circle" src="{{globals._avatar}}"
+                alt="">
+              <i *ngIf="avatar.src=='null'" class="fa fa-user"></i>
+            </div>
+            <p style="text-align:center">
+              <a (click)="staticModal.show()" class="cursor-point">
+                <i class="fa fa-upload" aria-hidden="true"></i> {{languages.change || 'Change'}}</a>
+              <a (click)="openTakePhoto()" class="cursor-point">
+                <i class="fa fa-camera" aria-hidden="true"></i> {{languages.takephoto || 'Take Photo'}}</a>
+            </p>
+            <h3 class="profile-username text-center">{{model.employeeName}}</h3>
+
+            <!-- <p class="text-muted text-center">Software Engineer</p> -->
+
+
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">
+              {{languages.offboardnotice||'Off Board Notice'}}
+            </h3>
+          </div>
+          <div class="box-body box-profile">
+            <div *ngIf="offBoardNotice == null">
+              <button (click)="openModalWithComponent()" class="btn btn-info pull-right">Off Board Notice</button>
+            </div>
+            <div *ngIf="offBoardNotice!=null" style="display:flex; width: 100%; text-align: center;">
+               <div style="width: 33%; flex-shrink: 0;">
+                  <label>{{languages.request}}</label><br>
+                  {{offBoardNotice.createDate|date:'dd/MM/yyyy'}}
+                </div>
+               <div style="width: 33%; flex-shrink: 0;">
+                <label>{{languages.confirmleavedate||'Confirm Leave date'}}</label><br>
+                 <span *ngIf="offBoardNotice.confirmedLastday"> {{offBoardNotice.confirmedLastday|date:'dd/MM/yyyy'}}</span> 
+                 <span *ngIf="!offBoardNotice.confirmedLastday"> {{offBoardNotice.expectedLeaveDate|date:'dd/MM/yyyy'}}</span> 
+                </div>
+               <div style="width: 33%; flex-shrink: 0;">
+                <label>{{languages.status}}</label><br>
+                <span class="label status-Reply">{{offBoardNotice.requestStatusDesc}}</span>
+              </div>
+            </div>
+          </div>
+           <div class="box-footer">
+            <div *ngIf="offBoardNotice!=null">
+              <button (click)="ViewDetail()" class="btn btn-info btn-sm pull-right">{{languages.view||'View'}}</button>
+            </div>
+           </div>
+        </div>
+        
+
+      </div>
+      <!-- /.col -->
+      <div class="col-md-9">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#settings" data-toggle="tab">{{languages.settings || 'Settings'}}</a>
+            </li>
+            <li>
+              <a href="#changepassword" data-toggle="tab">{{languages.changepassword || 'Change Password'}}</a>
+            </li>
+            <li>
+              <a href="#asset" data-toggle="tab">{{languages.asset || 'Asset'}}</a>
+            </li>
+            <li>
+              <a href="#externalaccount" data-toggle="tab">{{languages.externalaccount || 'External Account'}}</a>
+            </li>
+            <li>
+              <a href="#timeline" data-toggle="tab">{{languages.timeline || 'Timeline'}}</a>
+            </li>
+           
+          </ul>
+          <div class="tab-content">
+            <div class=" tab-pane" id="asset">
+              <!-- Post -->
+              <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="employeeId">
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+                <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+                <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                <dxi-column caption="{{languages.assetcode}}" dataField="assetCode" dataType="string" ></dxi-column>
+                <dxi-column dataField="assetDesc" caption="{{languages.assetdesc}}">
+                </dxi-column>
+                <dxi-column dataField="assetGroupDesc" caption="{{languages.assetgroup}}">
+                </dxi-column>
+                <dxi-column dataField="createDate" dataType="date" format="dd/MM/yyyy" caption="{{languages.createdate}}">
+                </dxi-column>
+                <dxi-column dataField="createUserName" caption="{{languages.createuser || 'Create User'}}">
+                </dxi-column>
+                <dxo-selection mode="single"></dxo-selection>
+                <dxo-paging [pageSize]="10"></dxo-paging>
+                <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+                  [showInfo]="true"></dxo-pager>
+                <dxo-editing mode="popup" [allowDeleting]="false">
+                </dxo-editing>
+              </dx-data-grid>
+              <!-- /.post -->
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="timeline">
+              <!-- The timeline -->
+              <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSourceUserLogin" keyExpr="userId">
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+                <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+                <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                <dxi-column caption="{{languages.username || 'Login User'}}" dataField="userId" dataType="string" ></dxi-column>
+                
+                <!-- <dxi-column dataField="ipAddress" caption="{{languages.address || 'Address IP'}} IP">
+                </dxi-column> -->
+                <dxi-column dataField="lDate" dataType="datetime2" caption="{{languages.datetime || 'Login Date'}}">
+                </dxi-column>
+              
+                <dxo-selection mode="single"></dxo-selection>
+                <dxo-paging [pageSize]="50"></dxo-paging>
+                <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[50]"
+                  [showInfo]="true"></dxo-pager>
+                <dxo-editing mode="popup" [allowDeleting]="false">
+                </dxo-editing>
+              </dx-data-grid>
+            </div>
+            <!-- /.tab-pane -->
+
+            <div class="active tab-pane" id="settings">
+              <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && updateProfile()" #f="ngForm"
+                novalidate>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">{{languages.firstname || 'First Name'}}</label>
+
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" disabled [(ngModel)]="model.firstName" #firstName="ngModel" id="FirstName"
+                      name="firstName" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail" class="col-sm-2 control-label">{{languages.lastname || 'Last Name'}}</label>
+
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" disabled [(ngModel)]="model.lastName" #lastname="ngModel" id="lastName"
+                      name="lastName" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">{{languages.employeename || 'Employee Name'}}</label>
+
+                  <div class="col-sm-4">
+                    <input type="text" [(ngModel)]="model.employeeName" disabled name="employeeName" #employeeName="ngModel"
+                      class="form-control" id="employeename" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">{{languages.email || 'Email'}}</label>
+
+                  <div class="col-sm-4">
+                    <input type="email" class="form-control" id="email" [(ngModel)]="model.email" name="email" #email="ngModel">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputName" class="col-sm-2 control-label">{{languages.mobileno || 'Mobile No'}}</label>
+
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" id="mobile" [(ngModel)]="model.mobile" name="mobile"
+                      #mobile="ngModel">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputSkills" class="col-sm-2 control-label">{{languages.language || 'Language'}}</label>
+
+                  <div class="col-sm-4">
+                    <select class="form-control" [(ngModel)]="model.language" name="language" #language="ngModel" class="form-control"
+                      name="language">
+                      <!-- <option *ngFor="let c of languages" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                      <option *ngFor="let c of languages1" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputVehicle" class="col-sm-2 control-label">{{languages.vehicle || 'Vehicle'}}</label>
+
+                  <div class="col-sm-4">
+                    <select class="form-control" [(ngModel)]="model.vehicle" name="vehicle" #language="ngModel" class="form-control"
+                      name="vehicle">
+                      <!-- <option *ngFor="let c of vehicles" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                      <option *ngFor="let c of vehicles" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputVehicleNo" class="col-sm-2 control-label">{{languages.vehicleno || 'Vehicle No'}}</label>
+
+                  <div class="col-sm-4">
+                    <input type="text" maxlength="12" class="form-control" id="vehicleNo" [(ngModel)]="model.vehicleNo" name="vehicleNo">
+                  </div>
+                  <div class="col-md-2">
+                      <button type="button" (click)="openQCodeDownload()" class="btn btn-info btn-sm">{{languages.viewqrcode || 'View QR Code'}}</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button [disabled]="loading" type="submit" class="btn btn-primary">{{languages.submit || 'Submit'}}</button>
+                    <i *ngIf="loading" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="changepassword">
+              <form name="formaddnew" class="form-horizontal" (ngSubmit)="f2.form.valid && updatePassword(f2)" #f2="ngForm"
+                novalidate>
+                <div class="form-group">
+                  <label for="pWD" class="col-sm-2 control-label">{{languages.password || 'Password'}}</label>
+
+                  <div class="col-sm-4">
+                    <input type="password" name="password" minlength="6" maxlength="50" [(ngModel)]="modelChangePass.password" #password="ngModel"
+                      class="form-control" id="password" autocomplete="off" validateEqual="confirmPassword" reverse="true"
+                      required />
+                    <span *ngIf="f2.submitted && !password.valid" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="Password is required" aria-hidden="true"></i>
+                    </span>
+                    <span *ngIf="password.errors?.minlength" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="Password must be at least 6 characters long" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="pWD" class="col-sm-2 control-label">{{languages.confirmpassword || 'Confirm Password'}}</label>
+                  <div class="col-sm-4">
+
+                    <input type="password" name="confirmPassword" [(ngModel)]="modelChangePass.confirmPassword"
+                      #confirmPassword="ngModel" reverse="false" class="form-control" id="confirmPassword" autocomplete="off"
+                      validateEqual="password" />
+
+                    <span [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f2.submitted)" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="confirmPassword not match" aria-hidden="true"></i>
+                    </span>
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button [disabled]="loading||!f2.form.valid" type="submit" class="btn btn-primary">{{languages.update || 'Update'}}</button>
+                    <i *ngIf="loading" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane" id="externalaccount">
+              <!-- <ul class="heroes">
+                <li *ngFor="let hero of listExternalAccount" [class.selected]="hero === selectedAccount" (click)="onSelect(hero)">
+                  <span class="badge">{{hero.accountType}}</span> {{hero.accountId}}
+                </li>
+              </ul>
+              
+              <div *ngIf="selectedAccount">
+                <fieldset>
+                <legend><h4>{{selectedAccount.accountType | uppercase}} Details</h4></legend>
+                   <div><span>id: </span>{{selectedAccount.accountType}}</div>
+                <div>
+                  <label>name:
+                    <input [(ngModel)]="selectedAccount.accountId" placeholder="name">
+                  </label>
+                </div>  
+                <form name="formeditAccount" class="form-horizontal" (ngSubmit)="f3.form.valid && updatePassword(f3)" #f3="ngForm"
+                novalidate>
+                <div class="form-group">
+                  <label for="pWD" class="col-md-2 control-label">Account Id</label>
+                                    
+                  <div class="col-md-4">
+                    <input  name="accountId" [(ngModel)]="selectedAccount.accountId" #password="ngModel"
+                      class="form-control" id="accountId" autocomplete="off"  reverse="true"
+                      required />                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                  </div>                                                                                                       
+                </div>
+                <div class="form-group">          
+                  <label for="pWD" class="col-md-2 control-label"> Password</label>
+                  <div class="col-md-4">
+           
+                    <input type="password" name="confirmPassword" [(ngModel)]="selectedAccount.pwd"
+                       class="form-control" id="Password" autocomplete="off"
+                      />
+
+                    <span [hidden]="confirmPassword.valid" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="confirmPassword not match" aria-hidden="true"></i>
+                    </span>
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <div class="col-md-offset-2 col-md-10">
+                    <button [disabled]="loading" type="submit" class="btn btn-primary">Update</button>
+                    <i *ngIf="loading" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                  </div>
+                </div>
+              </form>
+            </fieldset>
+              </div> -->
+              <dx-data-grid #gridContainer id="gridContainer" [dataSource]="listExternalAccount"(onEditorPreparing)="onEditorPreparing($event)"
+              (onRowUpdating)="updateAccountType($event)">
+    
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+              <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+              <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+              <dxi-column dataField="accountType" dataType="string"   caption="{{languages.accounttype || 'Account Type'}}" >
+              </dxi-column>
+              <dxi-column dataField="accountId" dataType="string" caption="{{languages.accountid || 'Account Id'}}">
+              
+              </dxi-column>
+    
+              <dxi-column dataField="pwd" cellTemplate="diffStatusTemplate" dataType="pass" caption="{{languages.password || 'Password'}}">
+              </dxi-column>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="false">
+              </dxo-editing>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+    
+              <div *dxTemplate="let d of 'diffStatusTemplate'">
+                  <span *ngIf="d.value" >********</span>
+                  
+                </div>
+            </dx-data-grid>
+            </div>
+          </div>
+          <!-- /.tab-content -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+  </section>
+  <!-- /.content -->
+</div>
+
+<div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{languages.updateavatar || 'Update Avatar'}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="staticModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="box-upload-avatar">
+          <app-fileupload #innerFileUpload projectId="100" sectionId="107" maxFiles="1" maxSize="2" fileExt="PNG,JPG,JPEG"
+            isVatar=true>
+          </app-fileupload>
+        </div>
+        <div>
+          <h4>
+            <span class="label label-info">{{languages.themaxsizefortheavatarshouldbe128x128 || 'The max size for the avatar should be 128x128'}}</span>
+          </h4>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="staticModal.hide()">{{languages.close || 'Close'}}</button>
+        <button class="btn btn-primary" (click)="updateAvatar()">{{languages.update || 'Update'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" bsModal #staticModal2="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{languages.updateavatar || 'Update Avatar'}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeTakePhoto()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="app">
+          <div>
+            <video #video id="video" width="540" height="480" autoplay></video>
+          </div>
+          <div>
+            <button type="button" id="snap" class="btn btn-primary" (click)="capture()">{{languages.takephoto || 'Take Photo'}}</button>
+          </div>
+          <canvas #canvas id="canvas" width="540" height="450"></canvas>
+          <ul>
+            <li *ngFor="let c of captures">
+              <img src="{{ c }}" height="50" />
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="closeTakePhoto()">{{languages.close || 'Close'}}</button>
+        <button class="btn btn-primary" (click)="updateFile()">{{languages.update || 'Update'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" bsModal #staticModal3="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{languages.vechiclenoqcode || 'Vehicle No QCode'}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeQCodeDownload()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="app">
+           
+          <ngx-qrcode 
+          [qrc-value] = "model.vehicleNo"
+          qrc-class = "qrcode"
+          qrc-version = "10"
+          qrc-element-type="url"
+          qrc-errorCorrectionLevel = "L">
+          
+          </ngx-qrcode>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="DownloadQcode()">{{languages.download || 'Download'}}</button>
+        <button class="btn btn-default" (click)="closeQCodeDownload()">{{languages.close || 'Close'}}</button>
+        
+      </div>
+    </div>
+  </div>
+</div>

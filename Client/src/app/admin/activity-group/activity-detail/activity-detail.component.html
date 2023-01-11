@@ -1,0 +1,120 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{languages.activity||'Activity edit'}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (submit)="f.form.valid && Save()" #f="ngForm" novalidate>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.subject}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" [(ngModel)]="model.subject" name="subject" #subject="ngModel" />
+                  </div>
+                  <label for="postDate" class="col-sm-2 control-label">{{languages.activitytype||'Activity Type'}}</label>
+                  <div class="col-sm-4">
+                    <select class="form-control" [(ngModel)]="model.activityType" name="type" #type="ngModel">
+                      <option value=""></option>
+                      <!-- <option *ngFor="let c of activityTypes" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                      <option *ngFor="let c of activityTypes" [ngValue]="c.codeId">
+                        {{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.date||'Date'}}<span class="required"></span></label>
+                  <div class="col-sm-4">
+                    <dx-date-box width="100%" displayFormat="dd/MM/yyyy" type="date" [(value)]="model.activityDate">
+                      <dx-validator>
+                          <dxi-validation-rule type="required" message="Date is required"></dxi-validation-rule>
+                      </dx-validator>
+
+                    </dx-date-box>
+                  </div>
+                  <label class="col-sm-2 control-label">{{languages.assigned||'Assigned Person'}} <span
+                      class="required"></span></label>
+                  <div class="col-md-3">
+                    <dx-select-box [(value)]="model.assignedPerson" [items]="listEmp" displayExpr="employeeName"
+                      valueExpr="employeeId" [searchEnabled]="true">
+                      <dx-validator>
+                        <dxi-validation-rule type="required" message="Assigned Person is required">
+                        </dxi-validation-rule>
+                      </dx-validator>
+                    </dx-select-box>                    
+                  </div>
+                  <div class="col-md-1">
+                    <a (click)="setCurrentUser()" title="{{languages.assigntome||'Assigned to me'}}">
+                      <i class="fa fa-user-circle-o" aria-hidden="true" style="margin: 6px 0 0 -10px;"></i></a>
+                  </div>                  
+                </div>                
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.relatedparty||'Related Party'}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" [(ngModel)]="model.relatedParty" name="relatedparty"
+                      #relatedparty="ngModel" />
+                  </div>
+                  <label class="col-sm-2 control-label">{{languages.duedate||'Due Date'}} </label>
+                  <div class="col-md-4">
+                    <dx-date-box width="100%" displayFormat="dd/MM/yyyy" type="date" [(value)]="model.dueDate">
+                    </dx-date-box>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.remark}}</label>
+                  <div class="col-sm-10">
+                    <app-tiny-editor *ngIf="!editMode" [elementId]="'details'" (onEditorKeyup)="keyupHandlerFunction($event)"
+                      [(tinymceModel)]="model.details" [tmHeight]="320">
+                    </app-tiny-editor>
+                    <app-tiny-editor *ngIf="editMode" [elementId]="'details'" (onEditorKeyup)="keyupHandlerFunction($event)"
+                      [(tinymceModel)]="model.details" [tmHeight]="150">
+                    </app-tiny-editor>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" [ngClass]="{'hide-attachment-activity': editMode==false}">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <div class="form-group">
+              <label for="attachment" class="col-sm-2 control-label">{{languages.attachment}}</label>
+              <div class="col-sm-10">
+                <div class="row">
+                  <div class="col-md-12">
+                    <app-fileupload #assetUploadFile projectId="100" sectionId="107" maxFiles="4" maxSize="5">
+                    </app-fileupload>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 group-btn-right">
+        <button type="button" class="btn btn-default pull-right"
+          (click)="bsModalRef.hide()">{{languages.close}}</button>
+        <!-- <button type="submit" class="btn btn-primary pull-right" [disabled]="IsSubmit">{{languages.submit}}</button> -->
+        <dx-button class="btn btn-primary pull-right" [disabled]="IsSubmit" 
+            id="button"
+            [text]="languages.submit"
+            type="success"  
+            [useSubmitBehavior]="true">
+        </dx-button>
+      </div>
+    </div>
+  </form>
+</div>

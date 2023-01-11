@@ -1,0 +1,244 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.timesheetreport||"Timesheet Report"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li class="active">{{languages.timesheetreport||"Timesheet Report"}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">{{languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse" data-toggle="tooltip"
+                title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.subsidiary}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" (change)="changedSudidiary()" [(ngModel)]="searchModel.subsidiary"
+                        name="subsidiary" #subsidiary="ngModel">
+                        <option *ngFor="let c of listSubsidiary" [ngValue]="c.subsidiaryId">{{c.subsidiaryName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.division}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.division" (change)="changedDivision()" name="division"
+                        #division="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of listDivision" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.department}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.DeptCode" (change)="changedDepartment()"
+                        name="DeptCode" #DeptCode="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of departments2" [ngValue]="c.deptCode">{{c.deptDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{languages.date}}</label>
+                    <div class="col-sm-4 date-from">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsRangeValue[0]">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-4">
+                      <dx-date-box width="100%" [min]="bsRangeValue[0]" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsRangeValue[1]">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="Subject" class="col-sm-4 control-label">{{languages.employee}}</label>
+                    <div class="col-sm-8 date-from">
+                      <dx-select-box    [(value)]="searchModel.employeeId"   [items]="listusers2" displayExpr="employeeName" valueExpr="employeeId" [searchEnabled]="true">
+                      </dx-select-box>
+                    </div>
+                 
+                    <div class="col-sm-offset-4 col-sm-8">
+                      <dx-check-box (onValueChanged)="getAllEmployee()" [(value)]="IsStatusEmployee" text="Employee Left">
+                      </dx-check-box>
+                    </div>
+                  </div>
+                </div>
+
+                
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-12">
+                      <dx-check-box class="col-sm-5" [(value)]="IsManualUpdate"  text="Manual Update"></dx-check-box>
+                      <dx-check-box class="col-sm-5" [(value)]="IsCheckTime"  text="Blank time"></dx-check-box>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{languages.workinglocation}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.workingLocation" name="workingLocation"
+                        #workingLocation="ngModel">
+                        <option value="0"></option>
+                        <option *ngFor="let c of listWorkingLocation" [ngValue]="c.id">{{c.locationName}}</option>
+                      </select>                     
+                    </div>
+                  </div>
+                </div>                
+
+              </div>
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <button *ngIf="searchModel.employeeId" type="button" (click)="printPdf()" class="btn btn-default pull-right btn-sm"> Print Report</button>
+            <!-- <button type="button" (click)="exportExcel()" class="btn btn-info pull-right btn-sm">{{languages.export||"Export"}}</button> -->
+            <button type="button" (click)="search()" class="btn btn-primary pull-right btn-sm">{{languages.search}}</button>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <!-- <div class="box-header">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title">List ID Request</h3>
+          </div> -->
+          <div class="box-body">
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource">
+              <dxo-export [enabled]="true" fileName="TimesheetReport"></dxo-export>
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+              <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+              <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+              <dxi-column dataType="string" dataField="employeeCode" caption="{{languages.employeecode}}" cellTemplate="diffCellTemplate">
+              </dxi-column>
+              <dxi-column dataType="string" dataField="employeeName" caption="{{languages.employee}}" cellTemplate="diffCellEditTemplate">
+              </dxi-column>
+              <dxi-column dataType="string" dataField="divisionDesc" caption="{{languages.division||'Division'}}">
+              </dxi-column>
+              <dxi-column dataType="string" dataField="deptDesc" caption="{{languages.department||'Department'}}">
+              </dxi-column>
+              <dxi-column dataType="string" dataField="timeSheetCode" caption="{{languages.timesheetcode || 'Time Sheet Code'}}">
+              </dxi-column>
+              <dxi-column dataField="createDateFormat" caption="{{languages.date}}" [format]="{ type: 'dd/MM/yyyy' }">
+              </dxi-column>
+              <dxi-column alignment="center" dataField="startTimeFormat" caption="{{languages.starttime}}" [format]="{ type: 'dd/MM/yyyy' }">
+              </dxi-column>
+              <dxi-column alignment="center" dataField="endTimeFormat" caption="{{languages.endtime}}" >
+              </dxi-column>
+              <dxi-column dataType="number" dataField="workHour" caption="{{languages.workhour}}">
+              </dxi-column>
+              <dxi-column dataType="number" dataField="overtTimeHour" caption="{{languages.overtimehour}}">
+              </dxi-column>
+              <dxi-column alignment="center" dataField="originalStartTimeFormat" caption="{{languages.originalstarttime||'Original Start time'}}">
+              </dxi-column>
+              <dxi-column alignment="center" dataField="originalEndTimeFormat" caption="{{languages.originalendtime||'Original End time'}}" >
+              </dxi-column>
+              <dxi-column alignment="center" dataField="updateDate" caption="{{languages.updatedate}}" >
+              </dxi-column>
+              <dxi-column dataField="isManualPost" caption="{{languages.manualupdate|| 'Manual Update'}}" cellTemplate="diffCellTemplateManualUpdate">
+              </dxi-column>
+              <dxi-column dataField="manualPostReason" caption="{{languages.manualpostreason}}">
+              </dxi-column>
+              <dxi-column dataField="workingLocation" caption="{{languages.workingLocation || 'Working Location'}}">
+              </dxi-column>
+              <dxi-column dataField="approveType" caption="{{languages.approvetype}}"></dxi-column>
+              <dxi-column dataField="approvedNameBy" caption="{{languages.approvednameby}}"></dxi-column>
+              <!-- <dxi-column caption="" dataField="annId" cellTemplate="diffStatusTemplate"></dxi-column> -->
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+                [showInfo]="true"></dxo-pager>
+              <dxo-editing mode="popup" [allowDeleting]="false">
+              </dxo-editing>
+              <div *dxTemplate="let d of 'diffCellTemplate'">
+                <a (click)="viewHistory(d.data)" tooltip = "Click to view history" placement="right">
+                  <span> {{d.value}}</span>
+                </a>
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate'">
+                <div style="text-align:center" class="box-grid-action">
+                  <a (click)="edit(d.value)">
+                    <i class="fa fa-pencil-square-o fa-1x"></i>
+                  </a>
+                  <a (click)="delete(d.value)">
+                    <i class="fa fa-trash-o fa-1x"></i>
+                  </a>
+                </div>
+              </div>
+              <div *dxTemplate="let d of 'DateTimeTemplate'">
+                <span>{{convertLocalTime(d.value)}}</span>
+              </div>
+              <div *dxTemplate="let c of 'diffCellTemplateManualUpdate'">
+                <span>{{c.value ==1 ?'Updated': ''}}</span>
+              </div>
+              <div *dxTemplate="let d of 'DateTemplate'">
+                <span>{{convertDateTime(d.value)}}</span>
+              </div>
+              <div *dxTemplate="let d of 'diffCellEditTemplate'">
+                <a (click)="openEditTimesheetModalWithComponent(d)">
+                  <span> {{d.value}}</span>
+                </a>
+              </div>
+            </dx-data-grid>
+
+          </div>
+          <div class="box-footer"></div>
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>

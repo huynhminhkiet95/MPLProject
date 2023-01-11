@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <div class="form-group dv-system">
+    <div class="row system-row">
+      <label for="systems" class="col-sm-2 control-label">Select System</label>
+      <div class="col-sm-4">
+        <select class="form-control" id="systems" name="systems" [(ngModel)]="systemId" (change)="onChangeSystem($event.target.value)">
+          <option *ngFor="let i of systemList" [ngValue]="i.systemId" >{{i.systemName}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Info boxes -->
+  <div class="row">
+    <dx-data-grid #gridContainer 
+      id="gridContainer" 
+      [dataSource]="arrDataSource" 
+      [(selectedRowKeys)]="selectedRows"
+      keyExpr="groupId" 
+      (onSelectionChanged)="onSelectionChanged($event)">
+
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+      <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+      <!-- <dxo-column-chooser [enabled]="true"></dxo-column-chooser> -->
+      <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+      <dxi-column dataField="groupId" caption="Group ID">
+      </dxi-column>
+      <dxi-column dataField="groupDesc">
+      </dxi-column>
+      <dxo-selection mode="multiple" showCheckBoxesMode="always"></dxo-selection>
+      <dxo-editing mode="popup" [allowDeleting]="false">
+      </dxo-editing>
+
+    </dx-data-grid>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Close</button>
+</div>

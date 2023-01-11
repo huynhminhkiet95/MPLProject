@@ -1,0 +1,374 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{languages.contractdetail||'Contract Detail'}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && Save()" #f="ngForm" novalidat>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"> {{languages.employeename || 'Employee Name'}}
+                    <span class="required"></span></label>
+                  <div class="col-sm-4">
+                    <dx-select-box [(value)]="model.employeeId" [items]="listusers" displayExpr="employeeName"
+                      valueExpr="employeeId" [searchEnabled]="true" itemTemplate="listItem"
+                      (onSelectionChanged)="changedeContract($event)">
+
+                      <div *dxTemplate="let itemData of 'listItem'; let itemIndex = index">
+                        <span style="display:inline-block;min-width:100px ;font-weight: bold">
+                          {{itemData.employeeName}}
+                        </span>
+                        <br />
+                        <span>{{itemData.divisionDesc}} - {{itemData.deptDesc}} </span>
+                      </div>
+                    </dx-select-box>
+                    <span *ngIf="f.submitted && model.employeeId == null" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="Employee Name is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  <label class="col-sm-2 control-label">{{languages.contracttype || 'Contract Type'}} <span
+                      class="required"></span></label>
+                  <div class="col-sm-4">
+                    <input *ngIf="editMode" [disabled]="editMode" class="form-control" type="text"
+                      value="{{languages[model.contracType|removewhitespaces]||model.contracType}}">
+
+                    <div *ngIf="!editMode">
+                      <select class="form-control" id="contracType" name="contracType" [(ngModel)]="model.contracType"
+                        #contracType="ngModel" required (change)="ChangeContractType($event)">
+                        <option *ngFor="let c of contractTypes" [ngValue]="c.codeId">
+                          {{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                      <span *ngIf="f.submitted && !contracType.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Contract Type is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.contractdate||'Contract Date'}}<span
+                      class="required"></span></label>
+                  <div class="col-sm-4">
+                    <dx-date-box width="100%" displayFormat="dd/MM/yyyy" type="date" [(value)]="contractDate">
+                    </dx-date-box>
+                    <span *ngIf="f.submitted && contractDate == null" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="EContract Type is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  <label class="col-sm-2 control-label">{{languages.expireddate||'Expired Date'}}<span
+                      class="required"></span></label>
+                  <div class="col-sm-4">
+                    <dx-date-box width="100%" displayFormat="dd/MM/yyyy" type="date" [(value)]="expiredDate"
+                      (onValueChanged)="valueChangeExpiredDate()">
+                    </dx-date-box>
+                    <span *ngIf="f.submitted && expiredDate == null" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="EContract Type is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.contractperson||'Contact Person'}}</label>
+                  <div class="col-sm-4">
+                    <dx-select-box [(value)]="contractPersonId" [dataSource]="listEmployer" displayExpr="codeDesc"
+                      valueExpr="codeId" [searchEnabled]="true">
+                    </dx-select-box>
+                    <!-- a<p>{{model.contractPerson}}</p> -->
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{languages.remark}}</label>
+                  <div class="col-sm-10">
+                    <textarea style="height:80px;width: 100%" [(ngModel)]="model.remark" name="remark"
+                      #remark="ngModel">
+                    </textarea>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-header with-border" style="height: 35px;">
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{languages.econtracttype || 'eContractType'}}<span
+                  class="required"></span></label>
+              <div class="col-sm-6">
+                <select class="form-control" id="econtractType" name="econtractType"
+                  [(ngModel)]="modelContract.econtractTypes" #econtractType="ngModel" required>
+                  <option *ngFor="let c of econtractTypes" [ngValue]="c.eContractType">{{c.eContractTypeDesc}}</option>
+                </select>
+                <span *ngIf="f.submitted && !econtractType.valid" class="help-block-custom">
+                  <i class="fa fa-exclamation-circle" tooltip="EContract Type is required" aria-hidden="true"></i>
+                </span>
+              </div>
+
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{languages.employeeinfomation || 'Employee Infomation'}}</label>
+
+              <div class="col-sm-10">
+
+                <!-- /.box-header -->
+                <div style="border: 1px solid #bda1a1;">
+                  <table class="table table-contract">
+                    <tbody class="econtract">
+                      <tr>
+                        <td>
+                          <label>{{languages.contractno || 'Số HĐ'}}<span class="required"></span></label>
+                        </td>
+                        <td>
+                          <div>
+                            <input type="text" class="form-control" [(ngModel)]="contractNo"
+                              style="width: 93%;float: left;" name="no" id="no">
+
+                          </div>
+                        </td>
+                        <td>
+                          <label>{{languages.date || 'Date'}}</label>
+                        </td>
+                        <td>
+                          <dx-date-box [disabled]="true" width="93%" displayFormat="dd/MM/yyyy" type="date"
+                            [(value)]="contractDate">
+                          </dx-date-box>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label>{{languages.fullname || 'Fullname'}}</label>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" style="width: 93%" name="fullname" id="fullname"
+                            [(ngModel)]="modelContract.fullname" #fullname="ngModel" disabled>
+                        </td>
+                        <td>
+                          <label>{{languages.position || 'Position'}}</label>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" style="width: 93%" name="position" id="position"
+                            [(ngModel)]="modelContract.position" #position="ngModel">
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label>{{languages.employeecontracttype || 'Employee Contract Type'}}</label>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" style="width: 93%" name="typeofemployeecontract"
+                            id="typeofemployeecontract" [(ngModel)]="modelContract.typeofemployeecontract"
+                            #typeofemployeecontract="ngModel">
+                        </td>
+                        <td>
+                          <label>{{languages.employeenumber || 'Employee Number'}}</label>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" style="width: 93%" name="employeenumber"
+                            id="employeenumber" [(ngModel)]="modelContract.employeenumber" #employeenumber="ngModel">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label>{{languages.dateofbirth || 'Date Of Birth'}}</label>
+                        </td>
+                        <td>
+                          <dx-date-box width="93%" displayFormat="dd/MM/yyyy" type="date"
+                            [(value)]="modelContract.birthday">
+                          </dx-date-box>
+                        </td>
+                        <td>
+                          <label>{{languages.placeofbirth || 'Place of Birth'}}</label>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" style="width: 93%" name="placeOfBirth"
+                            id="placeOfBirth" [(ngModel)]="modelContract.placeofbirth" #placeOfBirth="ngModel">
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label>{{languages.idnumber || 'ID Number'}}</label>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" style="width: 93%" name="idcardnumber"
+                            id="idcardnumber" [(ngModel)]="modelContract.idcardnumber" #idcardnumber="ngModel">
+                        </td>
+                        <td>
+                          <label>{{languages.contactphone || 'Contact Phone'}}</label>
+                        </td>
+                        <td>
+                          <!-- <input type="text" class="form-control" style="width: 100%" name="phonenumber"
+                            id="phonenumber" [(ngModel)]="modelContract.phonenumber" #phonenumber="ngModel"> -->
+
+                          <dx-text-box [(value)]="modelContract.phonenumber" width="93%"
+                            maskInvalidMessage="The input value does not match the mask">
+                          </dx-text-box>
+
+                        </td>
+
+                      </tr>
+                      <tr>
+                        <td>
+                          <label>{{languages.idissuedate || 'Id Issue Date'}}</label>
+                        </td>
+                        <td>
+                          <dx-date-box width="93%" displayFormat="dd/MM/yyyy" type="date"
+                            [(value)]="modelContract.dateofissue">
+                          </dx-date-box>
+                        </td>
+                        <td>
+                          <label>{{languages.idissueplace || 'ID Issue Place'}}</label>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" style="width: 93%" name="placeofissue"
+                            id="placeofissue" [(ngModel)]="modelContract.placeofissue" #placeofissue="ngModel">
+                        </td>
+                      </tr>
+
+
+                      <tr>
+                        <td>
+                          <label>{{languages.permanentaddress || 'Permanent Address'}}</label>
+                        </td>
+                        <td colspan="3">
+                          <input type="text" class="form-control" style="width: 97.5%" id="permanentaddress"
+                            name="permanentaddress" [(ngModel)]="modelContract.permanentAddress"
+                            #permanentAddress="ngModel">
+
+                          <!-- modelContract.permanentAddress -->
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label>{{languages.residentialaddress || 'Residential Address'}}</label>
+                        </td>
+                        <td colspan="3">
+                          <input type="text" class="form-control" style="width: 97.5%" id="residentialaddress"
+                            name="residentialaddress" [(ngModel)]="modelContract.residentialaddress"
+                            #residentialaddress="ngModel">
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label>{{languages.monthlysalary || 'Monthly salary'}}</label>
+                        </td>
+                        <td>
+                          <dx-number-box width="93%" class="numberAlign" format="#,##0.00" [(value)]="monthlysalary">
+                          </dx-number-box>
+                        </td>
+                        <td style="width: 119px;">
+                          <label>{{languages.lunchallowance || 'Lunch allowance'}}</label>
+                        </td>
+                        <td>
+                          <div style="width: 51%;  float: left;">
+                            <dx-number-box class="numberAlign" format="#,##0.00" [(value)]="lunchallowance">
+                            </dx-number-box>
+
+
+                          </div>
+                          <div style="width: 42%;  display: inline-block;">
+                            <select class="form-control" id="typelunchallowance" name="typelunchallowance"
+                              [(ngModel)]="modelContract.typelunchallowance" #typelunchallowance="ngModel" required>
+                              <option value="ngày">Ngày</option>
+                              <option value="tháng">Tháng</option>
+                            </select>
+                          </div>
+
+
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label>{{languages.allowance || 'Allowance'}}</label>
+                        </td>
+                        <td>
+                          <dx-number-box width="93%" class="numberAlign" format="#,##0.00" [(value)]="allowance">
+                          </dx-number-box>
+                        </td>
+                        <td>
+                          <label>{{languages.rewardforworkefficiency || 'Reward for work efficiency'}}</label>
+                        </td>
+                        <td>
+                          <dx-number-box width="93%" class="numberAlign" format="#,##0.00"
+                            [(value)]="rewardforworkefficiency">
+                          </dx-number-box>
+                        </td>
+                      </tr>
+            
+
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- /.box-body -->
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{languages.attachment}}</label>
+              <div class="col-sm-10">
+                <div class="row">
+                  <div class="col-md-12">
+                    <app-fileupload #assetUploadFile projectId="100" sectionId="107" maxFiles="4" maxSize="5">
+                    </app-fileupload>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 group-btn-right">
+        <button type="button" class="btn btn-default pull-right"
+          (click)="bsModalRef.hide()">{{languages.close}}</button>
+        <button type="submit" *ngIf="!editMode" class="btn btn-primary pull-right">{{languages.save}}</button>
+        <button type="submit" *ngIf="editMode && modelContract.contractStatus === 'DRAFT'"
+          class="btn btn-primary pull-right">{{languages.update}}</button>
+        <!-- <button *ngIf="editMode" type="button" class="btn btn-primary pull-right"
+          (click)="viewReport()">{{languages.view || 'View'}}</button> -->
+        <!-- <button *ngIf="editMode" type="button" class="btn btn-primary pull-right"
+          (click)="DownloadEContractReport()">{{languages.download || 'Download'}}</button> -->
+        <button *ngIf="modelContract.contractStatus === 'DRAFT'" type="button" class="btn btn-info pull-right"
+          (click)="confirm()">{{languages.confirm || 'Confirm'}}</button>
+        <button *ngIf="modelContract.contractStatus === 'COMPLETE' && modelContract.verifyDate == null" type="button"
+          class="btn btn-info pull-right" (click)="verify()">{{languages.verify || 'Verify'}}</button>
+      </div>
+    </div>
+
+  </form>
+</div>

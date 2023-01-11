@@ -1,0 +1,164 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{languages.addnewidrequest}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid && addnew()" #f="ngForm" novalidate>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="iDService" class="col-sm-2 control-label">{{languages.idrequest}}&nbsp;<span class="required"></span></label>
+                  <div class="col-sm-3">
+                    <select class="form-control" id="iDService" name="iDService" [(ngModel)]="model.iDService"
+                      #iDService="ngModel" required>
+                      <!-- <option *ngFor="let c of listIDServices" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                      <option *ngFor="let c of listIDServices" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                    </select>
+                    <span *ngIf="f.submitted && !iDService.valid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                        tooltip="ID Service is required" aria-hidden="true"></i></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="requestMyselt" class="col-sm-2 control-label">{{languages.requestfor}}</label>
+                  <div class="col-sm-2">
+                    <div class="checkbox">
+                      <label>
+                        <input type="radio" value="1" [(ngModel)]="model.existedUserId" name="existedUserId">
+                        {{languages.myself}}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="checkbox">
+                      <label>
+                        <input type="radio" value="0" [(ngModel)]="model.existedUserId" name="existedUserId">
+                        {{languages.others}}( {{languages.providename}})
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="loginName" class="col-sm-2 control-label"> {{languages.userid}}</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" id="loginName" [(ngModel)]="model.loginName" name="loginName"
+                      #loginName="ngModel" [required]="model.existedUserId==0 ? true:null" [readonly]="model.existedUserId==1 ? true:null" />
+                    <span *ngIf="f.submitted && !loginName.valid" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="user Id is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  <label for="gender" class="col-sm-2 control-label"> {{languages.gender}}</label>
+                  <div class="col-sm-4">
+                    <select class="form-control" [(ngModel)]="model.gender" id="gender" #gender="ngModel" name="gender"
+                      [disabled]="model.existedUserId==1 ? true:null">
+                      <!-- <option *ngFor="let c of listGender" [ngValue]="c.codeType">{{c.codeDesc}}</option> -->
+                      <option *ngFor="let c of listGender" [ngValue]="c.codeType">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="firstname" class="col-sm-2 control-label">{{languages.firstname}}</label>
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"
+                      [required]="model.existedUserId==0 ? true:null" [readonly]="model.existedUserId==1 ? true:null" />
+                    <span *ngIf="f.submitted && !firstName.valid" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="First Name is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  <label for="lastName" class="col-sm-2 control-label">{{languages.lastname}}</label>
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel"
+                      [required]="model.existedUserId==0 ? true:null" [readonly]="model.existedUserId==1 ? true:null" />
+                    <span *ngIf="f.submitted && !lastName.valid" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="Last Name is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="email" class="col-sm-2 control-label">{{languages.emailaddress}}</label>
+
+                  <div class="col-sm-4">
+                    <input class="form-control" type="email" id="email" [(ngModel)]="model.email" name="email" #email="ngModel"
+                      [readonly]="model.existedUserId==1 ? true:null" [email]="model.email!='' && model.email!=null" />
+                    <span [hidden]="email.valid || (email.pristine && !f.submitted)" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="email not match" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  <label for="mobileNo" class="col-sm-2 control-label">{{languages.mobileno}}</label>
+
+                  <div class="col-sm-4">
+                    <input class="form-control" id="mobileNo" name="mobileNo" [(ngModel)]="model.mobileNo" [readonly]="model.existedUserId==1 ? true:null" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="pWD" class="col-sm-2 control-label">{{languages.password}}</label>
+                  <div class="col-sm-2">
+                    <input type="password" name="password" [(ngModel)]="model.password" #password="ngModel" class="form-control"
+                      id="password" autocomplete="off" validateEqual="confirmPassword" reverse="true" [readonly]="model.existedUserId==1 ? true:null" />
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="password" name="confirmPassword" [(ngModel)]="model.confirmPassword" #confirmPassword="ngModel"
+                      reverse="false" class="form-control" id="confirmPassword" autocomplete="off" validateEqual="password"
+                      [readonly]="model.existedUserId==1 ? true:null" />
+
+                    <span [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f.submitted)" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="confirmPassword not match" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  <label for="department" class="col-sm-2 control-label">{{languages.department}}</label>
+                  <div class="col-sm-4">
+                    <select class="form-control" name="Department" id="Department" [(ngModel)]="model.Department"
+                      [disabled]="model.existedUserId==1 ? true:null">
+                      <option *ngFor="let c of listDepartments" [ngValue]="c.id">{{c.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="DateofJoin" class="col-sm-2 control-label">{{languages.dateofjoin}}</label>
+                  <div class="col-sm-4">
+                    <dx-date-box [min]="minDate" width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                      [(value)]="bsValue">
+                    </dx-date-box>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="remark" class="col-sm-2 control-label">{{languages.remark}}&nbsp;<span class="required"></span></label>
+
+                  <div class="col-sm-10">
+                    <textarea class="form-control" id="remark" name="remark" #remark="ngModel" [(ngModel)]="model.remark"
+                      style="height:100px;" required></textarea>
+                    <span *ngIf="f.submitted && !remark.valid" class="help-block-custom">
+                      <i class="fa fa-exclamation-circle" tooltip="Remark is required" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="attachment" class="col-sm-2 control-label">{{languages.attachment}}</label>
+                  <div class="col-sm-10">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <app-fileupload projectId="100" sectionId="107" maxFiles="4" maxSize="2" fileExt="JPG, GIF, PNG">
+                        </app-fileupload>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button type="button" class="btn btn-default pull-right" (click)="bsModalRef.hide()">{{languages.close}}</button>
+        <button type="submit" class="btn btn-primary pull-right" [disabled]="IsSubmit">{{languages.save}}</button>
+      </div>
+    </div>
+  </form>
+</div>

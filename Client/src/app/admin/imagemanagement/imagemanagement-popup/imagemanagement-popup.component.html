@@ -1,0 +1,99 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form name="formaddnew" class="form-horizontal" (ngSubmit)="f.form.valid && addnew()" #f="ngForm" novalidate>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="box box-primary idrequest-search">
+        
+        <div class="box-body">
+
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="form-group">
+
+                <label for="iDService" class="col-sm-4 control-label">{{this.languages.subject}}</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="subject" name="subject" [(ngModel)]="model.subject"
+                    #subject="ngModel" />
+                  <span *ngIf="f.submitted && !subject.valid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                      tooltip="ID Service is required" aria-hidden="true"></i></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="SvcType" class="col-sm-4 control-label">{{this.languages.expiredate}}</label>
+                <div class="col-sm-8">
+                    <dx-date-box  width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                    [(value)]="bsValue">
+                  </dx-date-box>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="iDService" class="col-sm-4 control-label">{{this.languages.type}}</label>
+                <div class="col-sm-8">
+                  <select class="form-control" id="type" name="type" [(ngModel)]="model.type" #type="ngModel"
+                    required>
+                    <!-- <option *ngFor="let c of listTypes" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                    <option *ngFor="let c of listTypes" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                  </select>
+                  <span *ngIf="f.submitted && !type.valid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                      tooltip="ID Service is required" aria-hidden="true"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-md-12">
+          <div class="box box-primary">
+              <div class="box-body">
+               
+              <div class="form-group">
+                  <label for="attachment" class="col-sm-2 control-label">{{this.languages.attachment}}</label>
+
+                  <div class="col-sm-10">
+                      <div class="row">
+                          <div class="col-md-8">
+                            <app-fileupload 
+                              projectId="100" 
+                              sectionId="107" 
+                              maxFiles="4"
+                              maxSize="2"
+                              fileExt="JPG, GIF, PNG">
+                            </app-fileupload>
+                          </div>
+                          <div class="col-md-4">
+                            <!-- <ul class="list-attachfile-view">
+                              <li *ngFor="let c of attachments" class="item-files">
+                                  <i class="fa fa-bolt" aria-hidden="true"></i>
+                                  <a target="_blank" (click)="downloadFile(c.docNo)">{{c.dFileName}}</a>
+                              </li>
+                            </ul> -->
+                          </div>
+                        </div>
+                  </div>
+              </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 group-btn-right">
+        <button type="button" class="btn btn-default pull-right" (click)="bsModalRef.hide()">{{this.languages.close}}</button>
+        <button type="submit" class="btn btn-primary pull-right" >{{this.languages.save}}</button>
+    </div>
+  </div>
+</form>
+</div>
+ 

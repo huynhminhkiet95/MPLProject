@@ -1,0 +1,128 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group" *ngIf="model.Id != '0'">
+                            <label for="facilityCode" class="col-sm-3 control-label">{{languages.createuser}}</label>
+                            <div class="col-sm-6"><span>{{ model.CreateName }}</span></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="facilityCode" class="col-sm-3 control-label">{{languages.facilities}}</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" id="facilityCode" name="facilityCode" [(ngModel)]="model.FacilityCode"
+                                    #facilityCode="ngModel" [disabled]="model.Id != '0'" tabindex="0" required>
+                                    <option *ngFor="let c of facilityList" [ngValue]="c.facilityCode">{{c.facilityDesc}}</option>
+                                </select>
+                                <span *ngIf="facilityCode.invalid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                                        tooltip="Subject is required" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="col-sm-3 control-label">{{languages.subject}}</label>
+                            <div class="col-sm-8">
+                                <input type="text" tabindex="1" id="subject" [maxlength]="50" class="form-control" name="subject"
+                                    [(ngModel)]="model.BookSubject" #subject="ngModel" [disabled]="model.Id != '0'"
+                                    required />
+                                <span *ngIf="subject.invalid" class="help-block-custom"><i class="fa fa-exclamation-circle"
+                                        tooltip="Subject is required" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="model.Id != '0'" class="form-group">
+                            <label for="subject" class="col-sm-3 control-label">{{languages.bookingdate || 'Booking
+                                Date'}}</label>
+                            <div class="col-sm-8">
+                                <label for="subject" class="control-label">{{bookingdatestart + ' to '+ bookingdateto
+                                    }}</label>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="model.Id == '0'">
+                            <label for="subject" class="col-sm-3 control-label">{{languages.allday}} </label>
+                            <div class="col-sm-8">
+                                <dx-switch [value]="isAllDay" (onValueChanged)="ChangeAllDay()"></dx-switch>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="model.Id == '0'">
+                            <label for="ExpectedDate" class="col-sm-3 control-label">{{languages.date}}</label>
+                            <div class="col-sm-2">
+                                <dx-date-box disabled="disabled" width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy"
+                                    type="date" [(value)]="model.BookDateStart">
+                                </dx-date-box>
+                            </div>
+                            <div class="col-sm-6">
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="model.Id == '0'">
+                            <label for="mytime" class="col-sm-3 control-label">{{languages.periodtime}}</label>
+                            <div class="col-sm-1">
+                                <timepicker tabindex="4" [min]="minTime" [max]="maxTime" [(ngModel)]="model.BookDateStart"
+                                    name="mytimeStart" id="mytimeStart" #mytimeStart="ngModel" [hourStep]="hstep"
+                                    [minuteStep]="mstep" [showSeconds]="false" [disabled]="isAllDay"></timepicker>
+                            </div>
+                            <label for="mytime" class="col-sm-2 control-label">To</label>
+                            <div class="col-sm-1">
+                                <timepicker tabindex="5" [min]="minTime" [max]="maxTime" [(ngModel)]="model.BookDateTo"
+                                    name="mytimeTo" id="mytimeTo" #mytimeTo="ngModel" [hourStep]="hstep" [minuteStep]="mstep"
+                                    [showSeconds]="false" [disabled]="isAllDay"></timepicker>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookingMemo" class="col-sm-3 control-label">{{languages.memo}}</label>
+                            <div class="col-sm-8">
+                                <textarea tabindex="6" [maxlength]="256" id="bookingMemo" name="bookingMemo" style="height:100px;width:100%"
+                                    [(ngModel)]="model.BookMemo" #bookingMemo="ngModel" [disabled]="model.Id != '0'"
+                                    required></textarea>
+                                <span *ngIf="bookingMemo.invalid" class="help-block-custom">
+                                    <i class="fa fa-exclamation-circle" tooltip="Book Memo is required" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <select [(ngModel)]="welcomeBoard.Theme" name="selectedTheme" #selectedTheme="ngModel" class="form-control">
+                        <option selected="selected" value="blue.jpg">Blue</option>
+                        <option value="navy.jpg">Navy</option>
+                        <option value="wooden.jpg">Wooden</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <select [(ngModel)]="welcomeBoard.Fload" name="selectedTheme" #selectedTheme="ngModel" class="form-control">
+                        <option selected="selected" value="text-center">Center</option>
+                        <option value="text-left">Left</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 group-btn-right">
+            <button style="margin-right: 15px;float: right;" type="button" class="btn btn-default" (click)="bsModalRef.hide()"
+                tabindex="9">{{languages.close}}</button>
+            <button style="margin-right: 15px;float: right;" *ngIf="model.Id != '0'" class="btn btn-primary" (click)="Cancel()"
+                tabindex="8" [disabled]="model.CreateUser != currentuser.employeeId">{{languages.cancelbooking}}</button>
+            <button style="margin-right: 15px;float: right;" *ngIf="model.Id == '0'" tabindex="7" class="btn btn-primary"
+                (click)="Save()" [disabled]="!f.form.valid"> {{languages.submit}}</button>
+            <button style="margin-right: 15px;float: right;" *ngIf="model.Id != '0'" tabindex="7" class="btn btn-success"
+                (click)="ShowwelcomeBoard()"> {{languages.showwelcomeboard||"Show welcome Board"}}</button>
+
+        </div>
+    </div>
+</div>

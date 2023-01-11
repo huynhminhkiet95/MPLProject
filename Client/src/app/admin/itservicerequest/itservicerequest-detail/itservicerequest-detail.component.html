@@ -1,0 +1,228 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.editservicerequest}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home}}</a></li>
+      <li><a routerLink="../../servicerequest"> {{languages.itservicerequest}}</a></li>
+      <li class="active"><b>{{id}}</b></li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title"> {{languages.servicerequestview}}</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-7">
+                <ul class="ul-list-content">
+                  <li>
+                    <label class="lbl-title">{{languages.status}}</label>
+                    <span class="lbl-content">{{model.srStatusDesc}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.itservice}}</label>
+                    <span class="lbl-content">{{model.serviceTypeDesc}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.servicetype}}</label>
+                    <span class="lbl-content">{{model.itServiceDesc}}</span>
+                  </li>
+                  <!-- <li>
+                    <label class="lbl-title">{{languages.subject}}</label>
+                    <span class="lbl-content">{{model.srSubject}}</span>
+
+                  </li> -->
+                  <li>
+                    <div class="col-md-3" style="width: 137px;">
+                      <label class="lbl-title" style="min-width: 104px;">{{languages.subject}}</label>
+                    </div>
+                    <div class="col-md-9">
+                      <span class="lbl-content">{{model.srSubject}}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-5">
+                <ul class="ul-list-content">
+                  <li>
+                    <label class="lbl-title">{{languages.closed}}</label>
+                    <span *ngIf="model.updateUser" class="lbl-content">{{model.updateUser}} </span>
+                      <!-- on <span class="date">{{commonSvc.convertMilisecondToUTCDateTime(model.updateDate)}}</span></span> -->
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.createuser}}</label>
+                    <span class="lbl-content">{{model.createUser}}</span>
+                       <!-- on <span appDateTimeFormat>{{commonSvc.convertMilisecondToUTCDateTime(model.createDate)}}</span></span> -->
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.priority}}</label>
+                    <span class="lbl-content">{{model.pirorityDesc}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <ul class="list-attachfile-view">
+                    <li *ngFor="let c of attachFiles" class="item-files">
+                      <i class="fa fa-bolt" aria-hidden="true"></i>
+                      <a target="_blank" (click)="downloadFile(c.docNo)">{{c.dFileName}}</a>
+                      <a style="padding-left: 10px;" (click)="viewImage(c.docNo)"><i class="fa fa-eye"></i> {{languages.viewfile||'View File'}}</a>
+                    </li>
+                  </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">{{languages.details}}</h3>
+          </div>
+          <div class="box-body">
+            <div class="item-detail" *ngFor="let item of listDetail">
+              <div class="row">
+                <div class="col-md-7">
+                  <ul class="ul-list-content">
+                    <li>
+                      <img src="{{item.avatarUser}}" style="height:40px;" class="img-circle" onError="this.src='/assets/img/missing_avatar.svg.png';" alt=""/>
+                      <!-- <label class="lbl-title2">{{languages.posted}}</label> -->
+                      <span class="lbl-content">{{item.createUser}} at <i class="fa fa-clock-o"></i><span class="date"> {{commonSvc.convertMilisecondToUTCDateTime(item.createDate)}}</span></span>
+                    </li>
+                    <li>
+                      <div [innerHTML]="item.details" class="direct-chat-text" style="margin-left:57px"> </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-5">
+                  <ul class="ul-list-content">
+                    <li>
+                      <label class="lbl-title">{{languages.poststatus}}</label>
+                      <span class="label status-{{item.srStatusDesc}}">{{item.srStatusDesc}}</span>
+                    </li>
+                  </ul>
+                  <ul *ngIf="item.assignTo" class="ul-list-content">
+                    <li>
+                      <label class="lbl-title">{{languages.assignto}}</label>
+                      <span class="label label-default">{{item.assignTo}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div *ngIf="item.attachments.length>0" class="row">
+                <div class="col-md-2">
+                  <label class="lbl-title" style="padding-left:40px">{{languages.attachment}}</label>
+                </div>
+                <div class="col-md-10">
+                  <ul class="list-attachfile-view">
+                    <li *ngFor="let c of item.attachments" class="item-files">
+                      <i class="fa fa-bolt" aria-hidden="true"></i>
+                      <a target="_blank" (click)="downloadFile(c.docNo)">{{c.dFileName}}</a>
+                      <a style="padding-left: 10px;" (click)="viewImage(c.docNo)"><i class="fa fa-eye"></i> {{languages.viewfile||'View File'}}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-header">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title">{{languages.reply}}</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid && replyItRequest(f)" #f="ngForm" novalidate>
+                  <div class="form-group">
+                    <label for="remark" class="col-sm-2 control-label">{{languages.description}}</label>
+                    <div class="col-sm-9">
+                      <app-tiny-editor [elementId]="'details'" (onEditorKeyup)="keyupHandlerFunction($event)" [(tinymceModel)]="replyModel.details"
+                        [tmHeight]="180">
+                      </app-tiny-editor>
+                      <span *ngIf="f.submitted && !content1.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Details is required" aria-hidden="true"></i>
+                      </span>
+                      <textarea class="form-control" id="content1" style="height: 100px; display:none" name="content1" #content1="ngModel" [(ngModel)]="areacontent.content1"
+                        required></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="sRStatus" class="col-sm-2 control-label">{{languages.replystatus}}</label>
+                    <div class="col-sm-3">
+                      <select class="form-control" [(ngModel)]="replyModel.sRStatus" name="sRStatus" #sRStatus="ngModel" required>
+                        <!-- <option *ngFor="let c of listIDStatus" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listIDStatus" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+
+                      </select>
+                      <span *ngIf="f.submitted && !sRStatus.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Details is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                    <label  class="col-sm-1">{{languages.assignto}}</label>
+                    <div  class="col-sm-3">
+                      <app-select-multiple></app-select-multiple>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="attachment" class="col-sm-2 control-label">{{languages.attachment}}</label>
+
+                    <div class="col-sm-10">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <app-fileupload projectId="100" sectionId="107" maxFiles="4" maxSize="2">
+                          </app-fileupload>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      
+                      <button type="submit" class="btn btn-primary pull-right">{{languages.submit}}</button>
+                      <input class="btn pull-right pull-right-input" (click)="back()" type="button" value="Back" />
+                     
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /.col -->
+
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>

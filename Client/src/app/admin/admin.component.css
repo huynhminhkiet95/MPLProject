@@ -1,0 +1,25 @@
+/* .container {
+    background: var(--background);
+    color: var(--on-background);
+    padding: 25px;
+    margin: 5px;
+  }
+  
+  section {
+    background: var(--primary);
+    color: var(--on-primary);
+    padding: 25px;
+  }
+   */
+   body,.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6,*:not(a){
+     color: var(--font-color-normal);
+   }
+   .skin-blue .wrapper{
+    background-color:  var(--background);
+   }
+   .skin-blue .content-header{
+    background-color:  var(--background-header);
+   }
+   .sidebar ul.sidebar-menu li a,.sidebar ul.sidebar-menu li a i,.sidebar ul.sidebar-menu li a span{
+     color: var(--font-color-menu);
+   }

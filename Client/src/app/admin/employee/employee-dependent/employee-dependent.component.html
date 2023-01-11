@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Dependent</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="id"
+        (onRowInserting)="insert($event)" (onRowUpdating)="update($event)" (onRowRemoving)="delete($event)">
+        <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+        <dxi-column caption="{{languages.dependentame||'Name'}}" dataField="dependentName" dataType="string">
+        </dxi-column>
+        <dxi-column dataField="gender" caption="{{languages.gender||'Gender'}}">
+          <dxo-lookup [dataSource]="listGender" displayExpr="name" valueExpr="id">
+          </dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="relation" caption="{{languages.relation||'Relation'}}">
+          <dxo-lookup [dataSource]="listRealtion" displayExpr="name" valueExpr="id">
+          </dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="dob" dataType="date" format="dd/MM/yyyy" caption="{{languages.dob||'Date of Birth'}}">
+        </dxi-column>
+        <dxi-column dataField="taxCode" dataType="string" caption="{{languages.taxcode||'Tax Code'}}">
+        </dxi-column>
+        <dxi-column dataField="addressOfBirth" dataType="string" caption="{{languages.addressofbirth||'Address Of Birth'}}">
+        </dxi-column>
+        <dxi-column dataField="registrationDate" dataType="date" format="dd/MM/yyyy" caption="{{languages.registrationdate||'Registration Date'}}">
+        </dxi-column>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+          [showInfo]="true"></dxo-pager>
+        <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+        </dxo-editing>
+      </dx-data-grid>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+
+</div>

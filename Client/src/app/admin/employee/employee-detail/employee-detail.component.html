@@ -1,0 +1,503 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.employeedetail}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a routerLink="../../dashboard"><i class="fa fa-dashboard"></i> {{languages.home}}</a></li>
+      <li><a routerLink="../../employee"> {{languages.employee}}</a></li>
+      <li> {{employeeDetail.employeeName}}</li>
+    </ol>
+  </section>
+
+  <section class="content">
+    <form class="form-horizontal" name="formEmployeeDetail" (ngSubmit)="f.form.valid && saveEmp()" #f="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary idrequest-search">
+            <div class="box-header with-border">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title"> {{languages.general}}</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label">
+                      {{languages.division}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.divisionCode" (change)="changedDivision()"
+                        name="division" #division="ngModel" required>
+                        <option value=""></option>
+                        <option *ngFor="let c of listDivision" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                      </select>
+                      <span *ngIf="f.submitted && !division.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Division code is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label">
+                      {{languages.employeename}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="employeeName" name="employeeName" [(ngModel)]="employeeDetail.employeeName"
+                        #employeeName="ngModel" required />
+                      <span *ngIf="f.submitted && !employeeName.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Employee name is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label">{{languages.firstname}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="employeeDetail.firstName"
+                        #firstName="ngModel" required />
+                      <span *ngIf="f.submitted && !firstName.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="First Name is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label">
+                      {{languages.designation}}<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.designation" name="designation"
+                        #designation="ngModel" (change)="changeGrade()" required>
+                        <option value=""></option>
+                        <option *ngFor="let c of listRole" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                      <span *ngIf="f.submitted && !designation.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Designation is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label">
+                      {{languages.employmenttype||'Employment Type'}}&nbsp;<span class="required"></span>
+                    </label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.employementType" name="employementType"
+                        required #employementType="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listEmpType" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listEmpType" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                      <span *ngIf="f.submitted && !employementType.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Employement Type  is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label"> {{languages.status}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.employeeStatus" name="employeeStatus"
+                        #employeeStatus="ngModel">
+                        <!-- <option *ngFor="let c of listEmpStatus" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listEmpStatus" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                      <span *ngIf="f.submitted && !employeeStatus.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Employee Status Type  is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group" *ngIf="employeeDetail.employeeStatus=='LEFT'">
+                    <label for="postDate" class="col-sm-5 control-label">{{languages.leavereason||'Leave
+                      Reason'}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="leavereason" maxlength="250" name="leavereason"
+                        [(ngModel)]="employeeDetail.leftReason" #leavereason="ngModel" required />
+                      <span *ngIf="f.submitted && !leavereason.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Leave Reason is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label">
+                      {{languages.department}}&nbsp;<span class="required"></span> </label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.deptCode" name="department" required
+                        #department="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of listDepartment" [ngValue]="c.deptCode">{{c.deptDesc}}</option>
+                      </select>
+                      <span *ngIf="f.submitted && !department.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Department name is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label">{{languages.employeecode}}</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="employeeCode" name="employeeCode" [(ngModel)]="employeeDetail.employeeCode"
+                        #employeeCode="ngModel" readonly />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label">{{languages.lastname}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="employeeDetail.lastName"
+                        #lastName="ngModel" required />
+                      <span *ngIf="f.submitted && !lastName.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Last name is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label">{{languages.onboarddate
+                      }}</label>
+                    <div class="col-md-7">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsDateofJoin">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="grade" class="col-sm-5 control-label">
+                      {{languages.grade||'Grade'}}&nbsp;<span class="required"></span> </label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.grade" name="grade" required #grade="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listGrade" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listGrade" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                      <span *ngIf="f.submitted && !grade.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Grade is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="grade" class="col-sm-5 control-label">
+                      {{languages.workinglocation||'Working Location'}}
+                    </label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.workingLocation" name="workingLocation"  #workingLocation="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of listWorkLocs" [ngValue]="c.id">{{c.locationName}}</option>
+                      </select>
+                      <span *ngIf="f.submitted && !workingLocation.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="working Location is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group" *ngIf="employeeDetail.employeeStatus=='LEFT'">
+                    <label for="inputEmail3" class="col-sm-5 control-label">{{languages.resigndate||'Resign
+                      Date'}}<span class="required"></span></label>
+                    <div class="col-md-7">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsLeaveDate">
+                        <dx-validator>
+                          <dxi-validation-rule type="required" message="Resign
+                          Date is required"></dxi-validation-rule>
+                        </dx-validator>
+                      </dx-date-box>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <!-- Profile Image -->
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Avatar</h3>
+                    </div>
+                    <div class="box-body box-profile" style="padding: 13px 0">
+                      <!-- <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> -->
+                      <div class="border-avatar">
+                        <img onError="this.src='/assets/img/128-missing_avatar.svg.png';" class="profile-user-img img-responsive img-circle"
+                          src="{{avatar}}" alt="">
+                      </div>
+                      <p style="text-align:center">
+                        <a (click)="staticModal.show()" class="cursor-point">
+                          <i class="fa fa-upload" aria-hidden="true"></i> Change</a>
+                      </p>
+                    </div>
+                    <!-- /.box-body -->
+                  </div>
+                  <!-- /.box -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary idrequest-search">
+            <div class="box-header with-border">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title">{{languages.privateinfo }}</h3>
+              <button *ngIf="id" class="pull-right btn btn-info btn-sm" type="button" (click)="viewDependent()">{{languages.viewdependent||'View Dependent'}}</button>
+              <button *ngIf="id" class="pull-right btn btn-info btn-sm" type="button" (click)="viewDetail()" style="margin-right: 8px;">{{languages.viewmore||'View More'}}</button>
+              <button *ngIf="id" class="pull-right btn btn-info btn-sm" type="button" (click)="showPopupEmployeeTimesheet()" style="margin-right: 8px;">{{languages.timesheetcode||'Timesheet Code'}}</button>
+              <button *ngIf="id" class="pull-right btn btn-info btn-sm" type="button" (click)="showPopupAssetMovement()" style="margin-right: 8px;">{{languages.assetsmovement||'Assets Movement'}}</button>
+             <button *ngIf="id" class="pull-right btn btn-info btn-sm" type="button" (click)="showPopupContract()" style="margin-right: 8px;">{{languages.viewcontract||'View Contract'}}</button>
+            </div>
+            <div class="box-body">
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label">{{languages.dateofbirth
+                      }}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="bsDateofBirth">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label"> {{languages.idtype }}</label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.idType" name="idType" #idType="ngModel">
+                        <option value=""></option>
+                        <!-- <option *ngFor="let c of listIDType" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listIDType" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label"> {{languages.homeaddress}}</label>
+                    <div class="col-sm-7">
+                      <textarea style="height: 80px!important;" class="form-control" id="homeAddress" name="homeAddress"
+                        [(ngModel)]="employeeDetail.address" #homeAddress="ngModel"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label"> {{languages.tel}}</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="tel" name="tel" [(ngModel)]="employeeDetail.tel" #tel="ngModel" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label">{{languages.userid}}</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="userId" name="loginName" [(ngModel)]="employeeDetail.loginName"
+                        #userId="ngModel" [disabled]="true" />
+                    </div>
+                    <!-- <div class="col-sm-2" style="padding: 0px;">
+                      <button *ngIf="!isUserID" type="button" class="btn btn-link checkuser" style="padding: 0px;float: left;"
+                        (click)="checkuser()">
+                        <span class="glyphicon glyphicon-search" style="margin-top: 7px;color: #fb0000;"></span>
+                      </button>
+                      <p [@visibilityChanged]="ismessagecheckuser" style="color:red;">{{resultmessage}}</p>
+                    </div> -->
+                    <div class="col-sm-3">
+                      <!-- <button type="button" *ngIf="id && ( userIdRequest != null || userIdRequest != '') && (employeeDetail.loginName == null || employeeDetail.loginName == '')"
+                                                [disabled]="employeeDetail.loginName == '' ||  (userIdRequest == null || userIdRequest == '')"
+                                                (click)='sendUserIdRequest()' style="width: 100%;" class="btn btn-primary button col-sm-12 btn-sm pull-left">{{languages.senduseridrequest
+                                                || 'Send user id request'}}</button> -->
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-xs-12 col-sm-5 control-label">Email</label>
+                    <div class="col-xs-12 col-sm-7">
+                      <input type="text" class="form-control" id="tel" name="email" [(ngModel)]="employeeDetail.email"
+                        #email="ngModel" />
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-5 control-label"> {{languages.gender}}</label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.gender" name="gender" #gender="ngModel">
+                        <!-- <option *ngFor="let c of listGender" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listGender" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="idNumber" class="col-sm-5 control-label">{{languages.idnumber}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <input class="form-control" id="idNumber" name="idNumber" [(ngModel)]="employeeDetail.idNo" required #idNumber="ngModel" />
+                      <span *ngIf="f.submitted && !idNumber.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="ID Number is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label">{{languages.employeenote}}</label>
+                    <div class="col-sm-7">
+                      <textarea style="height: 80px!important;" class="form-control" id="employeeNote" name="employeeNote"
+                        [(ngModel)]="employeeDetail.employeeNote" #employeeNote="ngModel"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label">{{languages.mobile}}&nbsp;<span class="required"></span></label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="mobile" name="mobile" [(ngModel)]="employeeDetail.mobile" required
+                        #mobile="ngModel" />
+                        <span *ngIf="f.submitted && !mobile.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Phone Number is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-5 control-label">{{languages.englishname||'English Name'}}</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="englishName" name="englishName" [(ngModel)]="employeeDetail.englishName"
+                        #englishName="ngModel" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputVehicle" class="col-sm-5 control-label">{{languages.vehicle||'Vehicle'}}</label>
+                    <div class="col-sm-7">
+                      <select class="form-control" [(ngModel)]="employeeDetail.vehicle" name="vehicle" #language="ngModel" class="form-control"
+                        name="vehicle">
+                        <!-- <option *ngFor="let c of vehicles" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of vehicles" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputVehicleNo" class="col-sm-5 control-label">{{languages.vehicleno||'Vehicle No'}}</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="vehicleNo" [(ngModel)]="employeeDetail.vehicleNo" name="vehicleNo">
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-4">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">{{languages.documentsupport||'Document Support'}}</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <div class="col-sm-12">
+                              <app-fileupload projectId="100" #uploadfile2 sectionId="107" maxFiles="4" maxSize="2">
+                              </app-fileupload>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <ul class="list-attachfile-view">
+                            <li *ngFor="let c of attachments" class="item-files">
+                              <i class="fa fa-bolt" aria-hidden="true"></i>
+                              <a target="_blank" (click)="fileSvc.downloadFile(c.docNo)">{{c.dFileName}}</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">{{languages.history || 'History'}}</h3>
+                    </div>
+                    <div class="box-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <div class="col-sm-3">
+                             <span>{{languages.created||'Created'}}</span>
+                            </div>
+                            <div class="col-sm-5">
+                             <span>{{employeeDetail.createUserName}}</span>
+                            </div>
+                            <div class="col-sm-4">
+                             <span>{{createdDate}}</span>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-sm-3">
+                             <span>{{languages.updated||'updatedDate'}} </span>
+                            </div>
+                            <div class="col-sm-5">
+                             <span>{{employeeDetail.updateUserName}}</span>
+                            </div>
+                            <div class="col-sm-4">
+                             <span>{{updatedDate}}</span>
+                            </div>
+                          </div>
+                        </div>
+                       
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="box-footer">
+
+              <button *ngIf="!id" type="submit" class="btn btn-primary pull-right">{{languages.save}}</button>
+              <!-- <button *ngIf="id" type="submit"  class="btn btn-primary pull-right">{{languages.update}}</button> -->
+              <dx-button *ngIf="id" [elementAttr]="{ class: 'btn btn-primary pull-right' }" id="button" text="{{languages.update||'Update'}}"
+                type="primary" [useSubmitBehavior]="true">
+              </dx-button>
+              <input class="btn pull-right  pull-right-input" (click)="backemployee()" type="button" value="{{languages.back||'Back'}}" />
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>
+<div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{languages.updateavatar||'Update Avatar'}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="staticModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="box-upload-avatar">
+          <app-fileupload #innerFileUpload projectId="100" sectionId="107" maxFiles="1" maxSize="2" fileExt="PNG,JPG,JPEG"
+            isVatar=true>
+          </app-fileupload>
+        </div>
+        <div>
+          <h4>
+            <span class="label label-info"> The max size for the avatar should be 128x128</span>
+          </h4>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="staticModal.hide()">{{languages.close||'Close'}}</button>
+        <button class="btn btn-primary" (click)="updateAvatar()">{{languages.update||'Update'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #validateModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-2" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #f0ad4e;">
+        <h4 class="modal-title pull-left" style="color: #ffffff;">{{languages.validationwarning||'Validation Warning'}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="validateModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <h4>
+            <span>Please fill out the required fields</span>
+          </h4>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="validateModal.hide()">{{languages.close||'Close'}}</button>
+      </div>
+    </div>
+  </div>
+</div>

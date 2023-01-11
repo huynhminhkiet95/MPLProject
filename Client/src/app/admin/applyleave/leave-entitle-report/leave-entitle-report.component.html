@@ -1,0 +1,155 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.leaveentitlereport || "Leave Entitle Report"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home || "Home"}}</a></li>
+      <li class="active">{{languages.leaveentitlereport || "Leave Entitle Report"}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title"> {{languages.search || "Search"}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">{{languages.leavemonth || "Leave Month"}}</label>
+                    <div class="col-sm-8">
+                    <!-- moth ,year,decade,century, -->
+                        <dx-date-box width="100%"
+                                    [showClearButton]="false" 
+                                    displayFormat="MM/yyyy"
+                                    maxZoomLevel="year" 
+                                    minZoomLevel="century"
+                                    type="date"
+                                    [max]="maxDateValue"
+                                    [(value)]="leaveMonth">
+                        </dx-date-box>
+                      </div>
+                      
+                  </div>
+                  
+                </div>
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                      <label for="inputEmail3" class="col-sm-4 control-label">{{languages.division || "Division"}} </label>
+                      <div class="col-sm-8">
+                        <select class="form-control" [(ngModel)]="searchModel.division"
+                          name="division" #division="ngModel">
+                          <option value=""></option>
+                          <option *ngFor="let c of listDivision" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                        </select>
+                      </div>
+                      
+                  </div>
+
+                </div>
+                <div class="col-lg-c4 col-md-c6">
+                  <div class="form-group">
+                    <label for="department" class="col-sm-4 control-label">{{languages.department || "Department"}}</label>
+                    <div class="col-sm-8">
+                      <select class="form-control" [(ngModel)]="searchModel.department"
+                        name="department" #department="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of listDepartment" [ngValue]="c.deptCode">{{c.deptDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+
+          </div>
+          <div class="box-footer group-btn-right">
+            <!-- <button type="button" (click)="exportExcel()"
+              class="btn btn-info pull-right btn-sm">{{languages.excelexport || "Excel Report"}}</button> -->
+            <button type="button" (click)="search()" class="btn btn-primary pull-right btn-sm">{{languages.search || "Search"}}
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="divisionCode" onRowRemoving="delete($event)">
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-export [enabled]="true" fileName="Leave_Entitle_Report"></dxo-export>
+              <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+              <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+              <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+
+              <dxi-column dataField="divisionCode" caption="{{languages.divisioncode||'Division Code'}}">
+              </dxi-column>
+              <dxi-column dataField="divisionDesc" caption="{{languages.divisiondesc || 'Division Desc'}}">
+              </dxi-column>
+              <dxi-column dataField="deptDesc" caption="{{languages.department || 'Department'}}">
+                </dxi-column>
+              <!-- <dxi-column dataField="employeeId" caption="{{languages.employeeid || 'Employee Id'}}">
+              </dxi-column> -->
+              <dxi-column dataField="employeeCode" caption="{{languages.employeecode || 'Employee Code'}}">
+              </dxi-column>
+              <dxi-column dataField="employeeName" caption="{{languages.employeename || 'Employee Name'}}">
+              </dxi-column>
+              <dxi-column dataField="designationDesc" caption="{{languages.designation || 'Designation'}}">
+              </dxi-column>
+              <dxi-column dataField="dateofJoin" caption="{{languages.dateofjoin || 'Date Of Join'}}" dataType="datetime2">
+              </dxi-column>
+              <dxi-column dataField="employeeStatusDesc" caption="{{languages.employeestatus || 'Employee Status'}}">
+              </dxi-column>
+              <dxi-column dataField="annpr" caption="{{languages.annualleaveprevyr || 'Annual Leave(Previous Year)'}}">
+              </dxi-column>
+              <dxi-column dataField="annu" caption="{{languages.annualleave || 'Annual Leave'}}">
+              </dxi-column>
+              <dxi-column dataField="totalANNU" caption="{{languages.totalannualleave || 'Total Annual Leave'}}">
+              </dxi-column>
+              <dxi-column dataField="allLeaveDaysOnYear" caption="{{languages.allleavedaysonyear || 'All Leave Days On Year'}}">
+              </dxi-column>
+              <dxi-column dataField="remainLeaveDays" caption="{{languages.remainleavedays || 'Remain Leave Days'}}">
+              </dxi-column>
+              <dxi-column dataField="standaWorkDay" caption="{{languages.workingdays || 'Working Days'}}">
+              </dxi-column>
+              <dxi-column dataField="leaveDayHasSalary" caption="{{languages.leavedayhassalary || 'Leave Day Has Salary'}}">
+              </dxi-column>
+              <dxi-column dataField="otDay" caption="{{languages.otday || 'OT Day'}}">
+              </dxi-column>
+              <dxi-column dataField="leaveDayLeftSalary" caption="{{languages.leavedaywithoutsalary || 'Leave Day Without Salary'}}">
+              </dxi-column>
+
+              <dxo-selection mode="single"></dxo-selection>
+
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+             
+            </dx-data-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->
+</div>

@@ -1,0 +1,161 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.editidrequest}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i>   {{languages.home}}</a></li>
+      <li><a routerLink="../../idrequest"> {{languages.idrequest}}</a></li>
+      <li class="active"><b>{{id}}</b></li>
+    </ol>
+  </section>
+  <section class="content">
+      <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="box box-primary idrequest-search">
+              <div class="box-header with-border">
+                  <i class="ion ion-clipboard"></i>
+                  <h3 class="box-title">{{languages.idrequestview}}</h3>
+              </div>
+              <div class="box-body">
+                  <div class="row">
+                      <div class="col-md-6">
+                        <ul class="ul-list-content">
+                          <li>
+                            <label class="lbl-title">{{languages.status}}</label>
+                            <span class="lbl-content">{{model.requestStatusDesc}}</span>
+                          </li>
+                          <li>
+                            <label class="lbl-title">{{languages.idrequest}}</label>
+                            <span class="lbl-content">{{model.idServiceDesc}}</span>
+                          </li>
+                          <!-- <li>
+                            <label class="lbl-title">{{languages.requestfor}}</label>
+                            <span class="lbl-content">{{model.existedUserId}}</span>
+                          </li> -->
+
+                          <li>
+                            <label class="lbl-title">{{languages.username}}</label>
+                            <span class="lbl-content">{{model.loginName}}</span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-md-6">
+                        <ul class="ul-list-content">
+                          <li>
+                            <label class="lbl-title">{{languages.closed}}</label>
+                            <span class="lbl-content">{{model.updateUser}} on {{commonsvc.convertMilisecondToUTCDateTime(model.updateDate)}}</span>
+                          </li>
+                          <li>
+                            <label class="lbl-title">{{languages.posted}}</label>
+                            <span class="lbl-content">{{model.createUser}} on {{commonsvc.convertMilisecondToUTCDateTime(model.createDate)}}</span>
+                          </li>
+                          <li>
+                            
+                          </li>
+
+                          <li>
+                            <label class="lbl-title">{{languages.remark}}</label>
+                            <span class="lbl-content">{{model.remark}}</span>
+                          </li>
+                        </ul>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2">
+                        <label class="lbl-title" style="padding-left:40px">{{languages.attchement}}</label>
+                    </div>
+                    <div class="col-md-10">
+                        <ul class="list-attachfile-view">
+                          <li *ngFor="let c of attachFiles">
+                              <i class="fa fa-bolt" aria-hidden="true"></i>
+                              <a target="_blank" href="{{c.filePath}}">{{c.dFileName}}</a>
+                          </li>
+                        </ul>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="box box-primary idrequest-search">
+              <div class="box-header with-border">
+                  <i class="ion ion-clipboard"></i>
+                  <h3 class="box-title">{{languages.reply}}</h3>
+              </div>
+              <div class="box-body">
+                  <div class="row">
+                      <div class="col-md-6">
+                        <ul class="ul-list-content">
+                          <li>
+                            <label class="lbl-title">{{languages.posted}}</label>
+                            <span class="lbl-content">{{model.requestStatusDesc}}</span>
+                          </li>
+                          <li>
+                            <label class="lbl-title">{{languages.confirmeduserid}}</label>
+                            <span class="lbl-content">{{model.confirmedID}}</span>
+                          </li>
+                           
+                        </ul>
+                      </div>
+                      <div class="col-md-6">
+                        <ul class="ul-list-content">
+                          <li>
+                            <label class="lbl-title">{{languages.poststatus}}</label>
+                            <span class="lbl-content"></span>
+                          </li>
+                          <li>
+                            <label class="lbl-title">{{languages.confirmedpassword}}</label>
+                            <span class="lbl-content">{{model.confirmedPwd}}</span>
+                          </li>
+                          
+                        </ul>
+                      </div>
+                  </div>
+              </div>
+               
+            </div>
+             
+          </div>
+        </div>
+    <div class="row" *ngIf="model.requestStatus!='CLOSED'">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-header">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title">{{languages.confirmedpassword}}</h3>
+            
+          </div>
+          <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-11">
+                        <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid && ReplyIdRequest()" #f="ngForm" novalidate>
+                          <div class="form-group">
+                            <label for="loginName" class="col-sm-2 control-label">{{languages.confirmeduserid}}</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="loginName" [(ngModel)]="confirmModel.loginName" #loginName="ngModel"  class="form-control" id="loginName" required />
+                            </div>
+                            <label for="confirmPassword" class="col-sm-2 control-label">{{languages.confirmedpassword}}</label>
+                            <div class="col-sm-3">
+                              <input type="text" name="password" [(ngModel)]="confirmModel.password" #password="ngModel"  class="form-control" id="password" required/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-12">
+                              <button type="submit" class="btn btn-primary pull-right">{{languages.save}}</button>
+                          </div>
+                        </div>
+                        </form>
+                    </div>
+                  </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->
+</div>

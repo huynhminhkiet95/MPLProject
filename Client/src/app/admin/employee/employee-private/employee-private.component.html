@@ -1,0 +1,314 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      {{languages.employeeprivateinfo||"Employee Private Info"}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> {{languages.home}}</a>
+      </li>
+      <li>
+        <a> {{languages.employeeprivate || "Private"}}</a>
+      </li>
+
+    </ol>
+  </section>
+
+  <section class="content">
+    <form class="form-horizontal" name="formEmployeePrivate" (ngSubmit)="f.form.valid && Save()" #f="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary idrequest-search">
+            <div class="box-header with-border">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title"> {{languages.general}}</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">
+                      {{languages.nationality|| "Nationality"}}</label>
+                    <div class="col-sm-4">
+                      <select class="form-control" [(ngModel)]="employeePrivate.nationality" name="nationality"
+                        #nationality="ngModel" required>
+                        <!-- <option *ngFor="let c of listnationality" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listnationality" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">
+                      {{languages.nativeplace ||"Native Place"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="nativePlace" name="nativePlace"
+                        [(ngModel)]="employeePrivate.nativePlace" #nativePlace="ngModel" required />
+                      <span *ngIf="f.submitted && !nativePlace.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Native Place is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label"> {{languages.idPlaceofIssue ||"ID Issue
+                      Place"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="idPlaceofIssue" name="idPlaceofIssue"
+                        [(ngModel)]="employeePrivate.idPlaceofIssue" #idPlaceofIssue="ngModel" required />
+                      <span *ngIf="f.submitted && !idPlaceofIssue.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Id Issue Place is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label"> {{languages.educationlevel|| "Education
+                      Level"}}</label>
+                    <div class="col-sm-4">
+                      <select class="form-control" [(ngModel)]="employeePrivate.educaionLevel" name="educaionLevel"
+                        #educaionLevel="ngModel" required>
+
+                        <!-- <option *ngFor="let c of listeducationLevel" [ngValue]="c.codeId"> {{c.codeDesc}} </option> -->
+                        <option *ngFor="let c of listeducationLevel" [ngValue]="c.codeId"> {{languages[c.codeDesc|removewhitespaces]||c.codeDesc}} </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label"> {{languages.major }}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="major" name="major"
+                        [(ngModel)]="employeePrivate.major" #major="ngModel" required />
+                      <span *ngIf="f.submitted && !major.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Major is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label">
+                      {{languages.placeofbirth ||"Place of Birth"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="placeofBirth" name="placeofBirth"
+                        [(ngModel)]="employeePrivate.placeofBirth" #placeofBirth="ngModel" required />
+                      <span *ngIf="f.submitted && !placeofBirth.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Place of Birth is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label"> {{languages.marragestatus|| "Marrage
+                      Status"}}</label>
+                    <div class="col-sm-4">
+
+                      <select class="form-control" [(ngModel)]="employeePrivate.marrageStatus" name="marrageStatus"
+                        #marrageStatus="ngModel" required>
+                        <!-- <option *ngFor="let c of listmarrageStatus" [ngValue]="c.codeId">{{c.codeDesc}}</option> -->
+                        <option *ngFor="let c of listmarrageStatus" [ngValue]="c.codeId">{{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label">{{languages.idIssueDate || "Id Issue
+                      Date"}}</label>
+                    <div class="col-md-4">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="employeePrivate.idIssueDate">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label">
+                      {{languages.schoolname ||"School Name"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="lastEducationName" name="lastEducationName"
+                        [(ngModel)]="employeePrivate.lastEducationName" #lastEducationName="ngModel" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label">
+                      {{languages.contactphone ||"Contact Phone 2"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="contactPhone" name="contactPhone"
+                        [(ngModel)]="employeePrivate.contactPhone" #contactPhone="ngModel" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="box box-primary idrequest-search">
+            <div class="box-header with-border">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title"> {{languages.privateinfo || "Private Info"}}</h3>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label"> {{languages.familyrecordbookno ||"Family
+                      Record Book No "}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="familyRecordBookNo" name="familyRecordBookNo"
+                        [(ngModel)]="employeePrivate.familyRecordBookNo" #familyRecordBookNo="ngModel" required />
+                      <span *ngIf="f.submitted && !familyRecordBookNo.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Family Record Book No is required"
+                          aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">{{languages.householderbof || "House Holder
+                      BOF"}}</label>
+                    <div class="col-md-4">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="employeePrivate.houseHolderDOB">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label"> {{languages.permanentaddress || "Permanent
+                      Address"}}</label>
+                    <div class="col-sm-6">
+                      <textarea style="height: 80px!important;" class="form-control" id="permanentAddress"
+                        name="permanentAddress" [(ngModel)]="employeePrivate.permanentAddress"
+                        #permanentAddress="ngModel"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label"> {{languages.bankname ||"Bank Name"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="bankName" name="bankName"
+                        [(ngModel)]="employeePrivate.bankName" #bankName="ngModel" required />
+                      <span *ngIf="f.submitted && !bankName.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Bank Name is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label">
+                      {{languages.incometaxno ||"Income Tax No"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="incomeTaxNo" name="incomeTaxNo"
+                        [(ngModel)]="employeePrivate.incomeTaxNo" #incomeTaxNo="ngModel" required />
+                      <span *ngIf="f.submitted && !incomeTaxNo.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Income Tax No is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label"> {{languages.insurancebookno ||"Insurance Book
+                      No"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="insuranceBookNo" name="insuranceBookNo"
+                        [(ngModel)]="employeePrivate.insuranceBookNo" #insuranceBookNo="ngModel" required />
+                      <span *ngIf="f.submitted && !insuranceBookNo.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Insurance Book No is required"
+                          aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-4 control-label"> {{languages.sumitdocument ||"Submit Documents"}}</label>
+                    <div class="col-sm-6">
+                      <input type="checkbox" id="isSubmitDocument" name="isSubmitDocument"
+                        [(ngModel)]="employeePrivate.isSubmitDocument" #isSubmitDocument="ngModel"/>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label"> {{languages.householdername ||"House Holder
+                      Name"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="houseHolderName" name="houseHolderName"
+                        [(ngModel)]="employeePrivate.houseHolderName" #houseHolderName="ngModel" required />
+                      <span *ngIf="f.submitted && !houseHolderName.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="House Holder Name is required"
+                          aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label"> {{languages.emergencycontract || "Emergency
+                      Contract"}}</label>
+                    <div class="col-sm-6">
+                      <textarea style="height: 80px!important;" class="form-control" id="emergencyContact"
+                        name="emergencyContact" [(ngModel)]="employeePrivate.emergencyContact"
+                        #emergencyContact="ngModel"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label">
+                      {{languages.bankaccount ||"Bank Account"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="bankAccount" name="bankAccount"
+                        [(ngModel)]="employeePrivate.bankAccount" #bankAccount="ngModel" required />
+                      <span *ngIf="f.submitted && !bankAccount.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Bank Account is required" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label"> {{languages.incometaxnote ||"Income Tax
+                      Note"}}</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" id="incomeTaxNote" name="incomeTaxNote"
+                        [(ngModel)]="employeePrivate.incomeTaxNote" #incomeTaxNote="ngModel" required />
+                      <span *ngIf="f.submitted && !incomeTaxNote.valid" class="help-block-custom">
+                        <i class="fa fa-exclamation-circle" tooltip="Income Tax Note is required"
+                          aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label">
+                      {{languages.taxissuedate ||"Tax Issue Date"}}</label>
+                    <div class="col-sm-6">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="employeePrivate.issueDateTax">
+                      </dx-date-box>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-3 control-label">
+                      {{languages.signingcontactdate ||"Signing Contact Date"}}</label>
+                    <div class="col-sm-6">
+                      <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="employeePrivate.signingDate">
+                      </dx-date-box>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-offset-10">
+                  <button (click)="Viewemployeedetail()" class="btn btn-default pull-right" style="margin-left: 10px">{{languages.back
+                    ||"Back" }}</button>
+                  <button (click)="Save()" type="button"
+                    class="btn btn-primary pull-right">{{languages.update}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>

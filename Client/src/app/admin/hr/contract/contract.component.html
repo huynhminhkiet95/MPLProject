@@ -1,0 +1,205 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>
+      {{languages.contract||'Contract'}}
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {{languages.home}}</a></li>
+      <li class="active">{{languages.contract||'Contract'}}</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title"> {{languages.search}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse"
+                data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="form-horizontal" name="formsearch" #ff="ngForm">
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label"> {{languages.division}}</label>
+                    <div class="col-sm-3">
+                      <select class="form-control" [(ngModel)]="searchModel.DivisionId" (change)="changedDivision()"
+                        name="division" #division="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of devisions" [ngValue]="c.divisionCode">{{c.divisionDesc}}</option>
+                      </select>
+                    </div>
+                    <label class="col-sm-2 control-label"> {{languages.department}}</label>
+                    <div class="col-sm-3">
+                      <select class="form-control" [(ngModel)]="searchModel.DepartmentId" name="department"
+                        #department="ngModel" (change)="changedDept()">
+                        <option value=""></option>
+                        <option *ngFor="let c of departments2" [ngValue]="c.deptCode">{{c.deptDesc}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{languages.employee||'Employee'}} </label>
+                    <div class="col-sm-3">
+                      <dx-select-box #selectBox [(value)]="searchModel.EmployeeId" [items]="listusers2"
+                        displayExpr="employeeName" valueExpr="employeeId" [searchEnabled]="true"
+                        itemTemplate="listItem">
+                        <div *dxTemplate="let itemData of 'listItem'; let itemIndex = index">
+                          <span class="tbl-inner-drop">
+                            {{itemData.employeeName}}
+                          </span>
+                          <br />
+                          <span>{{itemData.divisionDesc}} - {{itemData.deptDesc}} </span>
+                        </div>
+                      </dx-select-box>
+                    </div>
+                    <label class="col-sm-2 control-label">{{languages.contracttype||'Contract Type'}} </label>
+                    <div class="col-sm-3">
+                      <select class="form-control" [(ngModel)]="searchModel.Type" name="type" #type="ngModel">
+                        <option value=""></option>
+                        <option *ngFor="let c of contractTypes" [ngValue]="c.codeId">
+                          {{languages[c.codeDesc|removewhitespaces]||c.codeDesc}}</option>
+                      </select>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="form-group">
+                    <label for="postDate" class="col-sm-2 control-label">{{languages.status||'Status'}}</label>
+                    <div class="col-md-3">
+                      <select class="form-control" [(ngModel)]="searchModel.Status" name="type" #type="ngModel">
+                        <option value=""></option>
+                        <option value="DRAFT">DRAFT</option>
+                        <option value="COMPLETE">COMPLETE</option>
+                        <option value="VERIFY">VERIFY</option>
+                      </select>
+                    </div>
+                    <label for="postDate"
+                      class="col-sm-2 control-label">{{languages.contractdate||'Contract Date'}}</label>
+                    <div class="col-sm-2">
+                      <dx-date-box width="100%" [disabled]="!searchModel.IsCheckDate" [showClearButton]="false"
+                        dateSerializationFormat="yyyy-MM-dd" displayFormat="dd/MM/yyyy" type="date"
+                        [(value)]="searchModel.dateFrom">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-2">
+                      <dx-date-box width="100%" [disabled]="!searchModel.IsCheckDate" [min]="searchModel.DateF"
+                        dateSerializationFormat="yyyy-MM-dd" [showClearButton]="false" displayFormat="dd/MM/yyyy"
+                        type="date" [(value)]="searchModel.dateTo">
+                      </dx-date-box>
+                    </div>
+                    <div class="col-sm-1">
+                      <input type="checkbox" name="IsCheckDate" #IsCheckDate="ngModel"
+                        [(ngModel)]="searchModel.IsCheckDate">
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+            </form>
+          </div>
+          <div class="box-footer group-btn-right">
+            <button type="button" (click)="addnew()" class="btn btn-info pull-right btn-sm">{{languages.new}}
+            </button>
+            <button type="button" (click)="search()" class="btn btn-primary pull-right btn-sm">{{languages.search}}
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- Info boxes -->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="id">
+              <dxo-export [enabled]="true" fileName="StationaryReport"></dxo-export>
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-state-storing [enabled]="true" type="custom"></dxo-state-storing>
+              <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+              <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+              <dxi-column dataField="employeeName" caption="{{languages.employeename}}" cellTemplate="diffCellTemplate">
+              </dxi-column>
+              <dxi-column dataField="employeeCode" caption="{{languages.employeecode}}">
+              </dxi-column>
+              <dxi-column dataField="contractNo" caption="{{languages.contractno || 'Số HĐ'}}">
+              </dxi-column>
+              <dxi-column dataField="contracType" cellTemplate="contracTypeTemplate"
+                caption="{{languages.contracttype||'Contract Type'}}">
+              </dxi-column>
+              <dxi-column dataField="contractDate" dataType="date2"
+                caption="{{languages.contractdate||'Contract Date'}}">
+              </dxi-column>
+              <dxi-column dataField="expiredDate" dataType="date2" caption="{{languages.expireddate||'Expired Date'}}">
+              </dxi-column>
+              <dxi-column dataField="contracPersonName" caption="{{languages.contractperson||'Contract Person'}}">
+              </dxi-column>
+              <dxi-column dataField="remark" caption="{{languages.remark||'remark'}}">
+              </dxi-column>
+              <dxi-column dataField="createdUserName" caption="{{languages.createdby}}">
+              </dxi-column>
+              <dxi-column dataField="createdDate" dataType="date2" caption="{{languages.createddate||'Created Date'}}">
+              </dxi-column>
+              <dxi-column dataField="contractStatus" alignment="center" cellTemplate="diffStatusTemplate"
+                caption="{{languages.status}}">
+              </dxi-column>
+              <dxi-column dataField="id" cellTemplate="diffCellTemplatePopupPermisson" caption="">
+              </dxi-column>
+              <dxo-selection mode="single"></dxo-selection>
+              <dxo-paging [pageSize]="10"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true"
+                [allowedPageSizes]="[10, 20, 50, 100]" [showInfo]="true"></dxo-pager>
+              <dxo-editing mode="popup" [allowUpdating]="false" [allowDeleting]="false">
+              </dxo-editing>
+              <div *dxTemplate="let d of 'diffCellTemplate'">
+                <a (click)="viewDetail(d.data)">
+                  <span>{{d.value}}</span>
+                </a>
+              </div>
+              <div *dxTemplate="let d of 'diffCellTemplatePopupPermisson'">
+                <div class="dx-btn-group">
+
+                  <a tooltip="Click to edit" (click)="viewDetail(d.data)" class="fa fa-fw fa-pencil-square-o"></a>
+                  <a tooltip="Click to View PDF" (click)="ViewEContractReport(d.data)" class="fa fa-fw  fa-eye"></a>
+                  <a tooltip="Click to download PDF" (click)="DownloadEContractReport(d.data)"
+                    class="fa fa-fw  fa-file-pdf-o"></a>
+                   
+                  <a tooltip="Click to edit" (click)="delete(d.data)" class="fa fa-fw fa-trash"></a>
+                </div>
+              </div>
+              <div *dxTemplate="let d of 'contracTypeTemplate'">
+
+                <span>{{languages[d.value|removewhitespaces]||d.value}}</span>
+
+              </div>
+              <div *dxTemplate="let d of 'diffStatusTemplate'">
+                <span class="label status-{{d.value|removewhitespaces}}">{{ d.value}}</span>
+              </div>
+            </dx-data-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->
+</div>

@@ -1,0 +1,24 @@
+.announce-detail{
+    padding-top: 30px;
+    color: white;
+    width: 80%;
+    margin: 30px auto;
+}
+.announce-detail h2{
+    text-align: center;
+    font-size: 60px;
+}
+.announce-detail .author{
+    text-align: right;
+    margin-right: 50px;
+    font-size: 45px;
+}
+.announce-detail .content{
+    margin-top: 30px;
+    font-size: 45px;
+}
+.announce-detail .announcetype{
+    position: absolute;
+    top: -21px;
+    font-size: 35px;
+}

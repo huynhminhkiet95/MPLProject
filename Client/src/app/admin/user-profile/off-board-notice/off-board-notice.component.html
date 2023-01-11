@@ -1,0 +1,74 @@
+<!-- <ng-template #template> -->
+
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{languages.offboardnotice||'Off Board Notice'}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hidemodal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid" #f="ngForm" novalidate>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">{{languages.generate||'Generate'}}</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="leaveDateType" class="col-sm-2 control-label">{{languages.leavetype}}
+
+                  </label>
+                  <div class="col-sm-4">
+                    <select id="leaveDateType" class="form-control" (change)="changedType()"
+                      [(ngModel)]="offBoardNoticeModel.leaveDateType" name="leaveDateType" #leaveDateType="ngModel"
+                      required>
+                      <option *ngFor="let item of listLeaveType" [value]="item.codeId">{{item.codeDesc}}</option>
+                    </select>
+
+                  </div>
+                  <div class="col-sm-4">
+                    <dx-date-box width="100%" [showClearButton]="false" displayFormat="dd/MM/yyyy" type="date"
+                      [(value)]="offBoardNoticeModel.expectedLeaveDate">
+                    </dx-date-box>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="reasontoleave"
+                    class="col-sm-2 control-label">{{languages.reasontoleave||'Reason to Leave'}}</label>
+                  <div class="col-sm-4">
+                    <select id="reasontoleave" class="form-control" [(ngModel)]="offBoardNoticeModel.reasonToLeave"
+                      name="LeaveType" #reasontoleave="ngModel" required>
+                      <option *ngFor="let item of listReasonToLeave" value="{{item.codeId}}">{{item.codeDesc}}</option>
+                    </select>
+
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="remark" class="col-sm-2 control-label">{{languages.remark||'Remark'}}</label>
+                  <div class="col-md-10">
+                    <app-tiny-editor [elementId]="'remark'" [(tinymceModel)]="offBoardNoticeModel.reasonRemark"
+                      [tmHeight]="400">
+                    </app-tiny-editor>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+  <div class="row">
+    <div class="col-sm-12">
+      <button *ngIf="offBoardNoticeModel.requestStatus ==''" style="margin-right: 15px;float: right;" type="button" class="btn btn-primary"
+        (click)="save()">{{languages.submit}}</button>
+      <button style="margin-right: 15px;float: right;" type="button" class="btn btn-default"
+        (click)="hidemodal()">{{languages.close}}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,124 @@
+<ng-template #template>
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary idrequest-search">
+          <div class="box-header with-border">
+            <i class="ion ion-clipboard"></i>
+            <h3 class="box-title"> {{languages.general}}</h3>
+            <div class="pull-right box-tools">
+              <button type="button" class="btn btn-primary btn-xs pull-right" data-widget="collapse" data-toggle="tooltip"
+                title="Collapse" style="margin-right: 5px;">
+                <i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="ul-list-content">
+                  <li>
+                    <label class="lbl-title">{{languages.leaveperiod}}</label>
+                    {{languages.from}} <span class="date">{{model.fromDate|date:'dd/MM/yyyy'}}</span> To
+                    <span class="date">{{model.toDate|date:'dd/MM/yyyy'}}</span>
+                    <span> ({{model.leaveDays}} days)</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.leavetype}}</label>
+                    <span>{{model.leaveTypeDesc}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title" style="float: left;">{{languages.remark}}</label>
+                    <!-- <span>{{model.remark}}</span> -->
+                    <div style="white-space: pre-wrap; margin-left: 150px;">{{model.remark}}</div>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.attachment}}</label>
+                    <div>
+                      <ul class="list-attachfile-view">
+                        <li *ngFor="let c of model.documents" class="item-files">
+                          <i class="fa fa-bolt" aria-hidden="true"></i>
+                          <a target="_blank" (click)="downloadFile(c.docNo)">{{c.dFileName}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="ul-list-content">
+                  <li>
+                    <label class="lbl-title">{{languages.requester}}</label>
+                    <span>{{model.employeeName}}</span>
+                  </li>
+                  <li>
+                    <label class="lbl-title">{{languages.requestdate}}</label>
+                    <span>{{model.submitDate|date:'dd/MM/yyyy'}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer group-btn-right">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <dx-data-grid #gridContainer id="gridContainer" [dataSource]="dataSource" keyExpr="id">
+                  <dxo-group-panel [visible]="true"></dxo-group-panel>
+                  <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+                  <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                  <dxi-column dataField="replyTypeDesc" caption="{{languages.actiontype}}">
+                  </dxi-column>
+                  <dxi-column dataField="assignerName" caption="{{languages.name}}">
+                  </dxi-column>
+                  <dxi-column dataField="leaveStatusDesc" caption="{{languages.status}}" cellTemplate="diffStatusTemplate">
+                  </dxi-column>
+                  <dxi-column dataField="approvalType" caption="{{languages.approvaltype}}">
+                  </dxi-column>
+                  <dxi-column dataField="{{languages.comment}}">
+                  </dxi-column>
+                  <dxi-column dataField="createDate" dataType="datetime2" caption="{{languages.createdate}}">
+                  </dxi-column>
+                  <dxo-selection mode="single"></dxo-selection>
+                  <dxo-paging [pageSize]="10"></dxo-paging>
+                  <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[10, 20, 50, 100]"
+                    [showInfo]="true"></dxo-pager>
+                  <dxo-editing mode="popup" [allowDeleting]="false">
+                  </dxo-editing>
+                  <div *dxTemplate="let d of 'diffCellTemplate'">
+                    <a href="#" class="dx-link dx-link-delete dx-icon-trash" routerLink="../itservicerequest/{{d.value}}">
+                      <span> </span></a>
+                  </div>
+
+                  <div *dxTemplate="let d of 'diffStatusTemplate'">
+                    <span class="label status-{{d.value|lowercase}}">{{d.value}}</span>
+                  </div>
+                </dx-data-grid>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button type="button" class="btn btn-default pull-right" (click)="close()">{{languages.close}}</button>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
